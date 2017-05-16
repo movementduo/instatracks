@@ -34,9 +34,10 @@ CREATE TABLE `instances` (
   `oauthToken` varchar(128) DEFAULT NULL,
   `sessionId` varchar(128) DEFAULT NULL,
   `s3bucket` text,
-  `language` varchar(5) DEFAULT NULL,
-  `stampCreate` datetime DEFAULT NULL,
+  `lang` varchar(5) DEFAULT NULL,
   `status` enum('active','pending','aborted','rejected') DEFAULT NULL,
+  `sessionMode` enum('manual','random') DEFAULT NULL,
+  `stampCreate` datetime DEFAULT NULL,
   `videoFile` text,
   `viewCache` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
