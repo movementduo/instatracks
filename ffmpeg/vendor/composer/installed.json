@@ -1,0 +1,39 @@
+[
+    {
+        "name": "olaferlandsen/ffmpeg-php-class",
+        "version": "0.1.4",
+        "version_normalized": "0.1.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/olaferlandsen/ffmpeg-php-class.git",
+            "reference": "54bb10af0548039c2764810667532e14ce1ef8be"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/olaferlandsen/ffmpeg-php-class/zipball/54bb10af0548039c2764810667532e14ce1ef8be",
+            "reference": "54bb10af0548039c2764810667532e14ce1ef8be",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2015-11-15T07:30:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "FFmpeg": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "FFmpeg class to use with PHP without install FFmpeg-PHP extension",
+        "homepage": "https://github.com/olaferlandsen/ffmpeg-php-class",
+        "keywords": [
+            "ffmpeg",
+            "video"
+        ]
+    }
+]

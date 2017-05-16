@@ -1,0 +1,5 @@
+{
+    "require": {
+        "olaferlandsen/ffmpeg-php-class": "^0.1.4"
+    }
+}
