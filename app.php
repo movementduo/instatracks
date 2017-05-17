@@ -3,7 +3,7 @@ require('config.php');
 require('classes/database.php');
 require('aws/vendor/autoload.php');
 require('vision/vendor/autoload.php');
-require('ffmpeg/vendor/autoload.php');
+
 
 session_start();
 
@@ -17,18 +17,18 @@ $db = new Database($cfg);
 /*
 
 
-use Aws\S3\S3Client;
+
 
 // Instantiate an Amazon S3 client.
-$s3 = new S3Client([
+$s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'eu-west-1'
 ]);
 
 try {
     $s3->putObject([
-        'Bucket' => 'instatracks-v3',
-        'Key'    => 'instagram',
+        'Bucket' => 'instatracks',
+        'Key'    => '????',
         'Body'   => fopen('/home/ubuntu/basquiat.jpg', 'r'),
         'ACL'    => 'public-read',
     ]);
@@ -54,10 +54,7 @@ try {
 	#}
 
 # }
-# 8 - time lyrics 
 
-# 9 - merge audio in ffmpeg,
-# 10 - merge images to audio track
 /*
 STEPS:
 1) concat 10 speech tracks into one file
@@ -81,7 +78,8 @@ ffmpeg -i video.mp4 -i finished.mp3 \
 overlay image ("overlay=20:20 top position in pixels", "between(t,0,25) appears from 0-25 seconds")
 ffmpeg -i fin.mp4 -i fanta_logo2.png -filter_complex "[0:v][1:v] overlay=20:20:enable='between(t,0,25)'" fin-overlay2.mp4
 */
+
 # 11 - store video in s3
 # 12 - update db + kill this session
 
-session_destroy();
+session_destroy()
