@@ -21,15 +21,15 @@ $vision = new VisionClient([
     'projectId' => 'node-instatracks',
 ]);
 
+//foreach(array('rb.jpg','c.jpg','b.jpg','p.jpg') as $i) {
+//	$image = $vision->image(file_get_contents('test_images/'.$i), ['LABEL_DETECTION','TEXT_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','LOGO_DETECTION','SAFE_SEARCH_DETECTION']);
+
+
 $images = json_decode($json);
 foreach($images->images as $i) {
-	
-	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION']);
+	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION','TEXT_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','LOGO_DETECTION','SAFE_SEARCH_DETECTION']);
 	$result = $vision->annotate($image);
-
 	print(var_export($result,true)."\n\n");
-
-
 }
 
 die();
