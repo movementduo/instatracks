@@ -12,3 +12,6 @@ $cfg = array(
 		'schema' => 'instratracks',
 	),
 );
+
+date_default_timezone_set('Europe/London') ;
+putenv('GOOGLE_APPLICATION_CREDENTIALS=creds/google.json');

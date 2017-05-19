@@ -1,16 +1,46 @@
 <?php
 require('config.php');
+
 require('classes/database.php');
 require('aws/vendor/autoload.php');
+require('google/vendor/autoload.php');
 require('vision/vendor/autoload.php');
 
+require('test-data.php');
 
 session_start();
+
+use Google\Cloud\Vision\VisionClient;
+
+$client = new Google_Client();
+$client->useApplicationDefaultCredentials();
+
+//creds/google.json
+
+$vision = new VisionClient([
+    'projectId' => 'node-instatracks',
+]);
+
+$images = json_decode($json);
+foreach($images->images as $i) {
+	
+	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION']);
+	$result = $vision->annotate($image);
+
+	print(var_export($result,true)."\n\n");
+
+
+}
+
+die();
+
 
 # 1 - get the token name, creation type (random|manual) + cdn linked images - if manual, 5 stored in db, if random, 10 stored and picked from db at random
 
 # 2 - create a database session
 $db = new Database($cfg);
+
+
 
 
 
@@ -82,4 +112,4 @@ ffmpeg -i fin.mp4 -i fanta_logo2.png -filter_complex "[0:v][1:v] overlay=20:20:e
 # 11 - store video in s3
 # 12 - update db + kill this session
 
-session_destroy()
+session_destroy();
