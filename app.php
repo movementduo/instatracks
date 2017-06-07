@@ -30,6 +30,7 @@ $vision = new VisionClient([
     'projectId' => 'node-instatracks',
 ]);
 
+
 /*
 
 	S3 Buckets:
@@ -58,40 +59,46 @@ foreach($images->images as $i) {
 
 	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION','TEXT_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','LOGO_DETECTION','SAFE_SEARCH_DETECTION']);
 	$result = $vision->annotate($image);
-print("Labels:\n");
+	
+	print("Labels:\n");
 	foreach($result->labels() as $label) {
-                print("\t".$label->description()."\n");
-        }
+		$des = $label->description();
+		$ing = substr($des, -3);
+		if($ing == "ing") {
+			print("\tVerb: ".$des."\n");
+		} else {
+			print("\tNoun: ".$des."\n");
+		}
+  }
 
-print("Faces:\n");
-foreach ((array) $result->faces() as $face) {
-    printf("[tAnger: %s\n", $face->isAngry() ? 'yes' : 'no');
-    printf("\tJoy: %s\n", $face->isJoyful() ? 'yes' : 'no');
-    printf("\tSurprise: %s\n", $face->isSurprised() ? 'yes' : 'no');
-}
+	print("Faces:\n");
+	foreach ((array) $result->faces() as $face) {
+	  printf("[tAnger: %s\n", $face->isAngry() ? 'yes' : 'no');
+	  printf("\tJoy: %s\n", $face->isJoyful() ? 'yes' : 'no');
+	  printf("\tSurprise: %s\n", $face->isSurprised() ? 'yes' : 'no');
+	}
 
-$result = $vision->annotate($image);
-print("Logos:\n");
-foreach ((array) $result->logos() as $logo) {
-    print("\t".$logo->description() . PHP_EOL);
-}
+	print("Logos:\n");
+	foreach ((array) $result->logos() as $logo) {
+	  print("\t".$logo->description() . PHP_EOL);
+	}
 
 
 	$safe = $result->safeSearch();
-print("SafeSearch:\n");
-printf("\tAdult: %s\n", $safe->isAdult() ? 'yes' : 'no');
-printf("\tSpoof: %s\n", $safe->isSpoof() ? 'yes' : 'no');
-printf("\tMedical: %s\n", $safe->isMedical() ? 'yes' : 'no');
-printf("\tViolence: %s\n", $safe->isViolent() ? 'yes' : 'no');
+	print("SafeSearch:\n");
+	printf("\tAdult: %s\n", $safe->isAdult() ? 'yes' : 'no');
+	printf("\tSpoof: %s\n", $safe->isSpoof() ? 'yes' : 'no');
+	printf("\tMedical: %s\n", $safe->isMedical() ? 'yes' : 'no');
+	printf("\tViolence: %s\n", $safe->isViolent() ? 'yes' : 'no');
 
-print("Landmarks:\n");
-foreach ((array) $result->landmarks() as $landmark) {
-    print("\t".$landmark->description() . PHP_EOL);
-}
+	print("Landmarks:\n");
+	foreach ((array) $result->landmarks() as $landmark) {
+	    print("\t".$landmark->description() . PHP_EOL);
+	}
 
-print "\n";
-print "------------\n";
-print "\n";
+	print "\n";
+	print "------------\n";
+	print "\n";
 
 
 }
