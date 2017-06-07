@@ -1,4 +1,8 @@
-<pre><?php
+<?php
+
+//die(var_export($_SERVER,true));
+
+
 require('config.php');
 require('classes/database.php');
 require('aws/vendor/autoload.php');
@@ -8,8 +12,14 @@ require('vision/vendor/autoload.php');
 require('test-data.php');
 
 session_start();
-
 use Google\Cloud\Vision\VisionClient;
+
+// Instantiate an Amazon S3 client.
+$s3 = new Aws\S3\S3Client([
+    'version' => 'latest',
+    'region'  => 'eu-west-1'
+]);
+
 
 $client = new Google_Client();
 $client->useApplicationDefaultCredentials();
@@ -20,9 +30,32 @@ $vision = new VisionClient([
     'projectId' => 'node-instatracks',
 ]);
 
+/*
+
+	S3 Buckets:
+	[authtoken]/images/[image_id].jpg
+	[authtoken]/speech/[image_id].wav
+	[authtoken]/rendered/video||[mungedname].mp4
+
+*/
 
 $images = json_decode($json);
 foreach($images->images as $i) {
+
+	$body = file_get_contents($i->url);
+
+	try {
+		$s3->putObject([
+        		'Bucket' => 'instatracks',  // bucket to store in
+        		'Key'    => '[oauthtoken1]'.'/images/'.$i->id.'.jpg', // filename of object stored
+        		'Body'   => $body, // image
+			'ACL'    => 'public-read',
+		]);
+	} catch (Aws\S3\Exception\S3Exception $e) {
+		echo "There was an error uploading the file.\n";
+	}
+
+
 	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION','TEXT_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','LOGO_DETECTION','SAFE_SEARCH_DETECTION']);
 	$result = $vision->annotate($image);
 print("Labels:\n");
@@ -75,27 +108,9 @@ $db = new Database($cfg);
 
 
 
-/*
 
 
 
-
-// Instantiate an Amazon S3 client.
-$s3 = new Aws\S3\S3Client([
-    'version' => 'latest',
-    'region'  => 'eu-west-1'
-]);
-
-try {
-    $s3->putObject([
-        'Bucket' => 'instatracks',
-        'Key'    => '????',
-        'Body'   => fopen('/home/ubuntu/basquiat.jpg', 'r'),
-        'ACL'    => 'public-read',
-    ]);
-} catch (Aws\S3\Exception\S3Exception $e) {
-    echo "There was an error uploading the file.\n";
-}*/
 
 # 3 - create s3 project folder inside bucket
 # 4 - get images from instagram and store in s3 and db against token
