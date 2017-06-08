@@ -10,6 +10,7 @@ require('google/vendor/autoload.php');
 require('vision/vendor/autoload.php');
 
 require('test-data.php');
+require('test-lyrics.php');
 
 session_start();
 use Google\Cloud\Vision\VisionClient;
@@ -41,6 +42,13 @@ $vision = new VisionClient([
 */
 
 $images = json_decode($json);
+
+$lyrics = json_decode($lyrics_copy);
+$type_noun = $lyrics->noun;
+$type_happy = $lyrics->happy;
+$type_group = $lyrics->group;
+$type_landmark = $lyrics->landmark;
+
 $safeImages = array();
 foreach($images->images as $i) {
 
@@ -67,12 +75,28 @@ foreach($images->images as $i) {
 	} else {
 		echo "This image is safe to use.\n";
 
+		print($result->logos());
+		
 		if($result->logos()){
+			$first = array_shift($result->logos());
+			$des = $first->description();
+			print("What logo is it? ".$des."\n");
 
-			//Fanta first priority
-			foreach ((array) $result->logos() as $logo) {
-				if($logo->description() == "Fanta") {
-					print("\tIt's fanta baby!\n"); // 1) Check logo is fanta
+			if($des == 'Fanta' || $des == 'fanta'){
+				//Fanta first priority
+				print("\tIt's fanta baby!\n"); // 1) Check logo is fanta
+				$myPics[] = array('fanta', '', $i->url);
+			} else {
+				print("A different logo is found, so use it's label: ");
+				$first = array_shift($result->labels());
+				$des = $first->description();
+				$ing = substr($des, -3);
+				if($ing == "ing") {
+					print("\tVerb: ".$des."\n");
+					$myPics[] = array('verb', $des, $i->url);
+				} else {
+					print("\tNoun: ".$des."\n");
+					$myPics[] = array('noun', $des, $i->url);
 				}
 			}
 
@@ -83,23 +107,39 @@ foreach($images->images as $i) {
 				$faceCount = sizeof($result->faces());
 				if($faceCount > 1){
 					printf("\tGroup of friends!\n"); // 2) Check if it's a group of friends
+					$myPics[] = array('group', '', $i->url);
 				} else {
 
 					foreach ((array) $result->faces() as $face) {
 						if($face->isAngry()){
 							printf("\tI'm so angry\n"); // 3) Check angry face
+							$myPics[] = array('angry', '', $i->url);
 						}
 						else if($face->isJoyful()){
 							printf("\tI'm so happy\n"); // 4) Check happy face
+
+							//Rhyme group choose
+							$rhymeA = $type_happy[0];
+
+							//Create lyric
+							$lyric = "\t".$rhymeA[0]."\n";
+							print_r($lyric);
+
+							//All information we need
+							$myPics[] = array('happy', '', $lyric, $i->url);
+
 						}
 						else if($face->isSorrowful()){
 							printf("\tI'm so sad\n"); // 5) Check sad face
+							$myPics[] = array('sad', '', $i->url);
 						}
 						else if($face->isSurprised()){
 							printf("\tI'm so surprised\n"); // 6) Check surprised face
+							$myPics[] = array('suprised', '', $i->url);
 						}
 						else{
 							printf("\tLooking good there\n"); // 7) Check no emotion detected
+							$myPics[] = array('noemotion', '', $i->url);
 						}
 					}
 
@@ -107,23 +147,38 @@ foreach($images->images as $i) {
 
 		} else if ($result->landmarks()) {
 
-			print("Landmarks:\n");
-			foreach ((array) $result->landmarks() as $landmark) {
-			    print("\t".$landmark->description() . PHP_EOL); // 8) Check landmark
-			}
+			$first = array_shift($result->landmarks());
+			$des = $first->description();
+			print("\tLandmark: ".$des."\n");
+			$myPics[] = array('landmark', $des, $i->url);
 
 		} else {
 
-			print("Labels:\n");
 			foreach($result->labels() as $label) {
 				$des = $label->description();
-				$ing = substr($des, -3);
-				if($ing == "ing") {
-					print("\tVerb: ".$des."\n"); // 9) check verb
-				} else {
-					print("\tNoun: ".$des."\n"); // 10) check non-verb/noun
-				}
-		  }
+				$allLabels[] = $des;
+			}
+
+			print("Labels:\n");
+			$first = array_shift($result->labels());
+			$des = $first->description();
+			$ing = substr($des, -3);
+			if($ing == "ing") {
+				print("\tVerb: ".$des."\n");
+				$myPics[] = array('verb', $des, $i->url); // 9) Verb/adjective
+			} else {
+				print("\tNoun: ".$des."\n"); // 10) Check noun
+
+				//Rhyme group choose
+				$rhymeA = $type_noun[0];
+
+				//Create lyric
+				$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+				print_r($lyric);
+
+				//All information we need
+				$myPics[] = array('noun', $allLabels, $lyric, $i->url);
+			}
 
 		}
 
@@ -133,8 +188,55 @@ foreach($images->images as $i) {
 	print "------------\n";
 	print "\n";
 
-
 }
+
+print_r($myPics);
+
+// foreach($myPics as $j) {
+
+// 	$type = $j[0];
+// 	$text = $j[1];
+// 	$url = $j[2];
+// 	switch ($type) {
+// 			case 'fanta':
+// 		    echo "It's fanta\n";
+// 		    break;
+// 	    case 'noun':
+// 	        echo "It's a noun\n";
+// 	        break;
+// 	    case 'verb':
+// 	        echo "It's a verb\n";
+// 	        break;
+// 	    case 'happy':
+// 	        echo "I'm happy\n";
+// 	        break;
+// 	    case 'sad':
+// 	        echo "I'm sad\n";
+// 	        break;
+// 	    case 'angry':
+// 	        echo "I'm angry\n";
+// 	        break;
+// 	    case 'surprised':
+// 	        echo "I'm surprised\n";
+// 	        break;
+// 	    case 'noemotion':
+// 	        echo "I have no emotion\n";
+// 	        break;
+// 	    case 'group':
+// 	        echo "I'm with friends\n";
+// 	        break;
+// 	    case 'landmark':
+// 	        echo "It's famous\n";
+// 	        break;
+// 	    default:
+// 	        echo "confused\n";
+// 	}
+
+// 	print "\n";
+// 	print "------------\n";
+// 	print "\n";
+
+// }
 
 die();
 
