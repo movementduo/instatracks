@@ -21,6 +21,11 @@ $s3 = new Aws\S3\S3Client([
     'region'  => 'eu-west-1'
 ]);
 
+$polly = new \Aws\Polly\PollyClient([
+  'version'     => 'latest',
+  'region'      => 'eu-west-1',
+]);
+
 
 $client = new Google_Client();
 $client->useApplicationDefaultCredentials();
@@ -44,8 +49,14 @@ $vision = new VisionClient([
 $images = json_decode($json);
 
 $lyrics = json_decode($lyrics_copy);
+$type_fanta = $lyrics->fanta;
 $type_noun = $lyrics->noun;
+$type_verb = $lyrics->verb;
 $type_happy = $lyrics->happy;
+$type_angry = $lyrics->angry;
+$type_sad = $lyrics->sad;
+$type_surprised = $lyrics->surprised;
+$type_noEmotion = $lyrics->noEmotion;
 $type_group = $lyrics->group;
 $type_landmark = $lyrics->landmark;
 
@@ -85,18 +96,52 @@ foreach($images->images as $i) {
 			if($des == 'Fanta' || $des == 'fanta'){
 				//Fanta first priority
 				print("\tIt's fanta baby!\n"); // 1) Check logo is fanta
-				$myPics[] = array('fanta', '', $i->url);
+				
+				//Rhyme group choose
+				$rhymeA = $type_verb[0];
+
+				//Create lyric
+				$lyric = "\t".$rhymeA[0]."\n";
+
+				$myPics[] = (object) ["type"=>'fanta', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 			} else {
 				print("A different logo is found, so use it's label: ");
+
+				foreach($result->labels() as $label) {
+					$des = $label->description();
+					$allLabels[] = $des;
+				}
+
 				$first = array_shift($result->labels());
 				$des = $first->description();
 				$ing = substr($des, -3);
 				if($ing == "ing") {
 					print("\tVerb: ".$des."\n");
-					$myPics[] = array('verb', $des, $i->url);
+					
+					//Rhyme group choose
+					$rhymeA = $type_verb[0];
+
+					//Create lyric
+					$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+					print_r($lyric);
+
+					$myPics[] = (object) ["type"=>'verb', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+					$allLabels = array();
+
 				} else {
 					print("\tNoun: ".$des."\n");
-					$myPics[] = array('noun', $des, $i->url);
+
+					//Rhyme group choose
+					$rhymeA = $type_noun[0];
+
+					//Create lyric
+					$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+					print_r($lyric);
+
+					$myPics[] = (object) ["type"=>'noun', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+					$allLabels = array();
+					
 				}
 			}
 
@@ -107,13 +152,30 @@ foreach($images->images as $i) {
 				$faceCount = sizeof($result->faces());
 				if($faceCount > 1){
 					printf("\tGroup of friends!\n"); // 2) Check if it's a group of friends
-					$myPics[] = array('group', '', $i->url);
+
+					//Rhyme group choose
+					$rhymeA = $type_group[0];
+
+					//Create lyric
+					$lyric = "\t".$rhymeA[0]."\n";
+					print_r($lyric);
+
+					$myPics[] = (object) ["type"=>'group', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 				} else {
 
 					foreach ((array) $result->faces() as $face) {
 						if($face->isAngry()){
 							printf("\tI'm so angry\n"); // 3) Check angry face
-							$myPics[] = array('angry', '', $i->url);
+							
+							//Rhyme group choose
+							$rhymeA = $type_angry[0];
+
+							//Create lyric
+							$lyric = "\t".$rhymeA[0]."\n";
+							print_r($lyric);
+
+							//All information we need
+							$myPics[] = (object) ["type"=>'angry', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 						}
 						else if($face->isJoyful()){
 							printf("\tI'm so happy\n"); // 4) Check happy face
@@ -126,20 +188,47 @@ foreach($images->images as $i) {
 							print_r($lyric);
 
 							//All information we need
-							$myPics[] = array('happy', '', $lyric, $i->url);
+							$myPics[] = (object) ["type"=>'happy', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 
 						}
 						else if($face->isSorrowful()){
 							printf("\tI'm so sad\n"); // 5) Check sad face
-							$myPics[] = array('sad', '', $i->url);
+							
+							//Rhyme group choose
+							$rhymeA = $type_sad[0];
+
+							//Create lyric
+							$lyric = "\t".$rhymeA[0]."\n";
+							print_r($lyric);
+
+							//All information we need
+							$myPics[] = (object) ["type"=>'happy', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 						}
 						else if($face->isSurprised()){
 							printf("\tI'm so surprised\n"); // 6) Check surprised face
-							$myPics[] = array('suprised', '', $i->url);
+							
+							//Rhyme group choose
+							$rhymeA = $type_surprised[0];
+
+							//Create lyric
+							$lyric = "\t".$rhymeA[0]."\n";
+							print_r($lyric);
+
+							//All information we need
+							$myPics[] = (object) ["type"=>'surprised', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 						}
 						else{
 							printf("\tLooking good there\n"); // 7) Check no emotion detected
-							$myPics[] = array('noemotion', '', $i->url);
+							
+							//Rhyme group choose
+							$rhymeA = $type_noEmotion[0];
+
+							//Create lyric
+							$lyric = "\t".$rhymeA[0]."\n";
+							print_r($lyric);
+
+							//All information we need
+							$myPics[] = (object) ["type"=>'noEmotion', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 						}
 					}
 
@@ -150,7 +239,15 @@ foreach($images->images as $i) {
 			$first = array_shift($result->landmarks());
 			$des = $first->description();
 			print("\tLandmark: ".$des."\n");
-			$myPics[] = array('landmark', $des, $i->url);
+
+			//Rhyme group choose
+			$rhymeA = $type_landmark[0];
+
+			//Create lyric
+			$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+			print_r($lyric);
+
+			$myPics[] = (object) ["type"=>'landmark', "text"=>$des, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 
 		} else {
 
@@ -160,12 +257,23 @@ foreach($images->images as $i) {
 			}
 
 			print("Labels:\n");
-			$first = array_shift($result->labels());
+			$labels = $result->labels();
+			$first = array_shift($labels);
 			$des = $first->description();
 			$ing = substr($des, -3);
 			if($ing == "ing") {
 				print("\tVerb: ".$des."\n");
-				$myPics[] = array('verb', $des, $i->url); // 9) Verb/adjective
+
+				//Rhyme group choose
+				$rhymeA = $type_verb[0];
+
+				//Create lyric
+				$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+				print_r($lyric);
+
+				$myPics[] = (object) ["type"=>'verb', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+				$allLabels = array();
+
 			} else {
 				print("\tNoun: ".$des."\n"); // 10) Check noun
 
@@ -177,7 +285,30 @@ foreach($images->images as $i) {
 				print_r($lyric);
 
 				//All information we need
-				$myPics[] = array('noun', $allLabels, $lyric, $i->url);
+				$myPics[] = (object) ["type"=>'noun', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+				$allLabels = array();
+
+				// $pollySpeech = $polly->synthesizeSpeech([
+				//     'OutputFormat' => 'mp3', // REQUIRED
+				//     'Text' => $lyric, // REQUIRED
+				//     'TextType' => 'text',
+				//     'VoiceId' => 'Salli', // REQUIRED
+				// ]);
+
+				// print_r($pollySpeech);
+
+				// try {
+				// 	$s3->putObject([
+			 //        		'Bucket' => 'instatracks',  // bucket to store in
+			 //        		'Key'    => '[oauthtoken1]'.'/speech/xxxx.mp3', // filename of object stored
+			 //        		'Body'   => $pollySpeech,
+			 //        		'ContentType' => 'audio/mpeg', // image
+				// 		'ACL'    => 'public-read',
+				// 	]);
+				// } catch (Aws\S3\Exception\S3Exception $e) {
+				// 	echo "There was an error uploading the file.\n";
+				// }
+
 			}
 
 		}
@@ -190,53 +321,20 @@ foreach($images->images as $i) {
 
 }
 
+// MOST LIKED
+print_r("most liked: \n");
+usort($myPics, function($a, $b)
+{
+   return strcmp($b->likes, $a->likes);
+});
 print_r($myPics);
 
-// foreach($myPics as $j) {
-
-// 	$type = $j[0];
-// 	$text = $j[1];
-// 	$url = $j[2];
-// 	switch ($type) {
-// 			case 'fanta':
-// 		    echo "It's fanta\n";
-// 		    break;
-// 	    case 'noun':
-// 	        echo "It's a noun\n";
-// 	        break;
-// 	    case 'verb':
-// 	        echo "It's a verb\n";
-// 	        break;
-// 	    case 'happy':
-// 	        echo "I'm happy\n";
-// 	        break;
-// 	    case 'sad':
-// 	        echo "I'm sad\n";
-// 	        break;
-// 	    case 'angry':
-// 	        echo "I'm angry\n";
-// 	        break;
-// 	    case 'surprised':
-// 	        echo "I'm surprised\n";
-// 	        break;
-// 	    case 'noemotion':
-// 	        echo "I have no emotion\n";
-// 	        break;
-// 	    case 'group':
-// 	        echo "I'm with friends\n";
-// 	        break;
-// 	    case 'landmark':
-// 	        echo "It's famous\n";
-// 	        break;
-// 	    default:
-// 	        echo "confused\n";
-// 	}
-
-// 	print "\n";
-// 	print "------------\n";
-// 	print "\n";
-
-// }
+// SHUFFLE IMAGES
+$numberOfImages = 3;
+shuffle($myPics);
+$final = array_slice($myPics, 0, $numberOfImages);
+print_r("final random: \n");
+print_r($final);
 
 die();
 

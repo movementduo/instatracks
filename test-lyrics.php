@@ -37,7 +37,7 @@ $lyrics_copy = <<< EOL
     "angry": [
       [""]
     ],
-    "noemotion": [
+    "noEmotion": [
       [""]
     ],
     "group": [
