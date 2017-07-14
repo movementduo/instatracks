@@ -4,55 +4,323 @@ $lyrics_copy = <<< EOL
 {
 	"noun": [
       [
-        "I’ve never seen a ", "like this before. I love it like a cow loves a herbivore.",
-        "That’s the nicest ", "I ever saw. Could I be dreaming? I can’t be sure.",
-        "That ", "should be against the law. A taste so fruity it knocks me to the floor"
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
       ],
-      [""],
-      [""],
-      [""],
-      [""],
-      [""]
-    ],
-    "verb": [],
-    "fanta": [],
-    "happy": [
       [
-        "With a smile on your face, it's safe to say. It’s gonna be a brilliant day.",
-        "I look on the bright side, come what may. And everything is A O K.",
-        "Chill out, have some Fanta, enjoy the rays. This is what it’s all about, oh my days."
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
       ],
-      [""],
-      [""],
-      [""],
-      [""],
-      [""]
-    ],
-    "sad": [
-      [""]
-    ],
-    "surprised": [
-      [""]
-    ],
-    "angry": [
-      [""]
-    ],
-    "noEmotion": [
-      [""]
-    ],
-    "group": [
       [
-        "Summers here we can do what we please. Sitting in the sunshine shooting the breeze",
-        "Together, forever, living with ease. If life is a sandwich, I’m the big cheese",
-        "Sharing a Fanta, chilling under the trees. It tickles my tonsils, makes me weak at the knees"
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
+      ],
+      [
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
+      ],
+      [
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
+      ],
+      [
+        "A", "sometimes make you feel just great.",
+        "The", "appreciation’s underway.",
+        "Put a Fanta and a", "on my tray."
       ]
     ],
-    "landmark": [
-      [
-        "The ", "has nothing on you. If you opened to the public there would be a queue.",
-        "A visit to ", "might be good to do. Get the squad together, go rally the crew.",
-        "If you're heading to ", "I'll come too. Go get some munch and a Fanta or two."
-      ]
+  "verb": [
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
+    ],
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
+    ],
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
+    ],
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
+    ],
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
+    ],
+    [
+      "", "like the world champion today.",
+      "Nice", "let’s see an action replay.",
+      "", "makes you thirsty. Fanta makes it pay."
     ]
+  ],
+  "fanta": [
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ],
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ],
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ],
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ],
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ],
+    [
+      "Having fun? Then Fanta is to blame.",
+      "Fanta is the taste that you acclaim.",
+      "Fanta has the taste to win the game."
+    ]
+  ],
+  "sad": [
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ],
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ],
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ],
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ],
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ],
+    [
+      "Don’t be sad now, my good friend, don’t be grey.",
+      "TCheer up, my good friend, let’s go out and play.",
+      "A Fanta blows away all that dismay."
+    ]
+  ],
+  "angry": [
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ],
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ],
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ],
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ],
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ],
+    [
+      "Are you angry? Who forgot your birthday?.",
+      "Your anger makes the monsters run away.",
+      "If you’re angry drink a cold Fanta today."
+    ]
+  ],
+  "surprised": [
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ],
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ],
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ],
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ],
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ],
+    [
+      "Are you shocked? Because, honest, you look cray.",
+      "What surprised you? A flying cheese souffle?",
+      "Did Fanta put that surprise on your face?"
+    ]
+  ],
+  "landmark": [
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ],
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ],
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ],
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ],
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ],
+    [
+      "You saw", "on holiday.",
+      "From", "all the way to Bombay.",
+      "A Fanta by", "when we’re away."
+    ]
+  ],
+  "group": [
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ],
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ],
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ],
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ],
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ],
+    [
+      "We’re strong together excuse the cliche.",
+      "Who wants to be alone now anyway?.",
+      "A Fanta with my friends, oh yeah, hooray."
+    ]
+  ],
+  "noEmotion": [
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ],
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ],
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ],
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ],
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ],
+    [
+      "This face ls truly dappled bright sunray.",
+      "This person is absolutely bae.",
+      "Give this person Fanta, no delay."
+    ]
+  ],
+    "happy": [
+    [
+      "Pure happiness is in your DNA.",
+      "That smile will make your restless buddies stay.",
+      "Did Fanta put that smile upon Your face?"
+    ],
+    [
+      "Happiness is clearly in your genes.",
+      "That smile can start a crazy wild party.",
+      "That smile is as if Fanta grows on trees."
+    ],
+    [
+      "Pure happiness is in your DNA.",
+      "That smile will make your restless buddies stay.",
+      "Did Fanta put that smile upon Your face?"
+    ],
+    [
+      "Happiness is clearly in your genes.",
+      "That smile can start a crazy wild party.",
+      "That smile is as if Fanta grows on trees."
+    ],
+    [
+      "Pure happiness is in your DNA.",
+      "That smile will make your restless buddies stay.",
+      "Did Fanta put that smile upon Your face?"
+    ],
+    [
+      "Happiness is clearly in your genes.",
+      "That smile can start a crazy wild party.",
+      "That smile is as if Fanta grows on trees."
+    ]
+  ]
 }
 EOL;
