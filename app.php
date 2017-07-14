@@ -48,6 +48,7 @@ $vision = new VisionClient([
 
 $images = json_decode($json);
 
+//LYRICS USED FOR TEST RHYME SCHEME
 $lyrics = json_decode($lyrics_copy);
 $type_fanta = $lyrics->fanta;
 $type_noun = $lyrics->noun;
@@ -60,33 +61,46 @@ $type_noEmotion = $lyrics->noEmotion;
 $type_group = $lyrics->group;
 $type_landmark = $lyrics->landmark;
 
-$safeImages = array();
-foreach($images->images as $i) {
+// SHUFFLE IMAGES
+$c = count($images->images);
+$howmanytocheck = 8;
+if($c <= 6) {
+	print_r("\nYou have 6 or less images to check\n");
+	$numberOfImages = $c;
+} else if($c > 6 && $c <= $howmanytocheck){
+	print_r("\nYou have less than our minimum number of images to check\n");
+	$numberOfImages = $c;
+} else {
+	print_r("\nYou have more than enough images to check\n");
+	$numberOfImages = $howmanytocheck;
+}
+shuffle($images->images);
+$image_batch = array_slice($images->images, 0, $numberOfImages);
+
+foreach($image_batch as $i) {
 
 	$body = file_get_contents($i->url);
 
-	try {
-		$s3->putObject([
-        		'Bucket' => 'instatracks',  // bucket to store in
-        		'Key'    => '[oauthtoken1]'.'/images/'.$i->id.'.jpg', // filename of object stored
-        		'Body'   => $body, // image
-			'ACL'    => 'public-read',
-		]);
-	} catch (Aws\S3\Exception\S3Exception $e) {
-		echo "There was an error uploading the file.\n";
-	}
+	// try {
+	// 	$s3->putObject([
+ //        		'Bucket' => 'instatracks',  // bucket to store in
+ //        		'Key'    => 'test'.'/images/'.$i->id.'.jpg', // filename of object stored
+ //        		'Body'   => $body, // image
+	// 		'ACL'    => 'public-read',
+	// 	]);
+	// } catch (Aws\S3\Exception\S3Exception $e) {
+	// 	echo "There was an error uploading the file.\n";
+	// }
 
-	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION','TEXT_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','SAFE_SEARCH_DETECTION']);
+	$image = $vision->image(file_get_contents($i->url), ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','SAFE_SEARCH_DETECTION']);
+
 	$result = $vision->annotate($image);
-
 	$safe = $result->safeSearch();
 
 	if($safe->isAdult() || $safe->isSpoof() || $safe->isMedical() || $safe->isViolent()) {
 		echo "This image is not safe.\n";
 	} else {
 		echo "This image is safe to use.\n";
-
-		print($result->logos());
 		
 		if($result->logos()){
 			$first = array_shift($result->logos());
@@ -94,15 +108,13 @@ foreach($images->images as $i) {
 			print("What logo is it? ".$des."\n");
 
 			if($des == 'Fanta' || $des == 'fanta'){
-				//Fanta first priority
-				print("\tIt's fanta baby!\n"); // 1) Check logo is fanta
 				
-				//Rhyme group choose
-				$rhymeA = $type_verb[0];
-
-				//Create lyric
+				//Test rhyme scheme - it gets really complicated...
+				$rhymeA = $type_fanta[0];
 				$lyric = "\t".$rhymeA[0]."\n";
+				print_r($lyric);
 
+				//Need to make this a function...
 				$myPics[] = (object) ["type"=>'fanta', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 
 			} else {
@@ -119,11 +131,8 @@ foreach($images->images as $i) {
 				if($ing == "ing") {
 					print("\tVerb: ".$des."\n");
 					
-					//Rhyme group choose
 					$rhymeA = $type_verb[0];
-
-					//Create lyric
-					$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+					$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 					print_r($lyric);
 
 					$myPics[] = (object) ["type"=>'verb', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
@@ -132,11 +141,8 @@ foreach($images->images as $i) {
 				} else {
 					print("\tNoun: ".$des."\n");
 
-					//Rhyme group choose
 					$rhymeA = $type_noun[0];
-
-					//Create lyric
-					$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+					$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 					print_r($lyric);
 
 					$myPics[] = (object) ["type"=>'noun', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
@@ -147,88 +153,68 @@ foreach($images->images as $i) {
 
 		} else if ($result->faces()) {
 
-				//Check faces
 				print("Faces:\n");
 				$faceCount = sizeof($result->faces());
 				if($faceCount > 1){
-					printf("\tGroup of friends!\n"); // 2) Check if it's a group of friends
+					printf("\tGroup of friends!\n");
 
-					//Rhyme group choose
 					$rhymeA = $type_group[0];
-
-					//Create lyric
 					$lyric = "\t".$rhymeA[0]."\n";
 					print_r($lyric);
 
 					$myPics[] = (object) ["type"=>'group', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 				} else {
 
 					foreach ((array) $result->faces() as $face) {
 						if($face->isAngry()){
-							printf("\tI'm so angry\n"); // 3) Check angry face
-							
-							//Rhyme group choose
+							printf("\tI'm so angry\n");
 							$rhymeA = $type_angry[0];
-
-							//Create lyric
 							$lyric = "\t".$rhymeA[0]."\n";
 							print_r($lyric);
 
-							//All information we need
 							$myPics[] = (object) ["type"=>'angry', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 						}
 						else if($face->isJoyful()){
-							printf("\tI'm so happy\n"); // 4) Check happy face
+							printf("\tI'm so happy\n");
 
-							//Rhyme group choose
 							$rhymeA = $type_happy[0];
-
-							//Create lyric
 							$lyric = "\t".$rhymeA[0]."\n";
 							print_r($lyric);
 
-							//All information we need
 							$myPics[] = (object) ["type"=>'happy', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 
 						}
 						else if($face->isSorrowful()){
 							printf("\tI'm so sad\n"); // 5) Check sad face
 							
-							//Rhyme group choose
 							$rhymeA = $type_sad[0];
-
-							//Create lyric
 							$lyric = "\t".$rhymeA[0]."\n";
 							print_r($lyric);
 
-							//All information we need
 							$myPics[] = (object) ["type"=>'happy', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 						}
 						else if($face->isSurprised()){
 							printf("\tI'm so surprised\n"); // 6) Check surprised face
 							
-							//Rhyme group choose
 							$rhymeA = $type_surprised[0];
-
-							//Create lyric
 							$lyric = "\t".$rhymeA[0]."\n";
 							print_r($lyric);
 
-							//All information we need
 							$myPics[] = (object) ["type"=>'surprised', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 						}
 						else{
 							printf("\tLooking good there\n"); // 7) Check no emotion detected
-							
-							//Rhyme group choose
-							$rhymeA = $type_noEmotion[0];
 
-							//Create lyric
+							$rhymeA = $type_noEmotion[0];
 							$lyric = "\t".$rhymeA[0]."\n";
 							print_r($lyric);
 
-							//All information we need
 							$myPics[] = (object) ["type"=>'noEmotion', "text"=>'', "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+
 						}
 					}
 
@@ -240,11 +226,8 @@ foreach($images->images as $i) {
 			$des = $first->description();
 			print("\tLandmark: ".$des."\n");
 
-			//Rhyme group choose
 			$rhymeA = $type_landmark[0];
-
-			//Create lyric
-			$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+			$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 			print_r($lyric);
 
 			$myPics[] = (object) ["type"=>'landmark', "text"=>$des, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
@@ -264,50 +247,23 @@ foreach($images->images as $i) {
 			if($ing == "ing") {
 				print("\tVerb: ".$des."\n");
 
-				//Rhyme group choose
 				$rhymeA = $type_verb[0];
-
-				//Create lyric
-				$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+				$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 				print_r($lyric);
 
 				$myPics[] = (object) ["type"=>'verb', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 				$allLabels = array();
 
+
 			} else {
 				print("\tNoun: ".$des."\n"); // 10) Check noun
 
-				//Rhyme group choose
 				$rhymeA = $type_noun[0];
-
-				//Create lyric
-				$lyric = "\t".$rhymeA[0]."'".$des."'"." ".$rhymeA[1]."\n";
+				$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 				print_r($lyric);
 
-				//All information we need
 				$myPics[] = (object) ["type"=>'noun', "text"=>$allLabels, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 				$allLabels = array();
-
-				// $pollySpeech = $polly->synthesizeSpeech([
-				//     'OutputFormat' => 'mp3', // REQUIRED
-				//     'Text' => $lyric, // REQUIRED
-				//     'TextType' => 'text',
-				//     'VoiceId' => 'Salli', // REQUIRED
-				// ]);
-
-				// print_r($pollySpeech);
-
-				// try {
-				// 	$s3->putObject([
-			 //        		'Bucket' => 'instatracks',  // bucket to store in
-			 //        		'Key'    => '[oauthtoken1]'.'/speech/xxxx.mp3', // filename of object stored
-			 //        		'Body'   => $pollySpeech,
-			 //        		'ContentType' => 'audio/mpeg', // image
-				// 		'ACL'    => 'public-read',
-				// 	]);
-				// } catch (Aws\S3\Exception\S3Exception $e) {
-				// 	echo "There was an error uploading the file.\n";
-				// }
 
 			}
 
@@ -321,20 +277,35 @@ foreach($images->images as $i) {
 
 }
 
-// MOST LIKED
-print_r("most liked: \n");
-usort($myPics, function($a, $b)
-{
-   return strcmp($b->likes, $a->likes);
-});
-print_r($myPics);
+// SAFE IMAGES
+$safe = count($myPics);
 
-// SHUFFLE IMAGES
-$numberOfImages = 3;
-shuffle($myPics);
-$final = array_slice($myPics, 0, $numberOfImages);
-print_r("final random: \n");
-print_r($final);
+if($safe >= 6) {
+	$six = array_slice($myPics, 0, 6);
+	print_r($six);
+
+// foreach($six as $key=>$p){
+// 	$pollySpeech = $polly->synthesizeSpeech([
+//     'OutputFormat' => 'mp3', // REQUIRED
+//     'Text' => $p->lyrics, // REQUIRED
+//     'TextType' => 'text',
+//     'VoiceId' => 'Salli', // REQUIRED
+// 	]);
+
+// 	try {
+// 		$s3->putObject([
+// 	       		'Bucket' => 'instatracks',  // bucket to store in
+// 	       		'Key'    => 'test'.'/speech/'.$key.'.mp3', // filename of object stored
+// 	       		'Body'   => $pollySpeech->get('AudioStream')->getContents(),
+// 	       		'ContentType' => 'audio/mpeg', // image
+// 			'ACL'    => 'public-read',
+// 		]);
+// 	} catch (Aws\S3\Exception\S3Exception $e) {
+// 		echo "There was an error uploading the file.\n";
+// 	}
+// }
+
+}
 
 die();
 
@@ -343,14 +314,6 @@ die();
 
 # 2 - create a database session
 $db = new Database($cfg);
-
-
-
-
-
-
-
-
 
 # 3 - create s3 project folder inside bucket
 # 4 - get images from instagram and store in s3 and db against token
