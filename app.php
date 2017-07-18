@@ -49,7 +49,7 @@ $vision = new VisionClient([
 $images = json_decode($json);
 
 //LYRICS USED FOR TEST RHYME SCHEME
-$lyrics = json_decode($lyrics_copy);
+$lyrics_copy = json_decode($lyrics_copy);
 $type_fanta = $lyrics->fanta;
 $type_noun = $lyrics->noun;
 $type_verb = $lyrics->verb;
@@ -230,7 +230,7 @@ foreach($image_batch as $i) {
 			$lyric = "\t".$rhymeA[0]." '".$des."' ".$rhymeA[1]."\n";
 			print_r($lyric);
 
-			$myPics[] = (object) ["type"=>'landmark', "text"=>$des, "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
+			$myPics[] = (object) ["type"=>'landmark', "text"=>[$des], "id"=>$i->id, "url"=>$i->url, "likes"=>$i->likes, "tagged"=>$i->taggedUsers, "lyrics"=>$lyric];
 
 		} else {
 
@@ -280,9 +280,90 @@ foreach($image_batch as $i) {
 // SAFE IMAGES
 $safe = count($myPics);
 
+if($safe == 4 ) {
+	$selected = array_slice($myPics, 0, 4);
+	$n = array(0, 1, 2, 3);
+	shuffle($n);
+	$rGroup_1 = array($n[0], $n[1], $n[0], $n[1]);
+	$rGroup_2 = array($n[0], $n[0], $n[1], $n[1]);
+	$rGroup_3 = array($n[0], $n[1], $n[1], $n[0]);
+	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3);
+	$anotherRandom = rand(1,3);
+	print_r("\n lol what rhyme group then:\n");
+	print_r($whichGroup[$anotherRandom]);
+}
+if($safe == 5 ) {
+	$selected = array_slice($myPics, 0, 5);
+	$n = array(0, 1, 2, 3, 4);
+	shuffle($n);
+	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
+	$rGroup_2 = [$n[0], $n[1], $n[2], $n[1], $n[0]];
+	$rGroup_3 = [$n[0], $n[1], $n[0], $n[1], $n[0]];
+	$rGroup_4 = [$n[0], $n[1], $n[1], $n[0], $n[0]];
+	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3, $rGroup_4);
+	$anotherRandom = rand(1,4);
+	print_r("\n lol what rhyme group then:\n");
+	print_r($whichGroup[$anotherRandom]);
+}
 if($safe >= 6) {
-	$six = array_slice($myPics, 0, 6);
-	print_r($six);
+	$selected = array_slice($myPics, 0, 6);
+	$n = array(0, 1, 2, 3, 4, 5, 6);
+	shuffle($n);
+	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
+	$rGroup_2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
+	$rGroup_3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
+	$rGroup_4 = [$n[0], $n[1], $n[0], $n[2], $n[3], $n[2]];
+	$rGroup_5 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
+	print_r($rGroup_1);
+	print_r($rGroup_2);
+	print_r($rGroup_3);
+	print_r($rGroup_4);
+	print_r($rGroup_5);
+	print_r($rGroup_6);
+	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3, $rGroup_4, $rGroup_5);
+	print_r($whichGroup."\n");
+	$anotherRandom = rand(1,5);
+	print_r("\n lol what rhyme group then:\n");
+	print_r($whichGroup[$anotherRandom]);
+}
+// $scheme = $whichGroup[$anotherRandom];
+$scheme = array(0,0,0,0,0,0);
+print_r($scheme);
+$l = $lyrics_copy;
+
+foreach($selected as $key => $s){
+	$rhyme = $scheme[$key];
+	$type = $s->type;
+	$t = $l->$type;
+	$r = $t[$rhyme];
+
+	if($key == $total-1){
+		$line = $r[2];
+		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
+			$lyrics = $line[0].' '.$s->text[0].' '.$line[1];
+			print_r("\n lyrics: ".$lyrics."\n");
+			$s->lyrics = $lyrics;
+		} else {
+			$lyrics = $line[0];
+			print_r("\n lyrics: ".$lyrics."\n");
+			$s->lyrics = $lyrics;
+		}
+	} else {
+		$line = $r[0];
+		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
+			$lyrics = $line[0].' '.$s->text[0].' '.$line[1];
+			print_r("\n lyrics: ".$lyrics."\n");
+			$s->lyrics = $lyrics;
+		} else {
+			$lyrics = $line[0];
+			print_r("\n lyrics: ".$lyrics."\n");
+			$s->lyrics = $lyrics;
+		}
+	}
+
+}
+
+print_r($selected);	
 
 // foreach($six as $key=>$p){
 // 	$pollySpeech = $polly->synthesizeSpeech([
@@ -304,8 +385,6 @@ if($safe >= 6) {
 // 		echo "There was an error uploading the file.\n";
 // 	}
 // }
-
-}
 
 die();
 
