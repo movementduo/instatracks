@@ -1,0 +1,239 @@
+$green: #99bc1f;
+$blue: #000a8b;
+$orange: #f7941e;
+
+@font-face {
+  font-family: Fanta-Regular;
+  src: url(../fonts/Fanta-Regular.otf);
+}
+
+span {
+	font-size: 1.3em;
+}
+p, ul, li, a {
+	font-size: 1.1em;
+}
+ul {
+	padding-left: 0;
+}
+
+@mixin default-overlay {
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	position: absolute;
+	top: 0;
+}
+@mixin flex-centered {
+	justify-content: center;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center;
+	margin: 0 auto;
+}
+@mixin default-shadow {
+	border: 0;
+  -webkit-box-shadow: 3px 3px 0px 6px $blue;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    3px 3px 0px 6px $blue;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         3px 3px 0px 6px $blue;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+@mixin absolute-bottom {
+	position: absolute;
+	width: 100%;
+	bottom: 1em;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+@mixin cta {
+	width: 70%;
+	height: 8vh;
+	color: $blue;
+	font-size: 1.6em;
+}
+
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	font-family: Fanta-Regular;
+	color: white;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+button.cta-green {
+	background: $green;
+	@include cta;
+	@include default-shadow;
+}
+
+button.cta-orange {
+	background: $orange;
+	@include cta;
+	@include default-shadow;
+}
+
+button.cta-small {
+	width: 30%;
+	height: 5vh;
+	font-size: 1.2em;
+	margin: 5px 10px;
+}
+
+/*homepage*/
+
+#homepage {
+	height: 100%;
+	padding: 2em 2em 0.5em 2em;
+}
+
+#homepage {
+	background: $orange;
+}
+
+#homepage #what-is-this- {
+	@include absolute-bottom;
+}
+
+/*what-is-this*/
+
+#what-is-this-overlay {
+	display: none;
+	background: $blue;
+	@include default-overlay;
+}
+
+#what-is-this span {
+	color: $orange;
+}
+
+.back {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+}
+
+#terms {
+	@include absolute-bottom;
+}
+
+// loading
+#loading h1 {
+	margin: 0;
+}
+#loading .row:first-child {
+	background: $orange;
+}
+
+#loading .row:nth-child(2) {
+	background: white;
+	color: $blue;
+	@include flex-centered;
+}
+
+#loading .row:last-child {
+	background: $blue;
+}
+
+// video
+
+#video-player {
+	width: 100vw;
+	overflow: hidden;
+	display: block;
+	height: 60%;
+}
+
+#video-one .row {
+	@include flex-centered;
+}
+
+#email-video-overlay, #new-video-overlay {
+	display: none;
+	background: $orange;
+	@include default-overlay;
+}
+#new-video-overlay .row, #video-two .row.first{
+	@include flex-centered;
+}
+#video-two {
+	background: $orange;
+}
+
+// Email
+#email-video-overlay {
+	color: $blue;
+}
+
+#email-video-overlay .row.first{
+	@include flex-centered;
+}
+
+#email-video-overlay .row:last-child {
+	font-size: 1.3em;
+}
+
+.go-email {
+	@include cta;
+	background: $green;
+	border: 3px solid $blue;
+}
+
+#email-address {
+	@include cta;
+	background: $orange;
+	border: 3px solid $blue;
+	margin-bottom: 5vh;
+}
+
+// Select pics
+
+#select-pics {
+	color: $blue;
+	background: white;
+}
+
+#select-pics h2 {
+	color: white;
+	margin: 0;
+}
+
+#select-pics h3 {
+	text-align: left;
+	margin-left: 1rem;
+}
+
+#select-pics figure > img {
+	padding: 5px;
+}
+
+#select-pics figure.profile-pic {
+	width: 35%;
+	margin: 0 auto;
+	padding-top: 10px;
+}
+
+.square-grid {
+	width: calc(100% - 10px);
+	height: 100vw;
+}
+
+.user {
+	background: $green;
+}
+
+@media (min-width: 600px) {
+
+}

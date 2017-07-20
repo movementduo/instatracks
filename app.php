@@ -19,7 +19,7 @@ require('test-lyrics.php');
 
 session_start();
 $images = json_decode($json);
-$lyrics_copy - json_decode($lyrics_copy);
+$lyrics_copy = json_decode($lyrics_copy);
 
 
 
