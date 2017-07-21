@@ -21,13 +21,14 @@
 
 
   // receive OAuth token object
-		  $data = $instagram->getOAuthToken($_SESSION['oauthToken']);
-		  $username = $username = $data->user->username;
-		  // store user access token
-		  $instagram->setAccessToken($data);
+  $data = $instagram->getOAuthToken($_SESSION['oauthToken']);
+  $username = $username = $data->user->username;
 
-		  // now you have access to all authenticated user methods
-		  $result = $instagram->getUserMedia();
+  // store user access token
+  $instagram->setAccessToken($data);
+
+  // now you have access to all authenticated user methods
+  $result = $instagram->getUserMedia('self',100);
 ?>
 
         <h1><?php echo $data->user->username ?></h1>
