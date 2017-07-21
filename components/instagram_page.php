@@ -41,7 +41,7 @@
 
 					);
 	
-					$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1)",array(
+					$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1, :x2, :x3, :x4)",array(
 						$instanceId,
 						$media->id,
 						$media->images->standard_resolution->url,
