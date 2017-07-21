@@ -18,59 +18,40 @@
 			if(array_key_exists('code',$_REQUEST)) {
 				$_SESSION['oauthToken'] = $_REQUEST['code'];
 
+				// receive OAuth token object
+				$data = $instagram->getOAuthToken($_SESSION['oauthToken']);
+				$username = $username = $data->user->username;
 
+				// store user access token
+				$instagram->setAccessToken($data);
 
-  // receive OAuth token object
-  $data = $instagram->getOAuthToken($_SESSION['oauthToken']);
-  $username = $username = $data->user->username;
+				// now you have access to all authenticated user methods
+				$result = $instagram->getUserMedia('self',100);
 
-  // store user access token
-  $instagram->setAccessToken($data);
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array(session_id()));
+				$instanceId = $this->db->lastId();
 
-  // now you have access to all authenticated user methods
-  $result = $instagram->getUserMedia('self',100);
-?>
+				foreach ($result->data as $media) {
+				if ($media->type == 'image') {
 
-        <h1><?php echo $data->user->username ?></h1>
-        <ul>
-        <?php
-          // display all user likes
-          foreach ($result->data as $media) {
-            $content = "<li>";
+					$metadata = array(
+						$media->likes->count,
+						$width = $media->images->standard_resolution->width,
+						$height = $media->images->standard_resolution->height,
 
-            // output media
-            if ($media->type === 'video') {
-              // video
-              $poster = $media->images->low_resolution->url;
-              $source = $media->videos->standard_resolution->url;
-              $content .= "<video class=\"media video-js vjs-default-skin\" width=\"250\" height=\"250\" poster=\"{$poster}\"
-                           data-setup='{\"controls\":true, \"preload\": \"auto\"}'>
-                             <source src=\"{$source}\" type=\"video/mp4\" />
-                           </video>";
-            } else {
-              // image
-die('<pre>'.var_export($media,true));
-              $image = $media->images->low_resolution->url;
-              $content .= "<img class=\"media\" src=\"{$image}\"/>";
-            }
+					);
+	
+					$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1)",array(
+						$instanceId,
+						$media->id,
+						$media->images->standard_resolution->url,
+						serialize($metadata);
+					));
 
-            // create meta section
-            $avatar = $media->user->profile_picture;
-            $username = $media->user->username;
-            $comment = $media->caption->text;
-            $content .= "<div class=\"content\">
-                           <div class=\"avatar\" style=\"background-image: url({$avatar})\"></div>
-                           <p>{$username}</p>
-                           <div class=\"comment\">{$comment}</div>
-                         </div>";
-
-            // output media
-            echo $content . "</li>";
+				}
+				
+				exit 'done';
           }
-        ?>
-        </ul>
-
-<?php
 
 } else {
 
