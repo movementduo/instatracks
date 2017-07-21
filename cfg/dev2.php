@@ -8,7 +8,7 @@ define("DBPASS","m0bilem3");
 define("DBFILE","instatracks");
 
 define("APP_ROOT","/var/www/instatracks/");
-define("WEB_ROOT","http://instagram.movement.co.uk/");
+define("WEB_ROOT","http://instatracks.movement.co.uk/");
 
 define("TEMPLATES",APP_ROOT.'templates/');
 define("COMPONENTS",APP_ROOT.'components/');
