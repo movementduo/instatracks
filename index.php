@@ -4,6 +4,8 @@
 	# presentation layer
 	# james@movement.co.uk / july 2017
 	
+	session_start();
+	
 	require_once('config.php');
 	require_once('engine/database.php');
 	require_once('engine/component.php');
@@ -14,8 +16,8 @@
 	
 	$request = false;
 	
-	if(array_key_exists('REQUEST_URI',$_SERVER)) {
-		$request = trim($_SERVER['REQUEST_URI'],'/');
+	if(array_key_exists('SCRIPT_NAME',$_SERVER)) {
+		$request = trim($_SERVER['SCRIPT_NAME'],'/');
 	}
 	
 	if(!$request) {
