@@ -10,7 +10,7 @@
 	require_once('engine/template.php');
 	require_once('engine/misc.php');
 
-	$db = PDOManager::getInstance();
+	// $db = PDOManager::getInstance();
 	
 	$request = false;
 	
