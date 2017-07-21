@@ -30,6 +30,8 @@
 
 				$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array(session_id()));
 				$instanceId = $this->db->lastId();
+				
+				$_SESSION['instanceId'] = $instanceId;
 
 				foreach ($result->data as $media) {
 					if ($media->type == 'image') {
@@ -52,8 +54,7 @@
 				
 				}
 
-				echo 'got media';
-				exit;
+				$this->redirect('/loading');
 
 			} else {
 
