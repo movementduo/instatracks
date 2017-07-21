@@ -7,7 +7,7 @@
 			$this->tpl->set('title','Instatracks Home');
 			$this->tpl->set('link', '/videoone');
 			
-			$this->tpl->set('instance',$_SESSION['instanceId']);
+			$this->tpl->set('instanceId',$_SESSION['instanceId']);
 		}
 
 	}
