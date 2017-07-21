@@ -17,7 +17,7 @@
 		}
 
 		function create() {
-			$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array('chipshop'));
+			$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array(session_id()));
 			$instanceId = $this->db->lastId();
 			echo 'Instance ID: '.$instanceId;
 
