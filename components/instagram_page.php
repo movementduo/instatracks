@@ -42,7 +42,6 @@ echo $username.'<br /><br />';
 }
 
 
-			}		
 		}
 	
 	}
