@@ -10,12 +10,12 @@
 	require_once('engine/template.php');
 	require_once('engine/misc.php');
 
-	// $db = PDOManager::getInstance();
+	$db = PDOManager::getInstance();
 	
 	$request = false;
 	
-	if(array_key_exists('request',$_REQUEST)) {
-		$request = trim($_REQUEST['request'],'/');
+	if(array_key_exists('REQUEST_URI',$_SERVER)) {
+		$request = trim($_SERVER['REQUEST_URI'],'/');
 	}
 	
 	if(!$request) {

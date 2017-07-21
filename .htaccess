@@ -1,6 +1,0 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^/static/(.*)$ - [L]
-RewriteRule ^(.*)$ /index.php [L]
-</IfModule>
