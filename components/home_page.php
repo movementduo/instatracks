@@ -1,11 +1,12 @@
 <?
 
+	use MetzWeb\Instagram\Instagram;
+
 	class Home_Page extends Component {
 
 		function init() {
 			
 			require_once('instagram/vendor/autoload.php');
-			use MetzWeb\Instagram\Instagram;
 
 			// initialize class
 			$instagram = new Instagram(array(
