@@ -49,6 +49,7 @@
                            </video>";
             } else {
               // image
+die('<pre>'.var_export($media,true));
               $image = $media->images->low_resolution->url;
               $content .= "<img class=\"media\" src=\"{$image}\"/>";
             }
