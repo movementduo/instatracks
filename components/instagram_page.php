@@ -45,12 +45,13 @@
 						$instanceId,
 						$media->id,
 						$media->images->standard_resolution->url,
-						serialize($metadata);
+						serialize($metadata)
 					));
 
 				}
 				
-				exit 'done';
+				echo 'done';
+				exit;
           }
 
 } else {
