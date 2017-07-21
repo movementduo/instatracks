@@ -32,40 +32,38 @@
 				$instanceId = $this->db->lastId();
 
 				foreach ($result->data as $media) {
-				if ($media->type == 'image') {
+					if ($media->type == 'image') {
 
-					$metadata = array(
-						$media->likes->count,
-						$width = $media->images->standard_resolution->width,
-						$height = $media->images->standard_resolution->height,
+						$metadata = array(
+							$media->likes->count,
+							$width = $media->images->standard_resolution->width,
+							$height = $media->images->standard_resolution->height,
 
-					);
+						);
 	
-					$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1, :x2, :x3, :x4)",array(
-						$instanceId,
-						$media->id,
-						$media->images->standard_resolution->url,
-						serialize($metadata)
-					));
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1, :x2, :x3, :x4)",array(
+							$instanceId,
+							$media->id,
+							$media->images->standard_resolution->url,
+							serialize($metadata)
+						));
 
-				}
+					}
 				
-				echo 'done';
+				}
+
+				echo 'got media';
 				exit;
-          }
 
-} else {
-
-  // check whether an error occurred
-  if (isset($_GET['error'])) {
-    echo 'An error occurred: ' . $_GET['error_description'];
-    exit;
-  }
-
-}
-    exit;
+			} else {
 
 
+				if (isset($_GET['error'])) {
+					echo 'An error occurred: ' . $_GET['error_description'];
+				}
+
+			}
+		    exit;
 		}
 	
 	}
