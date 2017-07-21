@@ -44,5 +44,5 @@
 		$layout = $instance->tpl->set('body',$body);
 		echo $instance->tpl->render('_layout');
 	}
-	
+
 	exit;
