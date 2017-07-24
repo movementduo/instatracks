@@ -113,7 +113,10 @@ class Instatracks {
 	}
 
 	function execute() {
-	
+		if(!$this->instanceExists()) {
+			$this->debug("No instance");
+			$this->destroy();
+		}
 	
 		$this->updateState("analyzing");
 
