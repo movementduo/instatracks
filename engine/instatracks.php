@@ -134,6 +134,8 @@ if($c <= 6) {
 	$numberOfImages = $howmanytocheck;
 }
 
+$myPics = [];
+
 $image_batch = array_slice($this->images, 0, $numberOfImages);
 
 	
