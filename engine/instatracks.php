@@ -251,6 +251,9 @@ foreach($selected as $key => $s){
 			$s->lyrics = $lyrics;
 		}
 	}
+	
+	$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted', lyrics = :x1 WHERE id = :x2",[$s->id, $lyrics]);
+	
 
 }
 
