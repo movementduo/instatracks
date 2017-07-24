@@ -252,12 +252,28 @@ foreach($selected as $key => $s){
 		}
 	}
 	
-	$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted', lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
+	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
 	
 
 }
 
 $this->debug($selected);	
+
+// next step - get lyrics sorted (api call)
+// $this->updateState('audio');
+// store audio in tmp w/ instance id
+
+
+// ffmpeg everything.
+// $this->updateState('video');
+// this->ffmpeg....
+
+// move rendered video to s3
+// generate cloudfront url
+
+// done - update database to 'complete'.
+// $this->updateState('complete');
+// $this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
 
 	}
 

@@ -21,3 +21,4 @@ putenv('GOOGLE_APPLICATION_CREDENTIALS=creds/google.json');
 define("INSTAGRAM_KEY","ac5f0035b15e4224a8fd703ed9dc6887");
 define("INSTAGRAM_SECRET","7f750742907941f8a59a1c59927625e4");
 
+define('APP_LANGUAGE', 'en-gb');
