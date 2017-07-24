@@ -49,7 +49,6 @@ class Instatracks {
 		}
 		$instanceQ = $this->db->executeSql("SELECT * FROM instances WHERE id = :x1 AND status = 'pending' LIMIT 1",[$this->instanceID]);
 		if($instanceQ->rowCount()) {
-			$this->setImages();
 			$this->db->executeSql("UPDATE instances SET status = 'active' WHERE id = :x1 LIMIT 1",[$this->instanceID]);
 			return $instanceQ->fetchAssoc()[0];
 		}
@@ -113,11 +112,11 @@ class Instatracks {
 	}
 
 	function execute() {
-		if(!$this->instanceExists()) {
+/*		if(!$this->instanceExists()) {
 			$this->debug("No instance");
 			$this->destroy();
-		}
-	
+		}*/
+		$this->setImages();
 		$this->updateState("analyzing");
 
 		
