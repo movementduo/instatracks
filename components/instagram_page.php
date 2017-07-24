@@ -31,7 +31,7 @@
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, ouathToken, status, stampCreate) VALUES (:x1, :x2, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken']));
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, status, stampCreate) VALUES (:x1, :x2, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken']));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
