@@ -164,9 +164,9 @@ $image_batch = array_slice($this->images, 0, $numberOfImages);
 			$safe = $result->safeSearch();
 
 			if($safe->isAdult() || $safe->isSpoof() || $safe->isMedical() || $safe->isViolent()) {
-				$this->db->executeSql("UPDATE instanceImages SET status = 'rejected' WHERE id = :x1",[$i['id']]);
+				$this->db->executeSql("UPDATE instanceSlides SET status = 'rejected' WHERE id = :x1",[$i['id']]);
 			} else {
-				$this->db->executeSql("UPDATE instanceImages SET status = 'accepted' WHERE id = :x1",[$i['id']]);
+				$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$i['id']]);
 				$myPics[] = $this->analyseImage($result,$i);
 			}
 
