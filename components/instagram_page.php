@@ -16,6 +16,9 @@
 			));
 
 			if(array_key_exists('code',$_REQUEST)) {
+
+				$this->checkSessionID();
+
 				$_SESSION['oauthToken'] = $_REQUEST['code'];
 
 				// receive OAuth token object
@@ -53,6 +56,8 @@
 					}
 				
 				}
+				
+				shell_exec('echo "php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
 
 				$this->redirect('/loading');
 
@@ -65,6 +70,14 @@
 
 			}
 		    exit;
+		}
+		
+		function checkSessionID() {
+			$sessionQ = $this->db->executeSql("SELECT * FROM instances WHERE sessionId = :x1",array(session_id()));
+			if($sessionQ->rowCount()) {
+				session_regenerate_id();
+				$this->checkSessionID();
+			}
 		}
 	
 	}

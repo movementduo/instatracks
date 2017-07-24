@@ -15,9 +15,8 @@ require_once('vision/vendor/autoload.php');
 require_once('ffmpeg/vendor/autoload.php');
 
 /* todo - clean up */
-require('test-data.php');
 require('test-lyrics.php');
-$images = json_decode($json);
+
 $lyrics_copy = json_decode($lyrics_copy);
 
 
@@ -33,7 +32,6 @@ $client->useApplicationDefaultCredentials();
 
 $i = new Instatracks;
 $i->setInstance($instanceID);
-$i->setImages($images);
 $i->setLyrics($lyrics_copy);
 $i->setVision(new VisionClient(['projectId' => 'node-instatracks']));
 $i->setPolly(new Aws\Polly\PollyClient(['version' => 'latest', 'region' => 'eu-west-1']));

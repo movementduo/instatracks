@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 class Instatracks {
 
-	var $images;
+	var $images = [];
 	var $lyrics;
 	var $db;
 	var $isVerbose = false;
@@ -24,9 +24,6 @@ class Instatracks {
 		$this->instanceID = $instanceID;
 	}
 	
-	function setImages($images) {
-		$this->images = $images;
-	}
 	function setLyrics($lyrics) {
 		$this->lyrics = $lyrics;
 		
@@ -50,18 +47,24 @@ class Instatracks {
 		if(!$this->instanceID) {
 			return false;
 		}
-		$instanceQ = $this->db->executeSql("SELECT * FROM instances WHERE instances WHERE id = :x1 LIMIT 1",array($this->instanceID));
+		$instanceQ = $this->db->executeSql("SELECT * FROM instances WHERE id = :x1 AND status = 'pending' LIMIT 1",[$this->instanceID]);
 		if($instanceQ->rowCount()) {
+			$this->setImages();
+			$this->db->executeSql("UPDATE instances SET status = 'active' WHERE id = :x1 LIMIT 1",[$this->instanceID]);
 			return $instanceQ->fetchAssoc()[0];
 		}
 		return false;
 	}
 
 	function updateState($state) {
-		$this->db->executeSql("UPDATE instances SET creationState = :x1 WHERE instances WHERE id = :x2 LIMIT 1",array($state,$this->instanceID));
+		$this->db->executeSql("UPDATE instances SET creationState = :x1 WHERE id = :x2 LIMIT 1",[$state, $this->instanceID]);
 	}
 
-	function destroy() {}
+	function destroy() {
+		$this->db->executeSql("UPDATE instances SET status = 'rejected' WHERE id = :x1",[$this->instanceID]);
+		$this->updateState("rejected");
+		exit;
+	}
 
 	function getImagetype($image) {
 		if($image->logos()){
@@ -87,26 +90,39 @@ class Instatracks {
 	}
 
 	function createImageObject($type,$image,$text) {
+
+		$metadata = unserialize($image['metadata']);
+
 		return (object) [
 			"type"		=> $type,
 			"text"		=> $text,
-			"id"		=> $image->id,
-			"url"		=> $image->url,
-			"likes"		=> $image->likes,
-			"tagged"	=> $image->taggedUsers,
-			"lyrics"	=> ''
+			"id"		=> $image['id'],
+			"url"		=> $image['cdnURL'],
+			"likes"		=> $metadata[0],
+			"lyrics"	=> '',
+			"width"		=> $metadata[1],
+			"height"	=> $metadata[2],
 		];
 	}
 
-	
+	function setImages() {
+		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 8",array($this->instanceID));
+		if($imagesQ->rowCount()) {
+			$this->images = $imagesQ->fetchAssoc();
+		}
+	}
 
 	function execute() {
 	
+	
+		$this->updateState("analyzing");
 
 		
 	
-	$c = count($this->images->images);
+	$c = count($this->images);
+
 $howmanytocheck = 8;
+
 if($c <= 6) {
 	$this->debug("\nYou have 6 or less images to check\n");
 	$numberOfImages = $c;
@@ -117,14 +133,14 @@ if($c <= 6) {
 	$this->debug("\nYou have more than enough images to check\n");
 	$numberOfImages = $howmanytocheck;
 }
-shuffle($this->images->images);
-$image_batch = array_slice($this->images->images, 0, $numberOfImages);
+
+$image_batch = array_slice($this->images, 0, $numberOfImages);
 
 	
 			foreach($image_batch as $i) {
 
 				$allLabels = array();
-				$imageStream = file_get_contents($i->url);
+				$imageStream = file_get_contents($i['cdnURL']);
 /*
 				try {
 					$this->s3->putObject([
@@ -144,15 +160,23 @@ $image_batch = array_slice($this->images->images, 0, $numberOfImages);
 			$safe = $result->safeSearch();
 
 			if($safe->isAdult() || $safe->isSpoof() || $safe->isMedical() || $safe->isViolent()) {
-				$this->debug("This image is not safe.\n");
+				$this->db->executeSql("UPDATE instanceImages SET status = 'rejected' WHERE id = :x1",[$i['id']]);
 			} else {
+				$this->db->executeSql("UPDATE instanceImages SET status = 'accepted' WHERE id = :x1",[$i['id']]);
 				$myPics[] = $this->analyseImage($result,$i);
 			}
 
 		}
 
+
 	// SAFE IMAGES
 $safe = count($myPics);
+
+if($safe < 4) {
+	$this->destroy();
+}
+
+	$this->updateState("lyrics");
 
 if($safe == 4 ) {
 	$selected = array_slice($myPics, 0, 4);
