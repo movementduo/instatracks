@@ -252,7 +252,7 @@ foreach($selected as $key => $s){
 		}
 	}
 	
-	$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted', lyrics = :x1 WHERE id = :x2",[$s->id, $lyrics]);
+	$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted', lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
 	
 
 }
