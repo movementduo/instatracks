@@ -28,7 +28,7 @@
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array(session_id()));
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, status, stampCreate) VALUES (:x1, 'pending', NOW())",array(session_id()));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
@@ -43,7 +43,7 @@
 
 						);
 	
-						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID,instagramID,cdnURL,metadata) VALUES (:x1, :x2, :x3, :x4)",array(
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, metadata) VALUES (:x1, :x2, :x3, :x4)",array(
 							$instanceId,
 							$media->id,
 							$media->images->standard_resolution->url,
