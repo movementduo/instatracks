@@ -141,23 +141,11 @@ $myPics = [];
 $image_batch = array_slice($this->images, 0, $numberOfImages);
 
 	
-			foreach($image_batch as $i) {
+		foreach($image_batch as $i) {
 
-				$allLabels = array();
-				$imageStream = file_get_contents($i['cdnURL']);
-/*
-				try {
-					$this->s3->putObject([
-						'Bucket' => 'instatracks',  // bucket to store in
-						'Key'    => $this->instanceID.'/images/'.$i->id.'.jpg', // filename of object stored
-						'Body'   => $imageStream, // image
-						'ACL'    => 'public-read',
-					]);
-				} catch (Aws\S3\Exception\S3Exception $e) {
-					echo "There was an error uploading the file.\n";
-				}
-*/
-
+			$allLabels = array();
+			$imageStream = file_get_contents($i['cdnURL']);
+			$this->saveToS3($imageStream,'images',$i->id.'.jpg');
 			$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','SAFE_SEARCH_DETECTION']);
 			$result = $this->vision->annotate($image);
 
@@ -275,24 +263,20 @@ $this->debug($selected);
 			S3_WEB_ROOT.'dynamic/speech_20170727164141219.mp3',
 			S3_WEB_ROOT.'dynamic/speech_20170727164157447.mp3',
 		],
-	
 	];
-
 
 	$getVar = $this->createVocoderRequest($getVars);
 
 	$this->debug($getVar);
 
-	$curl = curl_init();
-	curl_setopt_array($curl, array(
-		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => VOCODER_API_LOC.$getVar,
-		CURLOPT_USERAGENT => 'Instatracks'
-	));
-	$resp = curl_exec($curl);
-	curl_close($curl);
+	$return = trim(file_get_contents(VOCODER_API_LOC.$getVar));
 
-	die(var_export($resp,true));
+	if(!$return) {
+die('no url');
+	}
+
+	$audio = file_get_contents($return);
+	$this->saveToS3($audio,'audio',$this->instanceID.'.wav');
 
 
 
@@ -396,6 +380,19 @@ $this->debug($selected);
 		
 		if(count($out)) {
 			return '?'.implode('&',$out);
+		}
+	}
+	
+	function saveToS3($stream,$folder,$filename) {
+		try {
+			$this->s3->putObject([
+				'Bucket' => S3_BUCKET,  // bucket to store in
+				'Key'    => $this->instanceID.'/'.$folder.'/'.$filename, // filename of object stored
+				'Body'   => $stream, // image
+				'ACL'    => 'public-read',
+			]);
+		} catch (Aws\S3\Exception\S3Exception $e) {
+			echo "There was an error uploading the file.\n";
 		}
 	}
 }

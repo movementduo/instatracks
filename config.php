@@ -21,3 +21,4 @@ define('VOCODER_API_LOC', 'http://vocoder.mattjarvis.co.uk/vocoder-api.php');
 define('VOCODER_API_SECRET', 'kMrAew7KRpqk5geg5LKSVm9uWAZ6w7VMPJWxj9cC');
 
 define('S3_WEB_ROOT', 'https://s3-eu-west-1.amazonaws.com/instatracks/');
+define('S3_BUCKET', 'instatracks');
