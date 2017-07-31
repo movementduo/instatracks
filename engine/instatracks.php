@@ -278,9 +278,10 @@ $this->debug($selected);
 	
 	];
 
-die($getVar);
 
 	$getVar = $this->createVocoderRequest($getVars);
+
+die($getVar);
 
 $curl = curl_init();
 // Set some options - we are passing in a useragent too here
