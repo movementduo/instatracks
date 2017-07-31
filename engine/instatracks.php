@@ -145,7 +145,7 @@ $image_batch = array_slice($this->images, 0, $numberOfImages);
 
 			$allLabels = array();
 			$imageStream = file_get_contents($i['cdnURL']);
-			$this->saveToS3($imageStream,'images',$i->id.'.jpg');
+			$this->saveToS3($imageStream,'images',$i['id'].'.jpg');
 			$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','SAFE_SEARCH_DETECTION']);
 			$result = $this->vision->annotate($image);
 
