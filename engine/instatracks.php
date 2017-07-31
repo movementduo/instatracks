@@ -281,21 +281,18 @@ $this->debug($selected);
 
 	$getVar = $this->createVocoderRequest($getVars);
 
-die($getVar);
+	$this->debug($getVar);
 
-$curl = curl_init();
-// Set some options - we are passing in a useragent too here
-curl_setopt_array($curl, array(
-    CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => VOCODER_API_LOC.$getVar,
-    CURLOPT_USERAGENT => 'Instatracks'
-));
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => VOCODER_API_LOC.$getVar,
+		CURLOPT_USERAGENT => 'Instatracks'
+	));
+	$resp = curl_exec($curl);
+	curl_close($curl);
 
-$resp = curl_exec($curl);
-
-curl_close($curl);
-
-die(var_export($resp,true));
+	die(var_export($resp,true));
 
 
 
