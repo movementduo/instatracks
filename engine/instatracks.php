@@ -263,6 +263,40 @@ $this->debug($selected);
 // $this->updateState('audio');
 // store audio in tmp w/ instance id
 
+	$getVars = [
+		'salt'		=>	$this->instanceID,
+		'pepper'	=>	VOCODER_API_SECRET,
+		'sequence'	=>	'A01B02C01D02D03E09',
+		'file'		=> [
+			S3_WEB_ROOT.'dynamic/speech_20170727163851959.mp3',
+			S3_WEB_ROOT.'dynamic/speech_20170727163851959.mp3',
+			S3_WEB_ROOT.'dynamic/speech_20170727164053615.mp3',
+			S3_WEB_ROOT.'dynamic/speech_20170727164104675.mp3',
+			S3_WEB_ROOT.'dynamic/speech_20170727164141219.mp3',
+			S3_WEB_ROOT.'dynamic/speech_20170727164157447.mp3',
+		],
+	
+	];
+
+die($getVar);
+
+	$getVar = $this->createVocoderRequest($getVars);
+
+$curl = curl_init();
+// Set some options - we are passing in a useragent too here
+curl_setopt_array($curl, array(
+    CURLOPT_RETURNTRANSFER => 1,
+    CURLOPT_URL => VOCODER_API_LOC.$getVar,
+    CURLOPT_USERAGENT => 'Instatracks'
+));
+
+$resp = curl_exec($curl);
+
+curl_close($curl);
+
+die(var_export($resp,true));
+
+
 
 // ffmpeg everything.
 // $this->updateState('video');
@@ -349,4 +383,21 @@ $this->debug($selected);
 		}
 	}
 
+	function createVocoderRequest($vars) {
+		$out = [];
+		foreach($vars as $key => $val) {
+			if(is_array($val)) {
+				foreach($val as $v) {
+					$out[] = $key.'[]='.$v;
+				}
+			} else {
+				$out[] = $key.'='.$val;
+			}
+		
+		}
+		
+		if(count($out)) {
+			return '?'.implode('&',$out);
+		}
+	}
 }

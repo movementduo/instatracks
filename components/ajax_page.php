@@ -1,12 +1,17 @@
 <?php
 
 	class Ajax_Page extends Component {
+
+		var $instanceId = false;
 	
 		function init() {
+		
+			if(array_key_exists('instanceId',$_SESSION)) {
+				$this->instanceId = $_SESSION['instanceId'];
+			}
+		
 			if(array_key_exists('action',$_REQUEST)) {
 				switch($_REQUEST['action']) {
-					case 'create':
-						return $this->create();
 					case 'status':
 						return $this->status();
 						break;
@@ -16,22 +21,29 @@
 			}
 		}
 
-		function create() {
-			$instance = $this->db->executeSql("INSERT INTO instances (sessionId) VALUES (:x1)",array(session_id()));
-			$instanceId = $this->db->lastId();
-			echo 'Instance ID: '.$instanceId;
-
-			// shell_exec('php '.APP_ROOT.'app.php '.$instanceId);
-
-			exit;
-
-		}
-		
 		function status() {
+			if($this->instanceId) {
+				$instanceQ = $this->db->executeSql("SELECT * FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceId]);
+				if($instanceQ->rowCount()) {
+					$instance = $instanceQ->fetchAssoc()[0];
+/*
+pending: you're in the queue
 
-			echo $this->db->executeSql("SELECT NOW() AS time")->fetchAssoc()[0]['time'];
-//			echo $this->db->executeSql("SELECT * FROM instances WHERE ")->fetchAssoc()[0]['time'];
-			exit;
+active: return creationState
+
+rejected: error handle
+
+completed: send object w/ share url
+
+*/
+
+//						if status == active ... 
+
+//
+				
+				}
+			}
 		}
+
 	
 	}
