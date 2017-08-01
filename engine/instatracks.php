@@ -260,7 +260,7 @@ $this->debug($selected);
 	$audio = [];
 
 	foreach($selected as $s) {
-		$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3',
+		$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3';
 	}
 
 
