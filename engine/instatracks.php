@@ -242,27 +242,37 @@ foreach($selected as $key => $s){
 	
 	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
 	
+	
+	$pollySpeech = $this->polly->synthesizeSpeech([
+	  'OutputFormat' => 'mp3', // REQUIRED
+	  'Text' => '<speak><prosody rate="slow">'.$p->lyrics.'</prosody></speak>', // REQUIRED
+	  'TextType' => 'ssml',
+	  'VoiceId' => 'Joanna', // REQUIRED
+	]);
+
+	$this->saveToS3($pollySpeech,'audio',$s->id.'.mp3');
+	
 
 }
 
 $this->debug($selected);	
 
+	$audio = [];
+
+	foreach($selected as $s) {
+		$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3',
+	}
+
+
 // next step - get lyrics sorted (api call)
-// $this->updateState('audio');
+	$this->updateState('audio');
 // store audio in tmp w/ instance id
 
 	$getVars = [
-		'salt'		=>	$this->instanceID,
-		'pepper'	=>	VOCODER_API_SECRET,
-		'sequence'	=>	'A01B02C01D02D03E09',
-		'file'		=> [
-			S3_WEB_ROOT.'dynamic/speech_20170727163851959.mp3',
-			S3_WEB_ROOT.'dynamic/speech_20170727163851959.mp3',
-			S3_WEB_ROOT.'dynamic/speech_20170727164053615.mp3',
-			S3_WEB_ROOT.'dynamic/speech_20170727164104675.mp3',
-			S3_WEB_ROOT.'dynamic/speech_20170727164141219.mp3',
-			S3_WEB_ROOT.'dynamic/speech_20170727164157447.mp3',
-		],
+		'salt'		=> $this->instanceID,
+		'pepper'	=> VOCODER_API_SECRET,
+		'sequence'	=> 'A01B02C01D02D03E09',
+		'file'		=> $audio,
 	];
 
 	$getVar = $this->createVocoderRequest($getVars);
@@ -276,7 +286,7 @@ die('no url');
 	}
 
 	$audio = file_get_contents($return);
-	$this->saveToS3($audio,'audio',$this->instanceID.'.wav');
+	$this->saveToS3($audio,'audio/rendered',$this->instanceID.'.wav');
 
 
 
