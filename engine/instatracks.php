@@ -221,12 +221,14 @@ foreach($myPics as $key => $s){
 	
 	$pollySpeech = $this->polly->synthesizeSpeech([
 	  'OutputFormat' => 'mp3', // REQUIRED
-	  'Text' => '<speak><prosody rate="slow">'.$p->lyrics.'</prosody></speak>', // REQUIRED
+	  'Text' => '<speak><prosody rate="slow">'.$lyrics.'</prosody></speak>', // REQUIRED
 	  'TextType' => 'ssml',
 	  'VoiceId' => 'Joanna', // REQUIRED
 	]);
 
-	$this->saveToS3($pollySpeech->get('AudioStream')->getContents(),'audio',$s->id.'.mp3');
+	$audioStream = $pollySpeech->get('AudioStream')->getContents();
+
+	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
 	$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3';
 
 
