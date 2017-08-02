@@ -99,6 +99,7 @@ class Instatracks {
 			"url"		=> $image['cdnURL'],
 			"likes"		=> $metadata[0],
 			"lyrics"	=> '',
+			"lyrics2"	=> 'dynamic',
 			"width"		=> $metadata[1],
 			"height"	=> $metadata[2],
 		];
@@ -112,10 +113,10 @@ class Instatracks {
 	}
 
 	function execute() {
-/*		if(!$this->instanceExists()) {
+		if(!$this->instanceExists()) {
 			$this->debug("No instance");
 			$this->destroy();
-		}*/
+		}
 		$this->setImages();
 		$this->updateState("analyzing");
 
@@ -265,46 +266,11 @@ $this->debug($myPics);
 
 	$this->updateState('video');
 
-$images = [];
 
-$images[] = (object) [
-			"id"		=> "video3",
-			"url"		=> FFMPEG_ASSETS."img_3.png",
-			"lyrics"	=> 'LETS FIND SOMETHING',
-			"lyrics2"	=> 'TO MAKE YOU MORE CHILLAXY',
-			"width"		=> 640,
-			"height"	=> 320
-	];
-$images[] = (object) [
-			"id"		=> "video1",
-			"url"		=> FFMPEG_ASSETS."img_1.png",
-			"lyrics"	=> 'ARE YOU SHOCKED?',
-			"lyrics2"	=> 'BECAUSE, HONEST, YOU LOOK CRAY',
-			"width"		=> 640,
-			"height"	=> 640
-	];
-$images[] = (object) [
-			"id"		=> "video4",
-			"url"		=> FFMPEG_ASSETS."img_4.png",
-			"lyrics"	=> 'DRINK FANTA',
-			"lyrics2"	=> 'AND YOU MIGHT BE LESS ANGRY',
-			"width"		=> 320,
-			"height"	=> 640
-	];
-
-	
-$images[] = (object) [
-			"id"		=> "video2",
-			"url"		=> FFMPEG_ASSETS."img_2.png",
-			"lyrics"	=> 'WHAT SURPRISED YOU? ',
-			"lyrics2"	=> 'A FLYING CHEESE SOUFFLE?',
-			"width"		=> 320,
-			"height"	=> 640
-	];
 
 $all_commands = [];
 
-foreach($images as $i) {
+foreach($myPics as $i) {
 	// print_r($i);
 	$w = $i->width;
 	$h = $i->height;
@@ -361,9 +327,9 @@ add_music();
 // generate cloudfront url
 
 // done - update database to 'complete'.
-// $this->updateState('complete');
-// $this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
-
+		$this->updateState('complete');
+		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
+		$this->db->executeSql("UPDATE instances SET status = 'complete' WHERE id = :x1",[$this->instanceID]);
 	}
 
 
