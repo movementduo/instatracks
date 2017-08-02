@@ -317,7 +317,7 @@ foreach($myPics as $i) {
 exec(join(' & ', $all_commands));
 
 join_videos($myPics);
-add_music();
+add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav');
 
 
 
