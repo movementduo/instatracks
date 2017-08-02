@@ -230,7 +230,7 @@ foreach($myPics as $key => $s){
 	$audioStream = $pollySpeech->get('AudioStream')->getContents();
 
 	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
-	$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3';
+	$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
 
 
 }
@@ -317,7 +317,7 @@ foreach($myPics as $i) {
 exec(join(' & ', $all_commands));
 
 join_videos($myPics,$this->instanceID);
-add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
+add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
 
 
@@ -328,9 +328,20 @@ add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.w
 		$videoStream = file_get_contents("/tmp/finished-{$this->instanceID}.mp4");
 		$filename = $this->generateFilename();
 		$this->saveToS3($videoStream,'complete',$filename);
+
+		try {
+			$this->s3->putObject([
+				'Bucket' => S3_BUCKET,  
+				'Key'    => 'complete/'.$filename, 
+				'Body'   => $videoStream, // image
+				'ACL'    => 'public-read',
+			]);
+		} catch (Aws\S3\Exception\S3Exception $e) {
+			echo "There was an error uploading the file.\n";
+		}
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
-		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1 WHERE id = :x2",[$code,$this->instanceID]);
+		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1 WHERE id = :x2",[$filename,$this->instanceID]);
 	}
 
 
@@ -440,7 +451,7 @@ add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.w
 		try {
 			$this->s3->putObject([
 				'Bucket' => S3_BUCKET,  // bucket to store in
-				'Key'    => $this->instanceID.'/'.$folder.'/'.$filename, // filename of object stored
+				'Key'    => 'instances/'.$this->instanceID.'/'.$folder.'/'.$filename, // filename of object stored
 				'Body'   => $stream, // image
 				'ACL'    => 'public-read',
 			]);
