@@ -327,7 +327,7 @@ add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.w
 
 		$videoStream = file_get_contents("/tmp/finished-{$this->instanceID}.mp4");
 		$filename = $this->generateFilename();
-		saveToS3($videoStream,'complete',$filename);
+		$this->saveToS3($videoStream,'complete',$filename);
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
 		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1 WHERE id = :x2",[$code,$this->instanceID]);
