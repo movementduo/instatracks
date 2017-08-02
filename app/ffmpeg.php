@@ -57,20 +57,21 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 }
 
-function join_videos() {
+function join_videos($imgs) {
 	$intro = FFMPEG_ASSETS."Intro.mp4";
 	$end = FFMPEG_ASSETS."End.mp4";
-	$one = "video1.mp4";
-	$two = "video2.mp4";
-	$three = "video3.mp4";
-	$four = "video4.mp4";
-	// $five = "video5.mp4";
-	// $six = "video6.mp4";
+
+	$vids = [];
+	foreach($imgs as $i) {
+		$vids[] = ' -i '.$i->id.'.mp4';
+	}
+
+
 	$name = "addmusic.mp4";
 
-	$four_command = "ffmpeg -i ".$intro." -i ".$one." -i ".$two." -i ".$three." -i ".$four." -i ".$end." -filter_complex concat=n=6:v=1:a=1 -c:v libx264 ".$name;
+	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=6:v=1:a=1 -c:v libx264 ".$name;
 	
-	shell_exec($four_command);
+	shell_exec($cmd);
 }
 
 function add_music() {
