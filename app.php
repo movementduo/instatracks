@@ -1,7 +1,7 @@
 <?php
 
 if($_SERVER['argc'] < 2) {
-	die ('Usage: app.php [instanceID] [-v]'."\n");
+	die ('Usage: php app.php [instanceID] [-v]'."\n");
 }
 
 chdir(dirname($_SERVER['argv'][0]));
@@ -9,10 +9,11 @@ chdir(dirname($_SERVER['argv'][0]));
 require_once('config.php');
 require_once('engine/database.php');
 require_once('engine/instatracks.php');
+
 require_once('aws/vendor/autoload.php');
 require_once('google/vendor/autoload.php');
 require_once('vision/vendor/autoload.php');
-require_once('ffmpeg/vendor/autoload.php');
+//require_once('ffmpeg/vendor/autoload.php');
 
 /* todo - clean up */
 require('test-lyrics.php');

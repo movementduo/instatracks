@@ -105,7 +105,7 @@ class Instatracks {
 	}
 
 	function setImages() {
-		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 8",array($this->instanceID));
+		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
 		if($imagesQ->rowCount()) {
 			$this->images = $imagesQ->fetchAssoc();
 		}
@@ -119,59 +119,33 @@ class Instatracks {
 		$this->setImages();
 		$this->updateState("analyzing");
 
-		
-	
-	$c = count($this->images);
-
-$howmanytocheck = 8;
-
-if($c <= 6) {
-	$this->debug("\nYou have 6 or less images to check\n");
-	$numberOfImages = $c;
-} else if($c > 6 && $c <= $howmanytocheck){
-	$this->debug("\nYou have less than our minimum number of images to check\n");
-	$numberOfImages = $c;
-} else {
-	$this->debug("\nYou have more than enough images to check\n");
-	$numberOfImages = $howmanytocheck;
-}
-
-$myPics = [];
-
-$image_batch = array_slice($this->images, 0, $numberOfImages);
-
-	
-		foreach($image_batch as $i) {
-
-			$allLabels = array();
-			$imageStream = file_get_contents($i['cdnURL']);
-			$this->saveToS3($imageStream,'images',$i['id'].'.jpg');
-			$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION','SAFE_SEARCH_DETECTION']);
-			$result = $this->vision->annotate($image);
-
-			$safe = $result->safeSearch();
-
-			if($safe->isAdult() || $safe->isSpoof() || $safe->isMedical() || $safe->isViolent()) {
-				$this->db->executeSql("UPDATE instanceSlides SET status = 'rejected' WHERE id = :x1",[$i['id']]);
-			} else {
-				$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$i['id']]);
-				$myPics[] = $this->analyseImage($result,$i);
-			}
-
+		if(count($this->images) < 4) {
+			$this->updateState("imagecount");
+			$this->destroy();
 		}
 
 
-	// SAFE IMAGES
-$safe = count($myPics);
+	
+	foreach($this->images as $i) {
+		$allLabels = array();
+		$imageStream = file_get_contents($i['cdnURL']);
+		$this->saveToS3($imageStream,'images',$i['id'].'.jpg');
+		$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION']);
+		$result = $this->vision->annotate($image);
+		$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$i['id']]);
+		$myPics[] = $this->analyseImage($result,$i);
+	}
 
-if($safe < 4) {
-	$this->destroy();
-}
+
+	// SAFE IMAGES
 
 	$this->updateState("lyrics");
 
+$safe = count($myPics);
+
 if($safe == 4 ) {
-	$selected = array_slice($myPics, 0, 4);
+
+
 	$n = array(0, 1, 2, 3);
 	shuffle($n);
 	$rGroup_1 = array($n[0], $n[1], $n[0], $n[1]);
@@ -181,7 +155,7 @@ if($safe == 4 ) {
 	$anotherRandom = rand(1,3);
 }
 if($safe == 5 ) {
-	$selected = array_slice($myPics, 0, 5);
+
 	$n = array(0, 1, 2, 3, 4);
 	shuffle($n);
 	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
@@ -191,8 +165,8 @@ if($safe == 5 ) {
 	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3, $rGroup_4);
 	$anotherRandom = rand(1,4);
 }
-if($safe >= 6) {
-	$selected = array_slice($myPics, 0, 6);
+if($safe == 6) {
+
 	$n = array(0, 1, 2, 3, 4, 5, 6);
 	shuffle($n);
 	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
@@ -208,7 +182,9 @@ if($safe >= 6) {
 $scheme = array(0,0,0,0,0,0);
 //$this->debug($scheme);
 
-foreach($selected as $key => $s){
+$audio = [];
+
+foreach($myPics as $key => $s){
 	$rhyme = $scheme[$key];
 	$type = $s->type;
 	$t = $this->lyrics->$type;
@@ -250,18 +226,15 @@ foreach($selected as $key => $s){
 	  'VoiceId' => 'Joanna', // REQUIRED
 	]);
 
-	$this->saveToS3($pollySpeech,'audio',$s->id.'.mp3');
-	
+	$this->saveToS3($pollySpeech->get('AudioStream')->getContents(),'audio',$s->id.'.mp3');
+	$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3';
+
 
 }
 
-$this->debug($selected);	
+$this->debug($myPics);	
 
-	$audio = [];
 
-	foreach($selected as $s) {
-		$audio[] = S3_WEB_ROOT.$this->instanceID.'/audio/'.$s->id.'.mp3';
-	}
 
 
 // next step - get lyrics sorted (api call)
