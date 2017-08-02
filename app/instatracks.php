@@ -316,7 +316,7 @@ foreach($myPics as $i) {
 
 exec(join(' & ', $all_commands));
 
-join_videos();
+join_videos($myPics);
 add_music();
 
 
