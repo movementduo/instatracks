@@ -269,7 +269,7 @@ $images = [];
 
 $images[] = (object) [
 			"id"		=> "video3",
-			"url"		=> "img_3.png",
+			"url"		=> FFMPEG_ASSETS."img_3.png",
 			"lyrics"	=> 'LETS FIND SOMETHING',
 			"lyrics2"	=> 'TO MAKE YOU MORE CHILLAXY',
 			"width"		=> 640,
@@ -277,7 +277,7 @@ $images[] = (object) [
 	];
 $images[] = (object) [
 			"id"		=> "video1",
-			"url"		=> "img_1.png",
+			"url"		=> FFMPEG_ASSETS."img_1.png",
 			"lyrics"	=> 'ARE YOU SHOCKED?',
 			"lyrics2"	=> 'BECAUSE, HONEST, YOU LOOK CRAY',
 			"width"		=> 640,
@@ -285,7 +285,7 @@ $images[] = (object) [
 	];
 $images[] = (object) [
 			"id"		=> "video4",
-			"url"		=> "img_4.png",
+			"url"		=> FFMPEG_ASSETS."img_4.png",
 			"lyrics"	=> 'DRINK FANTA',
 			"lyrics2"	=> 'AND YOU MIGHT BE LESS ANGRY',
 			"width"		=> 320,
@@ -295,7 +295,7 @@ $images[] = (object) [
 	
 $images[] = (object) [
 			"id"		=> "video2",
-			"url"		=> "img_2.png",
+			"url"		=> FFMPEG_ASSETS."img_2.png",
 			"lyrics"	=> 'WHAT SURPRISED YOU? ',
 			"lyrics2"	=> 'A FLYING CHEESE SOUFFLE?',
 			"width"		=> 320,
