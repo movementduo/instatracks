@@ -263,13 +263,95 @@ $this->debug($myPics);
 	$audio = file_get_contents($return);
 	$this->saveToS3($audio,'audio/rendered',$this->instanceID.'.wav');
 
+	$this->updateState('video');
 
+$images = [];
 
-// ffmpeg everything.
-// $this->updateState('video');
-// this->ffmpeg....
+$images[] = (object) [
+			"id"		=> "video3",
+			"url"		=> "img_3.png",
+			"lyrics"	=> 'LETS FIND SOMETHING',
+			"lyrics2"	=> 'TO MAKE YOU MORE CHILLAXY',
+			"width"		=> 640,
+			"height"	=> 320
+	];
+$images[] = (object) [
+			"id"		=> "video1",
+			"url"		=> "img_1.png",
+			"lyrics"	=> 'ARE YOU SHOCKED?',
+			"lyrics2"	=> 'BECAUSE, HONEST, YOU LOOK CRAY',
+			"width"		=> 640,
+			"height"	=> 640
+	];
+$images[] = (object) [
+			"id"		=> "video4",
+			"url"		=> "img_4.png",
+			"lyrics"	=> 'DRINK FANTA',
+			"lyrics2"	=> 'AND YOU MIGHT BE LESS ANGRY',
+			"width"		=> 320,
+			"height"	=> 640
+	];
 
+	
+$images[] = (object) [
+			"id"		=> "video2",
+			"url"		=> "img_2.png",
+			"lyrics"	=> 'WHAT SURPRISED YOU? ',
+			"lyrics2"	=> 'A FLYING CHEESE SOUFFLE?',
+			"width"		=> 320,
+			"height"	=> 640
+	];
 
+$all_commands = [];
+
+foreach($images as $i) {
+	// print_r($i);
+	$w = $i->width;
+	$h = $i->height;
+	$url = $i->url;
+	$id = $i->id;
+	$l1 = $i->lyrics;
+	$l2 = $i->lyrics2;
+
+	if($w == $h) {
+		$object = new stdClass();
+		$object->background = APP_ROOT.'video-bg_003.mp4';
+		$object->textbox = APP_ROOT.'orange_textbox.png';
+		$object->image = $url;
+		$object->video = new stdClass();
+		$object->video->id = $id;
+		$object->video->text_top_line= $l1;
+		$object->video->text_bottom_line= $l2;
+		$all_commands[] = square_top($object);
+	}
+	if($w < $h) {
+		$object = new stdClass();
+		$object->background = APP_ROOT.'video-bg_005.mp4';
+		$object->textbox = APP_ROOT.'blue_textbox.png';
+		$object->image = $url;
+		$object->video = new stdClass();
+		$object->video->id = $id;
+		$object->video->text_top_line= $l1;
+		$object->video->text_bottom_line= $l2;
+		$all_commands[] = portrait_top($object);
+	}
+	if($w > $h) {
+		$object = new stdClass();
+		$object->background = APP_ROOT.'video-bg_009.mp4';
+		$object->textbox = APP_ROOT.'blue_textbox.png';
+		$object->image = $url;
+		$object->video = new stdClass();
+		$object->video->id = $id;
+		$object->video->text_top_line= $l1;
+		$object->video->text_bottom_line= $l2;
+		$all_commands[] = landscape_center($object);
+	}
+}
+
+exec(join(' & ', $all_commands));
+
+join_videos();
+add_music();
 
 
 

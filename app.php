@@ -8,7 +8,8 @@ chdir(dirname($_SERVER['argv'][0]));
 
 require_once('config.php');
 require_once('engine/database.php');
-require_once('engine/instatracks.php');
+require_once('app/instatracks.php');
+require_once('app/ffmpeg.php');
 
 require_once('lib/aws/vendor/autoload.php');
 require_once('lib/google/vendor/autoload.php');
