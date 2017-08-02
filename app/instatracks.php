@@ -426,7 +426,7 @@ add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.w
 	function generateFilename() {
 		$code = substr(sha1(microtime()),0,8).'.mp4';
 		
-		$codeQ = $this->db->executeSql("SELECT * FROM instances WHERE videoFile = x:1",array($code));
+		$codeQ = $this->db->executeSql("SELECT * FROM instances WHERE videoFile = :x1",array($code));
 		if($codeQ->rowCount()) {
 			return $this->generateFilename();
 		}
