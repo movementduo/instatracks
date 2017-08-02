@@ -6,7 +6,7 @@ function square_top($object) {
 	[i0]rotate='0.1*sin(15*PI/60*t)':ow=rotw(1080):oh=1350:c=black@0[i1]; \
 	[2]scale=900:-1,fade=in:st=0.2:d=0.2:alpha=1,fade=t=out:st=4.5:d=0.2:alpha=1[i2]; \
 	[0][i1]overlay=(main_w-overlay_w)/2:120:shortest=1,format=yuva422p[o1]; \
-	[o1][i2]overlay=(main_w-overlay_w)/2:y=120:shortest=1,drawtext=fontfile=font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=000a8b:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4.4),1,if(lt(t,4.5),(0.1-(t-4.4))/0.1,0))))':x=(w-text_w)/2:y=180,drawtext=fontfile=font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=000a8b:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4.4),1,if(lt(t,4.5),(0.1-(t-4.4))/0.1,0))))':x=(w-text_w)/2:y=260";
+	[o1][i2]overlay=(main_w-overlay_w)/2:y=120:shortest=1,drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=000a8b:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4.4),1,if(lt(t,4.5),(0.1-(t-4.4))/0.1,0))))':x=(w-text_w)/2:y=180,drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=000a8b:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4.4),1,if(lt(t,4.5),(0.1-(t-4.4))/0.1,0))))':x=(w-text_w)/2:y=260";
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
@@ -24,7 +24,7 @@ function portrait_top($object) {
 	$c = "[1]scale=-1:1100,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=0.2:alpha=1,fade=t=out:st=4.1:d=0.2:alpha=1,rotate='0.1*sin(20*PI/50*t)':ow=rotw(iw):oh=1350:c=black@0[i1]; \
 	[2]scale=1000:-1,fade=in:st=0.4:d=0.2:alpha=1,fade=t=out:st=4.1:d=0.2:alpha=1[i2]; \
 	[0][i1]overlay=(main_w-overlay_w)/2:250:shortest=1[o1]; \
-	[o1][i2]overlay=(main_w-overlay_w)/2:y=80:shortest=1,drawtext=fontfile=font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.4),0,if(lt(t,0.6),(t-0.4)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=180,drawtext=fontfile=font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.4),0,if(lt(t,0.6),(t-0.4)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=260";
+	[o1][i2]overlay=(main_w-overlay_w)/2:y=80:shortest=1,drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.4),0,if(lt(t,0.6),(t-0.4)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=180,drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.4),0,if(lt(t,0.6),(t-0.4)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=260";
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
@@ -44,7 +44,7 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 	[3]scale=1000:-1,fade=in:st=0.4:d=0.2:alpha=1,fade=t=out:st=4.1:d=0.2:alpha=1[i3]; \
 	[0][i1]overlay=x='if(lte(-w+(t-0.3)*2500,-80),-w+(t-0.3)*2500,-80)':y=-80:shortest=1[o1]; \
 	[o1][i2]overlay=x=-'if(lte(-w+(t-0.3)*2500,-120),-w+(t-0.3)*2500,-120)':y=610:shortest=1[o2]; \
-	[o2][i3]overlay=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2:shortest=1,drawtext=fontfile=font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=570, drawtext=fontfile=font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=650";
+	[o2][i3]overlay=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2:shortest=1,drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_top_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=570, drawtext=fontfile=".FFMPEG_ASSETS."font.otf:text='".$object->video->text_bottom_line."':fontsize=70:fontcolor=yellow:alpha='if(lt(t,0.2),0,if(lt(t,0.4),(t-0.2)/0.2,if(lt(t,4),1,if(lt(t,4.2),(0.2-(t-4))/0.2,0))))':x=(w-text_w)/2:y=650";
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
