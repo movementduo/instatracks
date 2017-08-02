@@ -183,6 +183,7 @@ $scheme = array(0,0,0,0,0,0);
 //$this->debug($scheme);
 
 $audio = [];
+$total = count($myPics);
 
 foreach($myPics as $key => $s){
 	$rhyme = $scheme[$key];
@@ -190,7 +191,6 @@ foreach($myPics as $key => $s){
 	$t = $this->lyrics->$type;
 	$r = $t[$rhyme];
 
-	$total = count($selected);
 
 	if($key == $total-1){
 		$line = $r[2];
@@ -239,9 +239,9 @@ $this->debug($myPics);
 
 
 
-// next step - get lyrics sorted (api call)
+	// next step - get lyrics sorted (api call)
 	$this->updateState('audio');
-// store audio in tmp w/ instance id
+	// store audio in tmp w/ instance id
 
 	$getVars = [
 		'salt'		=> $this->instanceID,
@@ -257,7 +257,7 @@ $this->debug($myPics);
 	$return = trim(file_get_contents(VOCODER_API_LOC.$getVar));
 
 	if(!$return) {
-die('no url');
+		die('no url');
 	}
 
 	$audio = file_get_contents($return);
@@ -268,6 +268,12 @@ die('no url');
 // ffmpeg everything.
 // $this->updateState('video');
 // this->ffmpeg....
+
+
+
+
+
+
 
 // move rendered video to s3
 // generate cloudfront url

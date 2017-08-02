@@ -10,10 +10,9 @@ require_once('config.php');
 require_once('engine/database.php');
 require_once('engine/instatracks.php');
 
-require_once('aws/vendor/autoload.php');
-require_once('google/vendor/autoload.php');
-require_once('vision/vendor/autoload.php');
-//require_once('ffmpeg/vendor/autoload.php');
+require_once('lib/aws/vendor/autoload.php');
+require_once('lib/google/vendor/autoload.php');
+require_once('lib/vision/vendor/autoload.php');
 
 /* todo - clean up */
 require('test-lyrics.php');

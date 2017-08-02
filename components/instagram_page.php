@@ -6,7 +6,7 @@
 
 		function init() {
 			
-			require_once('instagram/vendor/autoload.php');
+			require_once('lib/instagram/vendor/autoload.php');
 
 			// initialize class
 			$instagram = new Instagram(array(
