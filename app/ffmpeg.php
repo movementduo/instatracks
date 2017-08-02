@@ -57,9 +57,9 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 }
 
-function join_videos($object) {
-	$intro = APP_ASSETS."Intro.mp4";
-	$end = APP_ASSETS."End.mp4";
+function join_videos() {
+	$intro = FFMPEG_ASSETS."Intro.mp4";
+	$end = FFMPEG_ASSETS."End.mp4";
 	$one = "video1.mp4";
 	$two = "video2.mp4";
 	$three = "video3.mp4";
@@ -73,10 +73,10 @@ function join_videos($object) {
 	shell_exec($four_command);
 }
 
-function add_music($object) {
+function add_music() {
 
 	$vid = "addmusic.mp4";
-	$music = APP_ASSETS."track.mp3";
+	$music = FFMPEG_ASSETS."track.mp3";
 	$fin = "finished.mp4";
 
 	$command = "ffmpeg -i ".$vid." -i ".$music." \

@@ -315,8 +315,8 @@ foreach($images as $i) {
 
 	if($w == $h) {
 		$object = new stdClass();
-		$object->background = APP_ROOT.'video-bg_003.mp4';
-		$object->textbox = APP_ROOT.'orange_textbox.png';
+		$object->background = FFMPEG_ASSETS.'video-bg_003.mp4';
+		$object->textbox = FFMPEG_ASSETS.'orange_textbox.png';
 		$object->image = $url;
 		$object->video = new stdClass();
 		$object->video->id = $id;
@@ -326,8 +326,8 @@ foreach($images as $i) {
 	}
 	if($w < $h) {
 		$object = new stdClass();
-		$object->background = APP_ROOT.'video-bg_005.mp4';
-		$object->textbox = APP_ROOT.'blue_textbox.png';
+		$object->background = FFMPEG_ASSETS.'video-bg_005.mp4';
+		$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
 		$object->image = $url;
 		$object->video = new stdClass();
 		$object->video->id = $id;
@@ -337,8 +337,8 @@ foreach($images as $i) {
 	}
 	if($w > $h) {
 		$object = new stdClass();
-		$object->background = APP_ROOT.'video-bg_009.mp4';
-		$object->textbox = APP_ROOT.'blue_textbox.png';
+		$object->background = FFMPEG_ASSETS.'video-bg_009.mp4';
+		$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
 		$object->image = $url;
 		$object->video = new stdClass();
 		$object->video->id = $id;
