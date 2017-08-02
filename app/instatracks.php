@@ -113,11 +113,11 @@ class Instatracks {
 	}
 
 	function execute() {
-		if(!$this->instanceExists()) {
+/*		if(!$this->instanceExists()) {
 			$this->debug("No instance");
 			$this->destroy();
 		}
-		$this->setImages();
+*/		$this->setImages();
 		$this->updateState("analyzing");
 
 		if(count($this->images) < 4) {
