@@ -10,7 +10,7 @@ function square_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M '.$object->video->id.'.mp4';
+	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -28,7 +28,7 @@ function portrait_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M '.$object->video->id.'.mp4';
+	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -48,7 +48,7 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M '.$object->video->id.'.mp4';
+	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -57,28 +57,28 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 }
 
-function join_videos($imgs) {
+function join_videos($imgs,$instanceID) {
 	$intro = FFMPEG_ASSETS."Intro.mp4";
 	$end = FFMPEG_ASSETS."End.mp4";
 
 	$vids = [];
 	foreach($imgs as $i) {
-		$vids[] = ' -i '.$i->id.'.mp4';
+		$vids[] = ' -i /tmp/'.$i->id.'.mp4';
 	}
 
 
-	$name = "addmusic.mp4";
+	$name = "/tmp/addmusic-{$instanceID}.mp4";
 
 	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=".(count($vids) + 2).":v=1:a=1 -c:v libx264 ".$name;
 	
 	shell_exec($cmd);
 }
 
-function add_music($audioUrl) {
+function add_music($audioUrl,$instanceID) {
 
-	$vid = "addmusic.mp4";
+	$vid = "/tmp/addmusic-{$instanceID}.mp4";
 	$music = $audioUrl;
-	$fin = "finished.mp4";
+	$fin = "/tmp/finished-{$instanceID}.mp4";
 
 	$command = "ffmpeg -i ".$vid." -i ".$music." \
 	-c:v copy -c:a aac -strict experimental \

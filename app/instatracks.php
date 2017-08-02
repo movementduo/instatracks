@@ -316,20 +316,21 @@ foreach($myPics as $i) {
 
 exec(join(' & ', $all_commands));
 
-join_videos($myPics);
-add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav');
+join_videos($myPics,$this->instanceID);
+add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
 
 
 
 
 // move rendered video to s3
-// generate cloudfront url
 
-// done - update database to 'complete'.
+		$videoStream = file_get_contents("/tmp/finished-{$this->instanceID}.mp4");
+		$filename = $this->generateFilename();
+		saveToS3($videoStream,'complete',$filename);
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
-		$this->db->executeSql("UPDATE instances SET status = 'complete' WHERE id = :x1",[$this->instanceID]);
+		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1 WHERE id = :x2",[$code,$this->instanceID]);
 	}
 
 
@@ -420,6 +421,19 @@ add_music(S3_WEB_ROOT.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.w
 		if(count($out)) {
 			return '?'.implode('&',$out);
 		}
+	}
+	
+	function generateFilename() {
+		$code = substr(sha1(microtime()),0,8).'.mp4';
+		
+		$codeQ = $this->db->executeSql("SELECT * FROM instances WHERE videoFile = x:1",array($code));
+		if($codeQ->rowCount()) {
+			return $this->generateFilename();
+		}
+		
+		return $code;
+
+		
 	}
 	
 	function saveToS3($stream,$folder,$filename) {
