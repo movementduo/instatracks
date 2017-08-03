@@ -40,7 +40,8 @@ completed: send object w/ share url
 //						if status == active ... 
 
 //
-					return $instance['creationState'];
+					echo $instance['creationState'];
+					exit;
 				}
 			}
 		}
