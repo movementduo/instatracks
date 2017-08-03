@@ -281,7 +281,9 @@ foreach($myPics as $key => $s){
 $this->debug($myPics);	
 
 
-
+	$this->db->executeSql("UPDATE instances SET sequence = :x1 WHERE id = :x2",[implode('',$seq), $this->instanceID]);
+	
+	
 
 	// next step - get lyrics sorted (api call)
 	$this->updateState('audio');
