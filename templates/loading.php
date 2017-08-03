@@ -39,8 +39,11 @@
 
 <script type="text/javascript">
 
-	var state = setInterval(getState(),500);
+	var state;
 	
+	$(document).ready(function() {
+		state = setInterval(getState,500);
+	});
 	
 	function getState() {
 		$.get('/ajax?action=status',function(ret) {
