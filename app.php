@@ -15,14 +15,6 @@ require_once('lib/aws/vendor/autoload.php');
 require_once('lib/google/vendor/autoload.php');
 require_once('lib/vision/vendor/autoload.php');
 
-
-
-
-$lyrics = json_decode(file_get_contents('lyrics/'.APP_LANGUAGE.'.json'));
-
-die('<pre>'.var_export($lyrics,true));
-
-
 $instanceID = $_SERVER['argv'][1];
 
 $db = PDOManager::getInstance();
@@ -33,7 +25,7 @@ $client->useApplicationDefaultCredentials();
 
 $i = new Instatracks;
 $i->setInstance($instanceID);
-$i->setLyrics($lyrics);
+$i->setLyrics(json_decode(file_get_contents('lyrics/'.APP_LANGUAGE.'.json')));
 $i->setVision(new VisionClient(['projectId' => 'node-instatracks']));
 $i->setPolly(new Aws\Polly\PollyClient(['version' => 'latest', 'region' => 'eu-west-1']));
 $i->setS3(new Aws\S3\S3Client(['version' => 'latest', 'region' => 'eu-west-1']));
