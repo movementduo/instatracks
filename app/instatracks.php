@@ -187,7 +187,6 @@ $sequenceMap = [
 	"noEmotion" => "K",
 ];
 
-
 $seq = [];
 
 
@@ -224,7 +223,6 @@ foreach($scheme as $key=>$s){
 
 	$c++;
 }
-die(var_export($seq,true));
 
 $audio = [];
 $total = count($myPics);
