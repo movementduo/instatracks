@@ -174,7 +174,10 @@ if($image_count == 6) {
 $scheme = $rG[array_rand($rG)];
 $seq = [];
 
+$c = 0;
 foreach($scheme as $key=>$s){
+
+	$image = $myPics[$c];
 
 	$a = ($s*3)-2;
 	$b = ($s*3)-1;
@@ -183,26 +186,40 @@ foreach($scheme as $key=>$s){
 	if($a < 10) {
 		if($key == count($scheme)-1){
 			if($f < 10) {
-				$seq[] = '[fanta]'.'0'.$f;
+				$seq[] = $image->type.'0'.$f;
 			} else{
-				$seq[] = '[fanta]'.$f;
+				$seq[] = $image->type.$f;
 			}
 		} else if($key % 2 == 0) {
 			if($f < 10) {
-				$seq[] = '[type]'.'0'.$a;
+				$seq[] = $image->type.'0'.$a;
 			} else{
-				$seq[] = '[type]'.$a;
+				$seq[] = $image->type.$a;
 			}
 		} else {
 			if($f < 10) {
-				$seq[] = '[type]'.'0'.$b;
+				$seq[] = $image->type.'0'.$b;
 			} else{
-				$seq[] = '[type]'.$b;
+				$seq[] = $image->type.$b;
 			}
 		}
 	}
-}
 
+	$c++;
+}
+/*
+"happy" == "A"
+"angry" == "B"
+"sad" == "C"
+"surprised" == "D"
+"landmark" == "E" *
+"group" == "F"
+"noun" == "G" *
+"verb" == "H" *
+"logo" == "I" *
+"fanta" == "J"
+"noEmotion" == "K"
+*/
 die(var_export($seq,true));
 
 $audio = [];
