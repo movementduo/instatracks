@@ -203,7 +203,7 @@ foreach($scheme as $key=>$s){
 	}
 }
 
-
+die(var_export($seq,true));
 
 $audio = [];
 $total = count($myPics);
