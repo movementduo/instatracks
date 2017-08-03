@@ -8,11 +8,9 @@
 			$this->tpl->setTemplate('v');
 			$this->tpl->set('title','Instatracks Home');
 			
-			die('<pre>'.var_export($this->args));
 			
 			if(array_key_exists(1,$this->args)) {
-				$this->video = $this->db->executeSql("SELECT * FROM instances WHERE instanceId = :x1 AND status = 'complete' LIMIT 1")->fetchAssoc()[0];
-
+				$this->video = $this->db->executeSql("SELECT * FROM instances WHERE instanceId = :x1 AND status = 'complete' LIMIT 1",[$this->args[1]])->fetchAssoc()[0];
 			}
 			
 			if(!$this->video) {
