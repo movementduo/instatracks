@@ -40,6 +40,8 @@ completed: send object w/ share url
 //						if status == active ... 
 
 //
+					header('Content-type: text/json');
+
 					echo json_encode(
 						[
 							'state' => $instance['creationState'],

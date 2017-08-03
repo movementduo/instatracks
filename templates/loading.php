@@ -53,7 +53,7 @@
 				clearInterval(state);
 				window.location.href = ret.share;
 			}
-		});
+		},'json');
 	}
 
 
