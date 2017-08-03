@@ -172,7 +172,24 @@ if($image_count == 6) {
 }
 
 $scheme = $rG[array_rand($rG)];
+
+$sequenceMap = [
+	"happy" => "A",
+	"angry" => "B",
+	"sad" => "C",
+	"surprised" => "D",
+	"landmark" => "E",
+	"group" => "F",
+	"noun" => "G",
+	"verb" => "H",
+	"logo" => "I",
+	"fanta" => "J",
+	"noEmotion" => "K",
+];
+
+
 $seq = [];
+
 
 $c = 0;
 foreach($scheme as $key=>$s){
@@ -186,40 +203,27 @@ foreach($scheme as $key=>$s){
 	if($a < 10) {
 		if($key == count($scheme)-1){
 			if($f < 10) {
-				$seq[] = $image->type.'0'.$f;
+				$seq[] = $sequenceMap[$image->type].'0'.$f;
 			} else{
-				$seq[] = $image->type.$f;
+				$seq[] = $sequenceMap[$image->type].$f;
 			}
 		} else if($key % 2 == 0) {
 			if($f < 10) {
-				$seq[] = $image->type.'0'.$a;
+				$seq[] = $sequenceMap[$image->type].'0'.$a;
 			} else{
-				$seq[] = $image->type.$a;
+				$seq[] = $sequenceMap[$image->type].$a;
 			}
 		} else {
 			if($f < 10) {
-				$seq[] = $image->type.'0'.$b;
+				$seq[] = $sequenceMap[$image->type].'0'.$b;
 			} else{
-				$seq[] = $image->type.$b;
+				$seq[] = $sequenceMap[$image->type].$b;
 			}
 		}
 	}
 
 	$c++;
 }
-/*
-"happy" == "A"
-"angry" == "B"
-"sad" == "C"
-"surprised" == "D"
-"landmark" == "E" *
-"group" == "F"
-"noun" == "G" *
-"verb" == "H" *
-"logo" == "I" *
-"fanta" == "J"
-"noEmotion" == "K"
-*/
 die(var_export($seq,true));
 
 $audio = [];
