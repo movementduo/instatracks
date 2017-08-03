@@ -144,17 +144,16 @@ class Instatracks {
 
 $image_count = count($myPics);
 
+$n = array(1, 2, 3, 4, 5, 6);
+shuffle($n);
+
 if($image_count == 4 ) {
-	$n = array(1, 2, 3, 4, 5, 6);
-	shuffle($n);
 	$rG1 = array($n[0], $n[1], $n[0], $n[1]);
 	$rG2 = array($n[0], $n[0], $n[1], $n[1]);
 	$rG = array($rG1, $rG2);
 }
 
 if($image_count == 5 ) {
-	$n = array(1, 2, 3, 4, 5, 6);
-	shuffle($n);
 	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
 	$rG2 = [$n[0], $n[1], $n[2], $n[1], $n[0]];
 	$rG3 = [$n[0], $n[1], $n[0], $n[1], $n[0]];
@@ -162,8 +161,6 @@ if($image_count == 5 ) {
 }
 
 if($image_count == 6) {
-	$n = array(1, 2, 3, 4, 5, 6);
-	shuffle($n);
 	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
 	$rG2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
 	$rG3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
@@ -190,38 +187,35 @@ $sequenceMap = [
 $seq = [];
 
 
-$c = 0;
 foreach($scheme as $key=>$s){
 
-	$image = $myPics[$c];
+	$image = $myPics[$key];
 
 	$a = ($s*3)-2;
 	$b = ($s*3)-1;
 	$f = ($s*3);
 
-	if($a < 10) {
-		if($key == count($scheme)-1){
-			if($f < 10) {
-				$seq[] = $sequenceMap[$image->type].'0'.$f;
-			} else{
-				$seq[] = $sequenceMap[$image->type].$f;
-			}
-		} else if($key % 2 == 0) {
-			if($f < 10) {
-				$seq[] = $sequenceMap[$image->type].'0'.$a;
-			} else{
-				$seq[] = $sequenceMap[$image->type].$a;
-			}
-		} else {
-			if($f < 10) {
-				$seq[] = $sequenceMap[$image->type].'0'.$b;
-			} else{
-				$seq[] = $sequenceMap[$image->type].$b;
-			}
+
+	if($key == count($scheme)-1){
+		if($f < 10) {
+			$seq[] = $sequenceMap[$image->type].'0'.$f;
+		} else{
+			$seq[] = $sequenceMap[$image->type].$f;
+		}
+	} else if($key % 2 == 0) {
+		if($f < 10) {
+			$seq[] = $sequenceMap[$image->type].'0'.$a;
+		} else{
+			$seq[] = $sequenceMap[$image->type].$a;
+		}
+	} else {
+		if($f < 10) {
+			$seq[] = $sequenceMap[$image->type].'0'.$b;
+		} else{
+			$seq[] = $sequenceMap[$image->type].$b;
 		}
 	}
 
-	$c++;
 }
 
 $audio = [];
