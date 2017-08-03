@@ -1,6 +1,6 @@
 <?
 
-	class Videotwo_Page extends Component {
+	class V_Page extends Component {
 		
 		var $video;
 
