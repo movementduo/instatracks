@@ -38,7 +38,6 @@
 	}
 	
 	$instance = new $component($db);
-	$instance->args = $request;
 	
 	if(method_exists($instance,'render')) {
 		$body = $instance->render();
