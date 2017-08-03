@@ -1,5 +1,4 @@
-Instance ID fired from component: <?php echo $instanceId; ?>
-
+<div id="text"></div>
 <div id="loading" style="height: 100%;">
 	<div class="container-fluid" style="height: 100%;">
 		<div class="row" style="height: 100vw;">
@@ -37,3 +36,19 @@ Instance ID fired from component: <?php echo $instanceId; ?>
 		<div class="row" style="height: calc(3 * (100% - 100vw) / 4);"></div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+	var state = setInterval(getState(),500);
+	
+	
+	function getState() {
+		$.get('/ajax?action=status',function(ret) {
+			$('#text').html(ret);
+		}
+		
+	
+	}
+
+
+</script>

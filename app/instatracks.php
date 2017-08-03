@@ -230,6 +230,10 @@ foreach($myPics as $key => $s){
 	$audioStream = $pollySpeech->get('AudioStream')->getContents();
 
 	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
+
+//IF SUBSTR($SEQUENCE) IN (E,F,G) THEN ONLY ADD THE RENDERED POLLY TO THE FILES ARRAY.
+
+
 	$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
 
 
