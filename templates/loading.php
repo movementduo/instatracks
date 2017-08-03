@@ -1,4 +1,4 @@
-<div id="text"></div>
+<div id="text" style="color: black;"></div>
 <div id="loading" style="height: 100%;">
 	<div class="container-fluid" style="height: 100%;">
 		<div class="row" style="height: 100vw;">
