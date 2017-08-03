@@ -44,8 +44,9 @@
 	
 	function getState() {
 		$.get('/ajax?action=status',function(ret) {
-			$('#text').html(ret);
-		}
+			d = new Date();
+			$('#text').html(d+': '+ret);
+		});
 		
 	
 	}
