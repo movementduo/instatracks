@@ -207,7 +207,7 @@ foreach($scheme as $key=>$s){
 
 $audio = [];
 $total = count($myPics);
-
+$c = 0;
 foreach($myPics as $key => $s){
 	$rhyme = $scheme[$key];
 	$type = $s->type;
@@ -253,10 +253,10 @@ foreach($myPics as $key => $s){
 
 	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
 
-	if(in_array(substr($seq[$key],0,1),array("E","G","H","I"))) {
+	if(in_array(substr($seq[$c],0,1),array("E","G","H","I"))) {
 		$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
 	}
-
+	$c++;
 }
 
 $this->debug($myPics);	
