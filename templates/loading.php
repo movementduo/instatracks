@@ -48,10 +48,12 @@
 	function getState() {
 		$.get('/ajax?action=status',function(ret) {
 			d = new Date();
-			$('#text').html(d+': '+ret);
+			$('#text').html(d+': '+ret.state);
+			if(ret.state == 'complete') {
+				clearInterval(state);
+				window.location.href = ret.share;
+			}
 		});
-		
-	
 	}
 
 

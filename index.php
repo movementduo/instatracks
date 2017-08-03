@@ -17,14 +17,14 @@
 	$request = false;
 	
 	if(array_key_exists('SCRIPT_NAME',$_SERVER)) {
-		$request = trim($_SERVER['SCRIPT_NAME'],'/');
+		$request = explode('/',trim($_SERVER['SCRIPT_NAME'],'/'));
 	}
 	
 	if(!$request) {
-		$request = 'Home';
+		$request = ['Home'];
 	}
 	
-	$component = "{$request}_Page";
+	$component = "{$request[0]}_Page";
 	
 	$filename = COMPONENTS.strtolower($component).'.php';
 	if(!file_exists($filename)) {
@@ -38,6 +38,7 @@
 	}
 	
 	$instance = new $component($db);
+	$instance->args = $request;
 	
 	if(method_exists($instance,'render')) {
 		$body = $instance->render();

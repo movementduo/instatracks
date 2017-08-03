@@ -40,7 +40,12 @@ completed: send object w/ share url
 //						if status == active ... 
 
 //
-					echo $instance['creationState'];
+					echo json_encode(
+						[
+							'state' => $instance['creationState'],
+							'share' => $instance['shareUrl'],
+						]
+					);
 					exit;
 				}
 			}

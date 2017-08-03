@@ -336,7 +336,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 		try {
 			$this->s3->putObject([
 				'Bucket' => S3_BUCKET,  
-				'Key'    => 'complete/'.$filename, 
+				'Key'    => 'complete/'.$filename.'.mp4', 
 				'Body'   => $videoStream, // image
 				'ACL'    => 'public-read',
 			]);
@@ -345,7 +345,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 		}
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
-		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1 WHERE id = :x2",[$filename,$this->instanceID]);
+		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1, shareUrl = :x2, instanceId = :x3 WHERE id = :x$",[$filename.'.mp4','/v/'.$filename,$filename,$this->instanceID]);
 	}
 
 
@@ -439,9 +439,9 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 	}
 	
 	function generateFilename() {
-		$code = substr(sha1(microtime()),0,8).'.mp4';
+		$code = substr(sha1(microtime()),0,8);
 		
-		$codeQ = $this->db->executeSql("SELECT * FROM instances WHERE videoFile = :x1",array($code));
+		$codeQ = $this->db->executeSql("SELECT * FROM instances WHERE videoFile = :x1",array($code.'.mp4'));
 		if($codeQ->rowCount()) {
 			return $this->generateFilename();
 		}
