@@ -345,7 +345,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 		}
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
-		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1, shareUrl = :x2, instanceId = :x3 WHERE id = :x$",[$filename.'.mp4','/v/'.$filename,$filename,$this->instanceID]);
+		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1, shareUrl = :x2, instanceId = :x3 WHERE id = :x4",[$filename.'.mp4','/v/'.$filename,$filename,$this->instanceID]);
 	}
 
 
