@@ -9,7 +9,7 @@
 		function __construct($db) {
 			$this->db = $db;
 			$this->tpl = new Template;
-			$this->args = array();
+			$this->args = explode('/',trim($_SERVER['SCRIPT_NAME'],'/'));
 			if(method_exists($this,'init')) {
 				$this->init();
 			}
