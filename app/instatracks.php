@@ -142,46 +142,68 @@ class Instatracks {
 
 	$this->updateState("lyrics");
 
-$safe = count($myPics);
+$image_count = count($myPics);
 
-if($safe == 4 ) {
-
-
-	$n = array(0, 1, 2, 3);
+if($image_count == 4 ) {
+	$n = array(1, 2, 3, 4, 5, 6);
 	shuffle($n);
-	$rGroup_1 = array($n[0], $n[1], $n[0], $n[1]);
-	$rGroup_2 = array($n[0], $n[0], $n[1], $n[1]);
-	$rGroup_3 = array($n[0], $n[1], $n[1], $n[0]);
-	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3);
-	$anotherRandom = rand(1,3);
+	$rG1 = array($n[0], $n[1], $n[0], $n[1]);
+	$rG2 = array($n[0], $n[0], $n[1], $n[1]);
+	$rG = array($rG1, $rG2);
 }
-if($safe == 5 ) {
 
-	$n = array(0, 1, 2, 3, 4);
+if($image_count == 5 ) {
+	$n = array(1, 2, 3, 4, 5, 6);
 	shuffle($n);
-	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
-	$rGroup_2 = [$n[0], $n[1], $n[2], $n[1], $n[0]];
-	$rGroup_3 = [$n[0], $n[1], $n[0], $n[1], $n[0]];
-	$rGroup_4 = [$n[0], $n[1], $n[1], $n[0], $n[0]];
-	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3, $rGroup_4);
-	$anotherRandom = rand(1,4);
+	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
+	$rG2 = [$n[0], $n[1], $n[2], $n[1], $n[0]];
+	$rG3 = [$n[0], $n[1], $n[0], $n[1], $n[0]];
+	$rG = array($rG1, $rG2, $rG3);
 }
-if($safe == 6) {
 
-	$n = array(0, 1, 2, 3, 4, 5, 6);
+if($image_count == 6) {
+	$n = array(1, 2, 3, 4, 5, 6);
 	shuffle($n);
-	$rGroup_1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
-	$rGroup_2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
-	$rGroup_3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
-	$rGroup_4 = [$n[0], $n[1], $n[0], $n[2], $n[3], $n[2]];
-	$rGroup_5 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
-
-	$whichGroup = array($rGroup_1, $rGroup_2, $rGroup_3, $rGroup_4, $rGroup_5);
-	$anotherRandom = rand(1,5);
+	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
+	$rG2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
+	$rG3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
+	$rG4 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
+	$rG = array($rG1, $rG2, $rG3, $rG4);
 }
-//$scheme = $whichGroup[$anotherRandom];
-$scheme = array(0,0,0,0,0,0);
-//$this->debug($scheme);
+
+$scheme = $rG[array_rand($rG)];
+$seq = [];
+
+foreach($scheme as $key=>$s){
+
+	$a = ($s*3)-2;
+	$b = ($s*3)-1;
+	$f = ($s*3);
+
+	if($a < 10) {
+		if($key == count($scheme)-1){
+			if($f < 10) {
+				$seq[] = '[fanta]'.'0'.$f;
+			} else{
+				$seq[] = '[fanta]'.$f;
+			}
+		} else if($key % 2 == 0) {
+			if($f < 10) {
+				$seq[] = '[type]'.'0'.$a;
+			} else{
+				$seq[] = '[type]'.$a;
+			}
+		} else {
+			if($f < 10) {
+				$seq[] = '[type]'.'0'.$b;
+			} else{
+				$seq[] = '[type]'.$b;
+			}
+		}
+	}
+}
+
+
 
 $audio = [];
 $total = count($myPics);
@@ -231,11 +253,9 @@ foreach($myPics as $key => $s){
 
 	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
 
-//IF SUBSTR($SEQUENCE) IN (E,F,G) THEN ONLY ADD THE RENDERED POLLY TO THE FILES ARRAY.
-
-
-	$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
-
+	if(in_array(substr($seq[$key],0,1),array("E","G","H","I"))) {
+		$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
+	}
 
 }
 
@@ -251,7 +271,7 @@ $this->debug($myPics);
 	$getVars = [
 		'salt'		=> $this->instanceID,
 		'pepper'	=> VOCODER_API_SECRET,
-		'sequence'	=> 'A01B02C01D02D03E09',
+		'sequence'	=> implode('',$seq),
 		'file'		=> $audio,
 	];
 
