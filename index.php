@@ -23,7 +23,8 @@
 	if(!$request) {
 		$request = ['Home'];
 	}
-	
+
+die('<pre>'.var_export($request,true));	
 	$component = "{$request[0]}_Page";
 	
 	$filename = COMPONENTS.strtolower($component).'.php';
