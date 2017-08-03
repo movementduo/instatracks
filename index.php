@@ -20,7 +20,7 @@
 		$request = explode('/',trim($_SERVER['SCRIPT_NAME'],'/'));
 	}
 	
-	if(!$request) {
+	if(!$request || empty($request[0])) {
 		$request = ['Home'];
 	}
 
