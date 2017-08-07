@@ -366,7 +366,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 
 		$videoStream = file_get_contents("/tmp/finished-{$this->instanceID}.mp4");
 		$filename = $this->generateFilename();
-		$this->saveToS3($videoStream,'complete',$filename);
+		$this->saveToS3($videoStream,'complete',$filename.'.mp4');
 
 		try {
 			$this->s3->putObject([
@@ -379,7 +379,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 			echo "There was an error uploading the file.\n";
 		}
 		$this->updateState('complete');
-		$this->db->executeSql("UPDATE instanceSlides SET status = 'completed' WHERE id = :x1",[$this->instanceID]);
+		$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$this->instanceID]);
 		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1, shareUrl = :x2, instanceId = :x3 WHERE id = :x4",[$filename.'.mp4','/v/'.$filename,$filename,$this->instanceID]);
 	}
 
