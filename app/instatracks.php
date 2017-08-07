@@ -99,7 +99,7 @@ class Instatracks {
 			"url"		=> $image['cdnURL'],
 			"likes"		=> $metadata[0],
 			"lyrics"	=> '',
-			"lyrics2"	=> 'dynamic',
+			"lyrics2"	=> '',
 			"width"		=> $metadata[1],
 			"height"	=> $metadata[2],
 		];
@@ -161,11 +161,11 @@ if($image_count == 5 ) {
 }
 
 if($image_count == 6) {
-	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
-	$rG2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
-	$rG3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
+	//$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
+	//$rG2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
+	//$rG3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
 	$rG4 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
-	$rG = array($rG1, $rG2, $rG3, $rG4);
+	$rG = array($rG4);
 }
 
 $scheme = $rG[array_rand($rG)];
@@ -185,6 +185,7 @@ $sequenceMap = [
 ];
 
 $seq = [];
+$l_seq = [];
 
 
 foreach($scheme as $key=>$s){
@@ -197,18 +198,21 @@ foreach($scheme as $key=>$s){
 
 
 	if($key == count($scheme)-1){
+		$l_seq[] = $f - 1;
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$f;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$f;
 		}
 	} else if($key % 2 == 0) {
+		$l_seq[] = $a - 1;
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$a;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$a;
 		}
 	} else {
+		$l_seq[] = $b - 1;
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$b;
 		} else{
@@ -222,42 +226,24 @@ $audio = [];
 $total = count($myPics);
 $c = 0;
 foreach($myPics as $key => $s){
-	$rhyme = $scheme[$key];
 	$type = $s->type;
 	$t = $this->lyrics->$type;
-	$r = $t[$rhyme];
-
-
-	if($key == $total-1){
-		$line = $r[2];
-		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
-			$lyrics = $line[0].' '.$s->text.' '.$line[1];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		} else {
-			$lyrics = $line[0];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		}
-	} else {
-		$line = $r[0];
-		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
-			$lyrics = $line[0].' '.$s->text.' '.$line[1];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		} else {
-			$lyrics = $line[0];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		}
-	}
+	if($type == 'landmark' || $type == 'noun' || $type == 'verb' || $type == 'logo') {
+ 		$replaced = str_replace('%replace%', $s->text, $t[$l_seq[$key]]);
+ 		$lyrics = explode('| ', $replaced);
+ 	} else {
+ 		$lyrics = explode('| ', $t[$l_seq[0]]);
+ 	}
+	$full_lyrics = implode('',$lyrics);
+	print_r($full_lyrics);
+ 	$s->lyrics = $lyrics[0];
+ 	$s->lyrics2 = $lyrics[1];
 	
-	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
-	
+	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$full_lyrics, $s->id]);
 	
 	$pollySpeech = $this->polly->synthesizeSpeech([
 	  'OutputFormat' => 'mp3', // REQUIRED
-	  'Text' => '<speak><prosody rate="slow">'.$lyrics.'</prosody></speak>', // REQUIRED
+	  'Text' => '<speak><prosody rate="slow">'.$full_lyrics.'</prosody></speak>', // REQUIRED
 	  'TextType' => 'ssml',
 	  'VoiceId' => 'Joanna', // REQUIRED
 	]);
