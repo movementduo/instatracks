@@ -71,7 +71,7 @@ function join_videos($imgs,$instanceID) {
 
 	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=".(count($vids) + 2).":v=1:a=1 -c:v libx264 ".$name;
 
-	mail('james@giantstepsdigital.co.uk','cmd2',$cmd,'From: dev2@movement.co.uk');
+//	mail('james@giantstepsdigital.co.uk','cmd2',$cmd,'From: dev2@movement.co.uk');
 
 	
 	shell_exec($cmd);
@@ -87,7 +87,7 @@ function add_music($audioUrl,$instanceID) {
 	-c:v copy -c:a aac -strict experimental \
 	-map 0:v:0 -map 1:a:0 ".$fin;
 
-mail('james@giantstepsdigital.co.uk','cmd3',$command,'From: dev2@movement.co.uk');
+//mail('james@giantstepsdigital.co.uk','cmd3',$command,'From: dev2@movement.co.uk');
 
 	
 	shell_exec($command);
