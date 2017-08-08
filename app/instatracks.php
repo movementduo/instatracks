@@ -340,12 +340,12 @@ foreach($myPics as $i) {
 	}
 }
 
-exec(join(' & ', $all_commands));
-
-join_videos($myPics,$this->instanceID);
-add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
 
+$all_commands[] = join_videos($myPics,$this->instanceID);
+$all_commands[] = add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
+
+exec(join(' ; ', $all_commands));
 
 
 
