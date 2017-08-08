@@ -196,7 +196,6 @@ foreach($scheme as $key=>$s){
 	$f = ($s*3);
 
 	if($key == count($scheme)-1){
-		$l_seq[] = $f - 1;
 		$image->lyrics_id = $f-1;
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$f;
@@ -204,8 +203,6 @@ foreach($scheme as $key=>$s){
 			$seq[] = $sequenceMap[$image->type].$f;
 		}
 	} else if($key % 2 == 0) {
-		$l_seq[] = $a - 1;
-		if($f < 10) {
 		$image->lyrics_id = $a-1;
 		if($a < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$a;
@@ -213,8 +210,6 @@ foreach($scheme as $key=>$s){
 			$seq[] = $sequenceMap[$image->type].$a;
 		}
 	} else {
-		$l_seq[] = $b - 1;
-		if($f < 10) {
 		$image->lyrics_id = $b-1;
 		if($b < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$b;
@@ -231,19 +226,7 @@ print_r($myPics);
 $audio = [];
 $total = count($myPics);
 $c = 0;
-foreach($myPics as $key => $s){
-	$type = $s->type;
-	$t = $this->lyrics->$type;
-	if($type == 'landmark' || $type == 'noun' || $type == 'verb' || $type == 'logo') {
- 		$replaced = str_replace('%replace%', $s->text, $t[$l_seq[$key]]);
- 		$lyrics = explode('| ', $replaced);
- 	} else {
- 		$lyrics = explode('| ', $t[$l_seq[0]]);
- 	}
-	$full_lyrics = implode('',$lyrics);
-	print_r($full_lyrics);
- 	$s->lyrics = $lyrics[0];
- 	$s->lyrics2 = $lyrics[1];
+ 	
 foreach($myPics as $key => $s){	
 	$type = $s->type;
 	$line = $s->lyrics_id;
