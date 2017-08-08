@@ -340,13 +340,19 @@ foreach($myPics as $i) {
 	}
 }
 
+exec(join(' & ', $all_commands));
 
+join_videos($myPics,$this->instanceID);
 
-$all_commands[] = join_videos($myPics,$this->instanceID);
-$all_commands[] = add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
+while(!file_exists(TMP_DIR."addmusic-{$instanceID}.mp4")) {
+	usleep(500);
+}
 
-exec(join(' ; ', $all_commands));
+add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
+while(!file_exists(TMP_DIR."finished-{$instanceID}.mp4")) {
+	usleep(500);
+}
 
 
 // move rendered video to s3
