@@ -71,7 +71,7 @@ function join_videos($imgs,$instanceID) {
 
 	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=".(count($vids) + 2).":v=1:a=1 -c:v libx264 ".$name;
 	
-	shell_exec($cmd);
+	exec($cmd);
 }
 
 function add_music($audioUrl,$instanceID) {
@@ -83,6 +83,6 @@ function add_music($audioUrl,$instanceID) {
 	$command = "ffmpeg -i ".$vid." -i ".$music." \
 	-c:v copy -c:a aac -strict experimental \
 	-map 0:v:0 -map 1:a:0 ".$fin;
-
-	shell_exec($command);
+	
+	exec($command);
 }
