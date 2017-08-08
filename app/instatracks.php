@@ -340,8 +340,8 @@ foreach($myPics as $i) {
 	}
 }
 
-$cmd = trim(join(' && ', $all_commands),' &');
-exec($cmd);
+$cmd = trim(join(' ; ', $all_commands),' ;');
+shell_exec($cmd);
 
 join_videos($myPics,$this->instanceID);
 
