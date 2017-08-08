@@ -243,11 +243,9 @@ foreach($myPics as $key => $s){
 
 	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
 	
-	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$full_lyrics, $s->id]);
-	
 	$pollySpeech = $this->polly->synthesizeSpeech([
 	  'OutputFormat' => 'mp3', // REQUIRED
-	  'Text' => '<speak><prosody rate="slow">'.$full_lyrics.'</prosody></speak>', // REQUIRED
+	  'Text' => '<speak><prosody rate="slow">'.$lyrics.'</prosody></speak>', // REQUIRED
 	  'TextType' => 'ssml',
 	  'VoiceId' => 'Joanna', // REQUIRED
 	]);
