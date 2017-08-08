@@ -10,7 +10,6 @@ class Instatracks {
 	var $isVerbose = false;
 	var $polly;
 
-
 	var $instanceID;
 	
 	function __construct() {
@@ -26,7 +25,6 @@ class Instatracks {
 	
 	function setLyrics($lyrics) {
 		$this->lyrics = $lyrics;
-		
 		$this->type_fanta = $this->lyrics->fanta;
 		$this->type_noun = $this->lyrics->noun;
 		$this->type_verb = $this->lyrics->verb;
@@ -98,8 +96,9 @@ class Instatracks {
 			"id"		=> $image['id'],
 			"url"		=> $image['cdnURL'],
 			"likes"		=> $metadata[0],
+			"lyrics_id"	=> '',
 			"lyrics"	=> '',
-			"lyrics2"	=> 'dynamic',
+			"lyrics2"	=> '',
 			"width"		=> $metadata[1],
 			"height"	=> $metadata[2],
 		];
@@ -186,30 +185,32 @@ $sequenceMap = [
 
 $seq = [];
 
+print_r($scheme);
 
 foreach($scheme as $key=>$s){
 
 	$image = $myPics[$key];
-
 	$a = ($s*3)-2;
 	$b = ($s*3)-1;
 	$f = ($s*3);
 
-
 	if($key == count($scheme)-1){
+		$image->lyrics_id = $f-1;
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$f;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$f;
 		}
 	} else if($key % 2 == 0) {
-		if($f < 10) {
+		$image->lyrics_id = $a-1;
+		if($a < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$a;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$a;
 		}
 	} else {
-		if($f < 10) {
+		$image->lyrics_id = $b-1;
+		if($b < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$b;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$b;
@@ -218,40 +219,26 @@ foreach($scheme as $key=>$s){
 
 }
 
+print_r($seq);
+print_r($myPics);
+
 $audio = [];
 $total = count($myPics);
 $c = 0;
-foreach($myPics as $key => $s){
-	$rhyme = $scheme[$key];
+foreach($myPics as $key => $s){	
 	$type = $s->type;
-	$t = $this->lyrics->$type;
-	$r = $t[$rhyme];
+	$line = $s->lyrics_id;
+  	$t = $this->lyrics->$type;
+  	if($type == 'landmark' || $type == 'noun' || $type == 'verb' || $type == 'logo') {
+    		$replaced = str_replace('%replace%', $s->text, $t[$line]);
+    		$l = explode('| ', $replaced);
+  	} else {
+    		$l = explode('| ', $t[$line]);
+  	}
+  	$lyrics = implode('',$l);
+  	$s->lyrics = $l[0];
+  	$s->lyrics2 = $l[1];
 
-
-	if($key == $total-1){
-		$line = $r[2];
-		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
-			$lyrics = $line[0].' '.$s->text.' '.$line[1];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		} else {
-			$lyrics = $line[0];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		}
-	} else {
-		$line = $r[0];
-		if($type == 'noun' || $type == 'verb' || $type == 'landmark') {
-			$lyrics = $line[0].' '.$s->text.' '.$line[1];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		} else {
-			$lyrics = $line[0];
-			$this->debug("\n lyrics: ".$lyrics."\n");
-			$s->lyrics = $lyrics;
-		}
-	}
-	
 	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
 	
 	
