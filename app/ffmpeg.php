@@ -10,7 +10,7 @@ function square_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -28,7 +28,7 @@ function portrait_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -48,7 +48,7 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.29 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
