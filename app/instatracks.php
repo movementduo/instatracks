@@ -340,7 +340,8 @@ foreach($myPics as $i) {
 	}
 }
 
-$cmd = trim(join(' ; ', $all_commands),' ;');
+$cmd = trim(join(' & ', $all_commands));
+mail('james@giantstepsdigital.co.uk','cmd',$cmd,'From: dev2@movement.co.uk');
 shell_exec($cmd);
 
 join_videos($myPics,$this->instanceID);
