@@ -10,7 +10,7 @@ function square_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M '.TMP_DIR.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -28,7 +28,7 @@ function portrait_top($object) {
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M '.TMP_DIR.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -48,7 +48,7 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 	$initial = 'ffmpeg -i '.$object->background.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->image.' -loop 1 -i '.$object->textbox.' -filter_complex ';
 
-	$end = ' -t 4.6 -b:v 10M /tmp/'.$object->video->id.'.mp4';
+	$end = ' -t 4.6 -b:v 10M '.TMP_DIR.$object->video->id.'.mp4';
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
@@ -63,11 +63,11 @@ function join_videos($imgs,$instanceID) {
 
 	$vids = [];
 	foreach($imgs as $i) {
-		$vids[] = ' -i /tmp/'.$i->id.'.mp4';
+		$vids[] = ' -i '.TMP_DIR.$i->id.'.mp4';
 	}
 
 
-	$name = "/tmp/addmusic-{$instanceID}.mp4";
+	$name = TMP_DIR."addmusic-{$instanceID}.mp4";
 
 	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=".(count($vids) + 2).":v=1:a=1 -c:v libx264 ".$name;
 	
@@ -76,9 +76,9 @@ function join_videos($imgs,$instanceID) {
 
 function add_music($audioUrl,$instanceID) {
 
-	$vid = "/tmp/addmusic-{$instanceID}.mp4";
+	$vid = TMP_DIR."addmusic-{$instanceID}.mp4";
 	$music = $audioUrl;
-	$fin = "/tmp/finished-{$instanceID}.mp4";
+	$fin = TMP_DIR."finished-{$instanceID}.mp4";
 
 	$command = "ffmpeg -i ".$vid." -i ".$music." \
 	-c:v copy -c:a aac -strict experimental \
