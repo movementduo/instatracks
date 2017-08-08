@@ -196,36 +196,27 @@ foreach($scheme as $key=>$s){
 	$f = ($s*3);
 
 	if($key == count($scheme)-1){
-<<<<<<< HEAD
 		$l_seq[] = $f - 1;
-=======
 		$image->lyrics_id = $f-1;
->>>>>>> oldcommit
 		if($f < 10) {
 			$seq[] = $sequenceMap[$image->type].'0'.$f;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$f;
 		}
 	} else if($key % 2 == 0) {
-<<<<<<< HEAD
 		$l_seq[] = $a - 1;
 		if($f < 10) {
-=======
 		$image->lyrics_id = $a-1;
 		if($a < 10) {
->>>>>>> oldcommit
 			$seq[] = $sequenceMap[$image->type].'0'.$a;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$a;
 		}
 	} else {
-<<<<<<< HEAD
 		$l_seq[] = $b - 1;
 		if($f < 10) {
-=======
 		$image->lyrics_id = $b-1;
 		if($b < 10) {
->>>>>>> oldcommit
 			$seq[] = $sequenceMap[$image->type].'0'.$b;
 		} else{
 			$seq[] = $sequenceMap[$image->type].$b;
@@ -240,7 +231,6 @@ print_r($myPics);
 $audio = [];
 $total = count($myPics);
 $c = 0;
-<<<<<<< HEAD
 foreach($myPics as $key => $s){
 	$type = $s->type;
 	$t = $this->lyrics->$type;
@@ -254,7 +244,6 @@ foreach($myPics as $key => $s){
 	print_r($full_lyrics);
  	$s->lyrics = $lyrics[0];
  	$s->lyrics2 = $lyrics[1];
-=======
 foreach($myPics as $key => $s){	
 	$type = $s->type;
 	$line = $s->lyrics_id;
@@ -270,7 +259,6 @@ foreach($myPics as $key => $s){
   	$s->lyrics2 = $l[1];
 
 	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
->>>>>>> oldcommit
 	
 	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$full_lyrics, $s->id]);
 	
