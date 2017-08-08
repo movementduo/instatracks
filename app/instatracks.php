@@ -346,13 +346,13 @@ join_videos($myPics,$this->instanceID);
 
 do {
 	usleep(500);
-} while(!file_exists(TMP_DIR."addmusic-{$instanceID}.mp4"));
+} while(!file_exists(TMP_DIR."addmusic-{$this->instanceID}.mp4"));
 
 add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
 do {
 	usleep(500);
-} while(!file_exists(TMP_DIR."finished-{$instanceID}.mp4"));
+} while(!file_exists(TMP_DIR."finished-{$this->instanceID}.mp4"));
 
 
 // move rendered video to s3
