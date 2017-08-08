@@ -86,7 +86,7 @@ function add_music($audioUrl,$instanceID) {
 	-c:v copy -c:a aac -strict experimental \
 	-map 0:v:0 -map 1:a:0 ".$fin;
 
-	returm $command;
+	return $command;
 	
 	exec($command);
 }

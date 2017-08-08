@@ -345,9 +345,7 @@ foreach($myPics as $i) {
 $all_commands[] = join_videos($myPics,$this->instanceID);
 $all_commands[] = add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
-mail('james@giantstepsdigital.co.uk','cmd',join(' ; ', $all_commands),'From: dev2@movement.co.uk');
-
-//exec();
+exec(join(' ; ', $all_commands));
 
 
 
