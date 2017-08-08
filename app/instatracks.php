@@ -269,7 +269,6 @@ $this->debug($myPics);
 
 	// next step - get lyrics sorted (api call)
 	$this->updateState('audio');
-	// store audio in tmp w/ instance id
 
 	$getVars = [
 		'salt'		=> $this->instanceID,
@@ -352,7 +351,7 @@ add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->i
 
 // move rendered video to s3
 
-		$videoStream = file_get_contents("/tmp/finished-{$this->instanceID}.mp4");
+		$videoStream = file_get_contents(TMP_DIR."finished-{$this->instanceID}.mp4");
 		$filename = $this->generateFilename();
 		$this->saveToS3($videoStream,'complete',$filename.'.mp4');
 
