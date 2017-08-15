@@ -105,7 +105,16 @@ class Instatracks {
 	}
 
 	function setImages() {
-		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+	
+		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()['sessionMode'];
+
+		if($mode == 'popular') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 6",array($this->instanceID));
+		}elseif($mode == 'manual') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 AND status = 'selected' ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		} else {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		}
 		if($imagesQ->rowCount()) {
 			$this->images = $imagesQ->fetchAssoc();
 		}

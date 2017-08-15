@@ -31,35 +31,45 @@
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, status, stampCreate) VALUES (:x1, :x2, :x3, 'random', 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE));
+				
+				$mode = array_key_exists(1,$this->args)?$this->args[1]:'random';
+				
+				if(!in_array($mode,['random','popular','manual'])) {
+					$this->is404();
+				}
+
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
 
 				foreach ($result->data as $media) {
 					if ($media->type == 'image') {
-
-						$metadata = array(
-							$media->likes->count,
-							$width = $media->images->standard_resolution->width,
-							$height = $media->images->standard_resolution->height,
-
-						);
-	
-						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, metadata) VALUES (:x1, :x2, :x3, :x4)",array(
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6)",array(
 							$instanceId,
 							$media->id,
 							$media->images->standard_resolution->url,
-							serialize($metadata)
+							$media->likes->count,
+							$width = $media->images->standard_resolution->width,
+							$height = $media->images->standard_resolution->height,
 						));
 
 					}
 				
 				}
 				
-				shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
+				if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()['total'] < 4) {
+					die('not enough images');
+				}
 
-				$this->redirect('/loading');
+				if(in_array($mode,['popluar','random'])) {
+					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
+					$this->redirect('/loading');
+				} else {
+					$this->redirect('/select');
+				}
+				
+				
 
 			} else {
 
