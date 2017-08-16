@@ -58,9 +58,9 @@
 				
 				}
 				
-				if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()['total'] < 4) {
-					die('not enough images');
-				}
+				// if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()['total'] < 4) {
+				//	die('not enough images');
+				//}
 
 				if(in_array($mode,['popular','random'])) {
 					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
