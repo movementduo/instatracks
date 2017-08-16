@@ -22,7 +22,7 @@
 				$_SESSION['oauthToken'] = $_REQUEST['code'];
 
 				// receive OAuth token object
-				$data = $instagram->getOAuthToken($_SESSION['oauthToken']);
+				$data = $instagram->getOAuthToken($_REQUEST['code']);
 				$username = $username = $data->user->username;
 
 				// store user access token
@@ -57,9 +57,9 @@
 				
 				}
 				
-				// if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()['total'] < 4) {
-				//	die('not enough images');
-				//}
+				if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()[0]['total'] < 4) {
+					die('not enough images');
+				}
 
 				if(in_array($mode,['popular','random'])) {
 					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
