@@ -93,12 +93,12 @@ class Instatracks {
 			"text"		=> $text,
 			"id"		=> $image['id'],
 			"url"		=> $image['cdnURL'],
-			"likes"		=> $metadata[0],
+			"likes"		=> $image['likes'],
 			"lyrics_id"	=> '',
 			"lyrics"	=> '',
 			"lyrics2"	=> '',
 			"width"		=> $image['width'],
-			"height"	=> $iamge['height'],
+			"height"	=> $image['height'],
 		];
 	}
 
