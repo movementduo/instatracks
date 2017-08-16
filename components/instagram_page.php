@@ -30,9 +30,9 @@
 
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
-
 				
-				$mode = array_key_exists(1,$this->args)?$this->args[1]:'random';
+				$mode = 'popular';
+				// $mode = array_key_exists(1,$this->args)?$this->args[1]:'random';
 				
 				if(!in_array($mode,['random','popular','manual'])) {
 					$this->is404();
@@ -62,7 +62,7 @@
 					die('not enough images');
 				}
 
-				if(in_array($mode,['popluar','random'])) {
+				if(in_array($mode,['popular','random'])) {
 					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
 					$this->redirect('/loading');
 				} else {
