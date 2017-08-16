@@ -31,7 +31,7 @@
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
 				
-				$mode = 'popular';
+				$mode = ['popular'];
 				// $mode = array_key_exists(1,$this->args)?$this->args[1]:'random';
 				
 				if(!in_array($mode,['random','popular','manual'])) {
