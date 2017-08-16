@@ -11,62 +11,21 @@
 	<div class="top-pics">
 		<h3>Top posts</h3>
 		<div class="square-grid">
+<?php foreach($popular as $image) { ?>
 			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
+				<figure style="height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
 			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
+<? } ?>
 		</div>
 	</div>
 	<div class="most-recent">
 		<h3>Most recent</h3>
 		<div class="square-grid">
+<?php foreach($recent as $image) { ?>
 			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
+				<figure style="height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
 			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
-			<div class="col-xs-4" style="padding: 0;">
-				<figure style="height: 33.33vw;"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-			</div>
+<? } ?>
 		</div>
 	</div>
 </div>
-<?php
-   echo '<script>console.log("'.$images.'")</script>';
-?>
