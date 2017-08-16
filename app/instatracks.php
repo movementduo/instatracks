@@ -108,6 +108,8 @@ class Instatracks {
 	
 		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()['sessionMode'];
 
+		print_r('what is the mode: ');
+		print_r($mode);
 		if($mode == 'popular') {
 			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 6",array($this->instanceID));
 		}elseif($mode == 'manual') {
