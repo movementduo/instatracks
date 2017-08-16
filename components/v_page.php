@@ -13,6 +13,12 @@
 				$this->video = $videoQ->fetchAssoc()[0];
 			}
 
+
+
+			//$images = $this->db->executeSql("SELECT cdnURL FROM instanceSlides WHERE instanceId = 195);
+			//$this->images = $images->fetchAssoc()[0];
+
+			//$this->tpl->set('images',$this->images);
 			
 			if(!$this->video) {
 				die('error');

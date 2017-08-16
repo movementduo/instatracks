@@ -65,7 +65,7 @@
 					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
 					$this->redirect('/loading');
 				} else {
-					$this->redirect('/select');
+					$this->redirect('/selectpics');
 				}
 				
 				

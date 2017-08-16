@@ -5,11 +5,11 @@
 
 		function init() {
 			$this->tpl->setTemplate('selectpics');
-			$this->tpl->set('title','Instatracks Home');
+			$this->tpl->set('title','Instatracks - Select Your Favourite Pictures');
 			$this->tpl->set('link', '/loading');
-			// $this->db->set('what', 'what');
-			$images = 'get images over here? read some db? then foreach loop for display them?';
-			$this->tpl->set('images', $images);
+
+			$this->tpl->set('popular', $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC LIMIT 8",[$_SESSION['instanceId']])->fetchAssoc());
+			$this->tpl->set('recent', $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY instagramID DESC LIMIT 8",[$_SESSION['instanceId']])->fetchAssoc());
 		}
 
 	}
