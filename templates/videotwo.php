@@ -6,7 +6,7 @@
 		<button class="cta-green"><a class="open-overlay" href="#new-video" id="new-video-">Make a new video</a></button>
 	</div>
 	<div class="row" style="height: 20%; padding-bottom: 7%;">
-		<button class="cta-orange"><a href="<?php echo $link1; ?>" id="what-again">Watch video again</a></button>
+		<button class="cta-orange"><a href="<?php echo 'javascript:history.go(-1)' ?>" id="what-again">Watch video again</a></button>
 	</div>
 </div>
 <div id="new-video-overlay">
