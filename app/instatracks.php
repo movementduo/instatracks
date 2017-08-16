@@ -106,8 +106,8 @@ class Instatracks {
 	
 		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()[0]['sessionMode'];
 
-		print_r('what is the mode: ');
-		print_r($mode);
+		$this->debug('what is the mode: ');
+		$this->debug($mode);
 		if($mode == 'popular') {
 			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 6",array($this->instanceID));
 		}elseif($mode == 'manual') {
@@ -195,7 +195,7 @@ $sequenceMap = [
 $seq = [];
 $l_seq = [];
 
-print_r($scheme);
+$this->debug($scheme);
 
 foreach($scheme as $key=>$s){
 
@@ -229,8 +229,8 @@ foreach($scheme as $key=>$s){
 
 }
 
-print_r($seq);
-print_r($myPics);
+$this->debug($seq);
+$this->debug($myPics);
 
 $audio = [];
 $total = count($myPics);
@@ -306,7 +306,7 @@ $this->debug($myPics);
 $all_commands = [];
 
 foreach($myPics as $i) {
-	// print_r($i);
+	// $this->debug($i);
 	$w = $i->width;
 	$h = $i->height;
 	$url = $i->url;
@@ -350,7 +350,6 @@ foreach($myPics as $i) {
 }
 
 $cmd = trim(join(' & ', $all_commands));
-//mail('james@giantstepsdigital.co.uk','cmd',$cmd,'From: dev2@movement.co.uk');
 shell_exec($cmd);
 
 join_videos($myPics,$this->instanceID);
