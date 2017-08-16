@@ -21,6 +21,6 @@
 		<button class="cta-orange"><a href="#random-pics" id="random-pics">do another random</a></button>
 	</div>
 	<div class="row" style="height: 16vh; padding-bottom: 10vh;">
-		<button class="cta-orange"><a href="#top-pics" id="top-pics">top pics only</a></button>
+		<button class="cta-orange"><a href="<?php echo $popular_link; ?>" id="top-pics">top pics only</a></button>
 	</div>
 </div>
