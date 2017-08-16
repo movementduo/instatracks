@@ -19,6 +19,7 @@
 			}
 
 			$this->tpl->set('video',$this->video);
+			$this->tpl->set('link','/videotwo');
 
 			session_destroy();
 		}
