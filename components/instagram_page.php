@@ -12,7 +12,7 @@
 			$instagram = new Instagram(array(
 			  'apiKey'      => INSTAGRAM_KEY,
 			  'apiSecret'   => INSTAGRAM_SECRET,
-			  'apiCallback' => WEB_ROOT.'instagram'
+			  'apiCallback' => WEB_ROOT.'instagram'.(isset($this->args[1])?'/'.$this->args[1]:''),
 			));
 
 			if(array_key_exists('code',$_REQUEST)) {
