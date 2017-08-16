@@ -2,7 +2,7 @@
 	<div class="back" id="video-two.html"><span>< BACK</span></div>
 	<div class="user" style="height: 25vh;">
 		<figure class="profile-pic"><img src="assets/img/b.jpg" width="100%" height="100%" /></figure>
-		<h2>@Username</h2>
+		<h2><?php echo $username; ?></h2>
 		<div class="row">
 			<button class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 			<button class="cta-green cta-small"><a href="go-pics" id="go-pics">Go</a></button>
