@@ -2,6 +2,9 @@
 	<div class="back" id="video-two.html"><span>< BACK</span></div>
 	<div class="user" style="height: 25vh;">
 		<figure class="profile-pic"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
+		<h2><?php echo $user['id']; ?></h2>
+		<h2><?php echo $user['sessionId']; ?></h2>
+		<h2><?php echo $user['lang']; ?></h2>
 		<h2><?php echo $user['username']; ?></h2>
 		<div class="row">
 			<button class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
