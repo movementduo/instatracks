@@ -88,8 +88,6 @@ class Instatracks {
 
 	function createImageObject($type,$image,$text) {
 
-		$metadata = unserialize($image['metadata']);
-
 		return (object) [
 			"type"		=> $type,
 			"text"		=> $text,
@@ -99,8 +97,8 @@ class Instatracks {
 			"lyrics_id"	=> '',
 			"lyrics"	=> '',
 			"lyrics2"	=> '',
-			"width"		=> $metadata[1],
-			"height"	=> $metadata[2],
+			"width"		=> $image['width'],
+			"height"	=> $iamge['height'],
 		];
 	}
 

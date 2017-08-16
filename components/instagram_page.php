@@ -50,8 +50,8 @@
 							$media->id,
 							$media->images->standard_resolution->url,
 							$media->likes->count,
-							$width = $media->images->standard_resolution->width,
-							$height = $media->images->standard_resolution->height,
+							$media->images->standard_resolution->width,
+							$media->images->standard_resolution->height,
 						));
 
 					}
