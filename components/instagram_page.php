@@ -37,7 +37,7 @@
 					$this->is404();
 				}
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode));
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, username, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, :x5, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode,$username));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
