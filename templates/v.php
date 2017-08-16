@@ -9,7 +9,7 @@
 		<button class="cta-orange"><a href="#email-video" class="open-overlay" id="email-video-">Email video</a></button>
 	</div>
 	<div class="row" style="height: 20%; padding-bottom:7%">
-		<button class="cta-orange"><a href="#new-video" class="open-overlay" id="new-video-">Make a new video</a></button>
+		<button class="cta-orange"><a href="/videotwo" class="open-overlay" id="new-video-">Make a new video</a></button>
 	</div>
 	<!-- Andriod -->
 	<!-- <div class="row" style="height: calc((100% - 100vw) / 2);">

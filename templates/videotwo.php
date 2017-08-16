@@ -10,17 +10,17 @@
 	</div>
 </div>
 <div id="new-video-overlay">
-	<div class="back" id="new-video"><span>< BACK</span></div>
+	<div class="back" id="new-video"><span>&lt; BACK</span></div>
 	<div class="row first" style="height: 52vh;">
 		<p>Pick your type of selection</p>
 	</div>
 	<div class="row" style="height: 16vh;">
-		<button class="cta-green"><a href="<?php echo $link2; ?>" id="select-pics">Select from pics</a></button>
+		<button class="cta-green"><a href="<? echo $manual_link; ?>" id="select-pics">Select from pics</a></button>
 	</div>
 	<div class="row" style="height: 16vh; padding-bottom: 5vh">
-		<button class="cta-orange"><a href="#random-pics" id="random-pics">do another random</a></button>
+		<button class="cta-orange"><a href="<? echo $random_link; ?>" id="random-pics">do another random</a></button>
 	</div>
 	<div class="row" style="height: 16vh; padding-bottom: 10vh;">
-		<button class="cta-orange"><a href="#top-pics" id="top-pics">top pics only</a></button>
+		<button class="cta-orange"><a href="<?php echo $popular_link; ?>" id="top-pics">top pics only</a></button>
 	</div>
 </div>

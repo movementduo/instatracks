@@ -88,24 +88,33 @@ class Instatracks {
 
 	function createImageObject($type,$image,$text) {
 
-		$metadata = unserialize($image['metadata']);
-
 		return (object) [
 			"type"		=> $type,
 			"text"		=> $text,
 			"id"		=> $image['id'],
 			"url"		=> $image['cdnURL'],
-			"likes"		=> $metadata[0],
+			"likes"		=> $image['likes'],
 			"lyrics_id"	=> '',
 			"lyrics"	=> '',
 			"lyrics2"	=> '',
-			"width"		=> $metadata[1],
-			"height"	=> $metadata[2],
+			"width"		=> $image['width'],
+			"height"	=> $image['height'],
 		];
 	}
 
 	function setImages() {
-		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+	
+		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()[0]['sessionMode'];
+
+		print_r('what is the mode: ');
+		print_r($mode);
+		if($mode == 'popular') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 6",array($this->instanceID));
+		}elseif($mode == 'manual') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 AND status = 'selected' ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		} else {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		}
 		if($imagesQ->rowCount()) {
 			$this->images = $imagesQ->fetchAssoc();
 		}

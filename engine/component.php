@@ -24,4 +24,10 @@
 			header("Location: {$url}");
 			exit;
 		}
+		
+		function is404() {
+			header("HTTP/1.1 404 Not Found");
+			echo '<h1>Not found</h1>';
+			exit;
+		}
 	}

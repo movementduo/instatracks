@@ -12,13 +12,16 @@
 				$videoQ = $this->db->executeSql("SELECT * FROM instances WHERE instanceId = :x1 AND status = 'complete' LIMIT 1",array($this->args[1]));
 				$this->video = $videoQ->fetchAssoc()[0];
 			}
+
 			
 			if(!$this->video) {
 				die('error');
 			}
 
 			$this->tpl->set('video',$this->video);
+			$this->tpl->set('link','/videotwo');
 
+			session_destroy();
 		}
 
 	}
