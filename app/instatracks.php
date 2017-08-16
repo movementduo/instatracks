@@ -106,7 +106,7 @@ class Instatracks {
 
 	function setImages() {
 	
-		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()['sessionMode'];
+		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()[0]['sessionMode'];
 
 		print_r('what is the mode: ');
 		print_r($mode);
