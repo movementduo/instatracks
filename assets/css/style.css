@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: Fanta-Regular;
   src: url(../fonts/Fanta-Regular.otf); }
@@ -239,7 +238,7 @@ input[type="checkbox"][id^="img-"] {
 label {
   border: 1px solid #fff;
   position: relative;
-  margin: 10px;
+  margin: 5px;
   cursor: pointer; }
 
 label:before {
@@ -268,7 +267,6 @@ label img {
   border-width: 3px; }
 
 :checked + label:before {
-  content: "✓";
   background-color: grey;
   transform: scale(1);
   z-index: 2; }

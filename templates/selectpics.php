@@ -39,3 +39,10 @@
 	</form>
 
 </div>
+<script>
+	$('#reset-pics').on('click', uncheckAll)
+
+	function uncheckAll() {
+	  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
+	}
+</script>
