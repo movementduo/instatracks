@@ -227,18 +227,34 @@ button.cta-small {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 99; }
+  z-index: 99;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw; }
 
 #profile_picture {
   height: 10vh; }
+
+#cta-submit {
+  position: fixed;
+  top: 15vh;
+  left: 50vw;
+  z-index: 100; }
+
+#cta-reset {
+  position: fixed;
+  top: 15vh;
+  left: 10vw;
+  z-index: 100; }
 
 input[type="checkbox"][id^="img-"] {
   display: none; }
 
 label {
+  width: 32vw;
+  height: 32vw;
+  margin-bottom: 1vw;
   border: 1px solid #fff;
   position: relative;
-  margin: 5px;
   cursor: pointer; }
 
 label:before {
@@ -263,13 +279,8 @@ label img {
   transform-origin: 50% 50%; }
 
 :checked + label {
-  border-color: #FE6C00;
+  border-color: #f7941e;
   border-width: 3px; }
-
-:checked + label:before {
-  background-color: grey;
-  transform: scale(1);
-  z-index: 2; }
 
 :checked + label img {
   transform: scale(0.9);

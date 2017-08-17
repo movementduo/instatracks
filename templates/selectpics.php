@@ -3,10 +3,6 @@
 	<div id="manual-header">
 		<figure id="profile_picture"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
 		<h2><?php echo $user['username'];?></h2>
-		<div class="row">
-			<button class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
-			<!-- <button class="cta-green cta-small"><a href="go-pics" id="go-pics">Go</a></button> -->
-		</div>
 	</div>
 	<form id="manual-form" method="post" action="/somewhere">
 		<div id="popular-posts">
@@ -34,12 +30,28 @@
 					</div>
 				<? } ?>
 			</div>
-			<button class="cta-green cta-small"><input type="submit" id="submit" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" id="submit" value="GO"></button>
+			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>
 
 </div>
 <script>
+
+function check_selected() {
+	  var check = document.getElementsByName("url");
+
+        var checkboxesChecked = [];
+        // loop over them all
+        for (var i=0; i<check.length; i++) {
+         // And stick the checked ones onto an array...
+         if (check[i].checked) {
+            checkboxesChecked.push(check[i].getElementById());
+         }
+        }
+        console.log(checkboxesChecked);
+	}
+
 	$('#reset-pics').on('click', uncheckAll)
 
 	function uncheckAll() {
