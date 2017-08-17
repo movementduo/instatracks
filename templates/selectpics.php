@@ -30,7 +30,7 @@
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" id="" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input onclick="check_selected()" value="GO"></button>
 			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>
@@ -40,9 +40,9 @@
 
 	$( document ).ready(function() {
 
-		var l = $("input[name='url']:checked").length;
-
 		function check_selected() {
+
+			var l = $("input[name='url']:checked").length;
 
 			if(l<4) {
 				console.log('Select more pictures');
@@ -62,17 +62,19 @@
 
 		}
 
-		if(l > 6) {
-			this.checked = false;
-		} else if(l < 4) {
-		  $('#cta-submit.cta-green').css('opacity', '0.3');
-		} else {
-		  $('#cta-submit.cta-green').css('opacity', '1');
-		}
+		$('input.checkbox').on('change', function(evt) {
 
-		if($("input[name='url']:checked").length > 6) {
-	    this.checked = false;
-	  }
+			var l = $("input[name='url']:checked").length;
+
+			if(l > 6) {
+				this.checked = false;
+			} else if(l < 4) {
+			  $('#cta-submit.cta-green').css('opacity', '0.3');
+			} else {
+			  $('#cta-submit.cta-green').css('opacity', '1');
+			}
+
+	  });
 
 	  function uncheckAll() {
 		  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
