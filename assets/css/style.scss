@@ -225,15 +225,23 @@ button.cta-small {
 	padding-top: 10px;
 }
 
-.square-grid {
-	width: calc(100% - 10px);
-	height: 100vw;
+#popular-posts {
+	margin-top: 30vh;
 }
 
-.user {
+#popular-posts.square-grid {
+	width: 100%;
+	height: 67vw;
+}
+
+#manual-header {
 	background: $green;
+	height: 25vh;
+	position: fixed;
+	top: 0;
+	width: 100%;
 }
 
-@media (min-width: 600px) {
-
+#profile_picture {
+	height: 10vh;
 }

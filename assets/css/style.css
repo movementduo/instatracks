@@ -217,11 +217,21 @@ button.cta-small {
   margin: 0 auto;
   padding-top: 10px; }
 
-.square-grid {
-  width: calc(100% - 10px);
-  height: 100vw; }
+#popular-posts {
+  margin-top: 30vh; }
 
-.user {
-  background: #99bc1f; }
+#popular-posts.square-grid {
+  width: 100%;
+  height: 67vw; }
+
+#manual-header {
+  background: #99bc1f;
+  height: 25vh;
+  position: fixed;
+  top: 0;
+  width: 100%; }
+
+#profile_picture {
+  height: 10vh; }
 
 /*# sourceMappingURL=style.css.map */
