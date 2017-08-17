@@ -14,7 +14,7 @@
 			<div class="square-grid">
 				<?php foreach($popular as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input class="checkbox" type="checkbox" name="url" value=$image>
+						<input id="img-"+$image['id'] class="checkbox" type="checkbox" name="url" value=$image>
 						<label>
 							<figure style="border: 1px solid black; height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
 						</label>
@@ -27,7 +27,7 @@
 			<div class="square-grid">
 				<?php foreach($recent as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input class="checkbox" type="checkbox" name="url" value=$image>
+						<input id="img-"+$image['id'] class="checkbox" type="checkbox" name="url" value=$image>
 						<label>
 							<figure style="height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
 						</label>
