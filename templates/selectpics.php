@@ -8,15 +8,15 @@
 			<!-- <button class="cta-green cta-small"><a href="go-pics" id="go-pics">Go</a></button> -->
 		</div>
 	</div>
-	<form id="manual-form" method="post" action="">
+	<form id="manual-form" method="post" action="/somewhere">
 		<div id="popular-posts">
 			<h3>Top posts</h3>
 			<div class="square-grid">
 				<?php foreach($popular as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="img-"+$image['id'] class="checkbox" type="checkbox" name="url" value=$image>
-						<label>
-							<figure style="border: 1px solid black; height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
+						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
+							<img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
 				<? } ?>
@@ -27,14 +27,14 @@
 			<div class="square-grid">
 				<?php foreach($recent as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="img-"+$image['id'] class="checkbox" type="checkbox" name="url" value=$image>
-						<label>
-							<figure style="height: 33.33vw;"><img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" /></figure>
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
+						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
+							<img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
 				<? } ?>
 			</div>
-			<button class="cta-green cta-small"><input type="button" id="submit" onclick="check_selected()" value="GO"></button>
+			<button class="cta-green cta-small"><input type="submit" id="submit" value="GO"></button>
 		</div>
 	</form>
 
