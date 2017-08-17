@@ -52,10 +52,10 @@
 
 	if($("input[name='url']:checked").length < 4) {
 	  $('#cta-submit.button.cta-green').css('opacity', '0.3');
-	  $('#cta-submit.button.cta-green').attr('disabled','disabled');
+	  $('#cta-submit.button.cta-green').prop('disabled','true');
 	} else {
 	  $('#cta-submit.button.cta-green').css('opacity', '1');
-	  $('#cta-submit.button.cta-green').removeAttr('disabled');
+	  $('#cta-submit.button.cta-green').prop('disabled', 'false');
 	}
 
 	if($("input[name='url']:checked").length > 6) {
