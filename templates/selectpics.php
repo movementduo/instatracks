@@ -30,7 +30,7 @@
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input onclick="check_selected()" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" value="GO"></button>
 			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>

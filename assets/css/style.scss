@@ -241,6 +241,11 @@ button.cta-small {
 	padding-right: 0.5vw;
 }
 
+#manual-form {
+	padding-left: 0.5vw;
+	padding-right: 0.5vw;
+}
+
 #profile_picture {
 	height: 10vh;
 }
@@ -250,6 +255,7 @@ button.cta-small {
 	top: 15vh;
 	left: 50vw;
 	z-index: 100;
+	opacity: 0.3;
 }
 
 #cta-reset {

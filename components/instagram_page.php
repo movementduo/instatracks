@@ -44,10 +44,11 @@
 
 				foreach ($result->data as $media) {
 					if ($media->type == 'image') {
-						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6)",array(
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, thumbnailURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6, :x7)",array(
 							$instanceId,
 							$media->id,
 							$media->images->standard_resolution->url,
+							$media->images->thumbnail->url,
 							$media->likes->count,
 							$media->images->standard_resolution->width,
 							$media->images->standard_resolution->height,
