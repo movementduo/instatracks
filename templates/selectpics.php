@@ -38,23 +38,34 @@
 </div>
 <script>
 
-function check_selected() {
+	function check_selected() {
 	  var check = document.getElementsByName("url");
 
-        var checkboxesChecked = [];
-        // loop over them all
-        for (var i=0; i<check.length; i++) {
-         // And stick the checked ones onto an array...
-         if (check[i].checked) {
-            checkboxesChecked.push(check[i].getElementById());
-         }
-        }
-        console.log(checkboxesChecked);
+	    var checkboxesChecked = [];
+	    for (var i=0; i<check.length; i++) {
+	     if (check[i].checked) {
+	        checkboxesChecked.push(check[i].id);
+	     }
+	    }
+	    console.log(checkboxesChecked);
+	}
+
+	if($("input[name='url']:checked").length < 4) {
+	  $('#cta-submit.button.cta-green').css('opacity', '0.3');
+	  $('#cta-submit.button.cta-green').attr('disabled','disabled');
+	} else {
+	  $('#cta-submit.button.cta-green').css('opacity', '1');
+	  $('#cta-submit.button.cta-green').removeAttr('disabled');
+	}
+
+	if($("input[name='url']:checked").length > 6) {
+    this.checked = false;
+  }
+
+  function uncheckAll() {
+	  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
 	}
 
 	$('#reset-pics').on('click', uncheckAll)
 
-	function uncheckAll() {
-	  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
-	}
 </script>
