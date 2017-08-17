@@ -12,7 +12,7 @@
 					<div class="col-xs-4" style="padding: 0;">
 						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
-							<img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
+							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
 				<? } ?>
@@ -25,7 +25,7 @@
 					<div class="col-xs-4" style="padding: 0;">
 						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
-							<img src="<?php echo $image['cdnURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
+							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
 				<? } ?>
