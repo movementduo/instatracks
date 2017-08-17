@@ -30,7 +30,7 @@
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" id="submit" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" id="" value="GO"></button>
 			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>
@@ -38,34 +38,48 @@
 </div>
 <script>
 
-	function check_selected() {
-	  var check = document.getElementsByName("url");
+	$( document ).ready(function() {
 
-	    var checkboxesChecked = [];
-	    for (var i=0; i<check.length; i++) {
-	     if (check[i].checked) {
-	        checkboxesChecked.push(check[i].id);
-	     }
-	    }
-	    console.log(checkboxesChecked);
-	}
+		var l = $("input[name='url']:checked").length;
 
-	if($("input[name='url']:checked").length < 4) {
-	  $('#cta-submit.button.cta-green').css('opacity', '0.3');
-	  $('#cta-submit.button.cta-green').prop('disabled','true');
-	} else {
-	  $('#cta-submit.button.cta-green').css('opacity', '1');
-	  $('#cta-submit.button.cta-green').prop('disabled', 'false');
-	}
+		function check_selected() {
 
-	if($("input[name='url']:checked").length > 6) {
-    this.checked = false;
-  }
+			if(l<4) {
+				console.log('Select more pictures');
+			} else {
 
-  function uncheckAll() {
-	  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
-	}
+		  	var check = document.getElementsByName("url");
 
-	$('#reset-pics').on('click', uncheckAll)
+		    var checkboxesChecked = [];
+		    for (var i=0; i<check.length; i++) {
+		     if (check[i].checked) {
+		        checkboxesChecked.push(check[i].id);
+		     }
+		    }
+		    console.log(checkboxesChecked);
+				// document.getElementById("manual-form").submit();
+			}
+
+		}
+
+		if(l > 6) {
+			this.checked = false;
+		} else if(l < 4) {
+		  $('#cta-submit.cta-green').css('opacity', '0.3');
+		} else {
+		  $('#cta-submit.cta-green').css('opacity', '1');
+		}
+
+		if($("input[name='url']:checked").length > 6) {
+	    this.checked = false;
+	  }
+
+	  function uncheckAll() {
+		  $("input[type='checkbox'][id^='img-']:checked").prop("checked", false)
+		}
+
+		$('#reset-pics').on('click', uncheckAll);
+
+	});
 
 </script>
