@@ -69,9 +69,11 @@ completed: send object w/ share url
 					$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE instanceId = :x1 AND id = :x2",[$slideId,$this->instanceId]);
 				}
 				shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$this->instanceId.'" | at now');
-				return 'true';				
+				echo 'true';
+				exit;
 			}
-			return false;
+			echo 'false';
+			exit;
 		}
 	
 	}
