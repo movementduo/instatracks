@@ -59,8 +59,19 @@ completed: send object w/ share url
 
 		function select() {
 		
-			mail('james@jamesbunker.com','vars',var_export($_REQUEST,true),'From: dev2@movement.co.uk');
-		
+			if(array_key_exists('instanceId',$_SESSION)) {
+				$this->instanceId = $_SESSION['instanceId'];
+			}
+
+			if(array_key_exists('url',$_GET)) {
+			
+				foreach($_GET['url'] as $slideId) {
+					$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE instanceId = :x1 AND id = :x2",[$slideId,$this->instanceId]);
+				}
+				shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$this->instanceId.'" | at now');
+				return 'true';				
+			}
+			return false;
 		}
 	
 	}
