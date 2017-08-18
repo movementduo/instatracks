@@ -43,9 +43,9 @@
 		$('#manual-form').submit(function(){
 			
 			$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
-alert(resp);
-
-				// if response == 'groovy', go to /loading'
+				if(resp == 'true') {
+					window.location.href = '/loading';
+				}
 			});
 			
 			return false;
