@@ -42,7 +42,9 @@
 	
 		$('#manual-form').submit(function(){
 			
-			alert('1' + $('#manual-form').serializeArray());
+			$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
+				// if response == 'groovy', go to /loading'
+			});
 			
 			return false;
 		});

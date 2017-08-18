@@ -15,6 +15,9 @@
 					case 'status':
 						return $this->status();
 						break;
+					case 'select':
+						return $this->select();
+						break;
 				}
 			} else {
 				die('No access!');
@@ -53,5 +56,11 @@ completed: send object w/ share url
 			}
 		}
 
+
+		function select() {
+		
+			mail('james@jamesbunker.com','vars',var_export($_REQUEST,true),'From: dev2@movement.co.uk');
+		
+		}
 	
 	}
