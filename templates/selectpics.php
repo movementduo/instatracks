@@ -10,7 +10,7 @@
 			<div class="square-grid">
 				<?php foreach($popular as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value="<?php echo $image['id']; ?>">
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
@@ -23,14 +23,14 @@
 			<div class="square-grid">
 				<?php foreach($recent as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value=$image>
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url" value="<?php echo $image['id']; ?>">
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" type="submit" value="GO"></button>
 			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>
@@ -39,6 +39,13 @@
 <script>
 
 	$( document ).ready(function() {
+	
+		$('#manual-form').submit(function(){
+			
+			alert($('#manual-form').serializeArray());
+			
+			return false;
+		});
 
 		function check_selected() {
 
@@ -59,6 +66,8 @@
 		    console.log(checkboxesChecked);
 				// document.getElementById("manual-form").submit();
 			}
+
+			alert($('#manual-form').serializeArray());
 
 		}
 
