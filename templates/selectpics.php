@@ -4,7 +4,7 @@
 		<figure id="profile_picture"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
 		<h2><?php echo $user['username'];?></h2>
 	</div>
-	<form id="manual-form" method="post" action="/somewhere">
+	<form id="manual-form" method="post" action="/select">
 		<div id="popular-posts">
 			<h3>Top posts</h3>
 			<div class="square-grid">
@@ -42,7 +42,7 @@
 	
 		$('#manual-form').submit(function(){
 			
-			alert($('#manual-form').serializeArray());
+			alert('1' + $('#manual-form').serializeArray());
 			
 			return false;
 		});
@@ -67,7 +67,7 @@
 				// document.getElementById("manual-form").submit();
 			}
 
-			alert($('#manual-form').serializeArray());
+			alert('2' + $('#manual-form').serializeArray());
 
 		}
 
