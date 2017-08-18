@@ -65,8 +65,8 @@ completed: send object w/ share url
 
 			if(array_key_exists('url',$_GET)) {
 			
-				foreach($_GET['url'] as $slideId) {
-					$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE instanceId = :x1 AND id = :x2",[$slideId,$this->instanceId]);
+				foreach($_GET['url'] as $slideId => $selected) {
+					$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1 AND instanceID = :x2",[$slideId,$this->instanceId]);
 				}
 				shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$this->instanceId.'" | at now');
 				echo 'true';
