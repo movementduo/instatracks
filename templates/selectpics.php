@@ -62,6 +62,17 @@
 
 		// }
 
+		$('#manual-form').submit(function(){
+	  	
+	  	$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
+	  		if(resp == 'true') {
+	  			window.location.href = '/loading';
+	  		}
+	  	});
+	  	
+	  	return false;
+	  });
+
 		$('input.checkbox').on('change', function(evt) {
 
 			var image_selected = $("input[value='1']:checked").length;
@@ -78,16 +89,6 @@
 
 			  $('#cta-submit.cta-green').css('opacity', '1');
 
-			  $('#manual-form').submit(function(){
-			  	
-			  	$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
-			  		if(resp == 'true') {
-			  			window.location.href = '/loading';
-			  		}
-			  	});
-			  	
-			  	return false;
-			  });
 			}
 
 	  });
