@@ -1,4 +1,4 @@
-<div id="video-two" style="height: 100%;">
+<div id="video-two" style="height: 100%; overflow-y: hidden;">
 	<div class="row first" style="height: 60%;">
 		<p>Video sent! <br /> Check your inbox to view and share.</p>
 	</div>
