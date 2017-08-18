@@ -10,7 +10,7 @@
 			<div class="square-grid">
 				<?php foreach($popular as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="<?php echo $image['id']; ?>">
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
@@ -23,7 +23,7 @@
 			<div class="square-grid">
 				<?php foreach($recent as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="<?php echo $image['id']; ?>">
+						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
 						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
@@ -51,13 +51,13 @@
 
 		function check_selected() {
 
-			var l = $("input[name='url']:checked").length;
+			var l = $(":checkbox").is(':checked').length;
 
 			if(l<4) {
 				console.log('Select more pictures');
 			} else {
 
-		  	var check = document.getElementsByName("url");
+		  	var check = $(":checkbox");
 
 		    var checkboxesChecked = [];
 		    for (var i=0; i<check.length; i++) {
@@ -69,13 +69,13 @@
 				// document.getElementById("manual-form").submit();
 			}
 
-			alert('2' + $('#manual-form').serializeArray());
+
 
 		}
 
 		$('input.checkbox').on('change', function(evt) {
 
-			var l = $("input[name='url']:checked").length;
+			var l = $(":checkbox").is(':checked').length;
 
 			if(l > 6) {
 				this.checked = false;
