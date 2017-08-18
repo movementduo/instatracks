@@ -1,4 +1,4 @@
-<div id="select-pics">
+<div id="manual-select">
 	<div class="back" id="video-two.html"><span>< BACK</span></div>
 	<div id="manual-header">
 		<figure id="profile_picture"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
@@ -64,7 +64,7 @@
 
 		$('input.checkbox').on('change', function(evt) {
 
-			var image_selected = $("input").is(':checked').length;
+			var image_selected = $("input[value='1']:checked").length;
 
 			if(image_selected > 6) {
 				this.checked = false;
