@@ -30,7 +30,7 @@
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input type="button" onclick="check_selected()" type="submit" value="GO"></button>
+			<button id="cta-submit" class="cta-green cta-small"><input type="button" type="submit" value="GO"></button>
 			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
 	</form>
@@ -39,52 +39,55 @@
 <script>
 
 	$( document ).ready(function() {
-	
-		$('#manual-form').submit(function(){
-			
-			$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
-				if(resp == 'true') {
-					window.location.href = '/loading';
-				}
-			});
-			
-			return false;
-		});
 
-		function check_selected() {
+		// function check_selected() {
 
-			var l = $(":checkbox").is(':checked').length;
+		// 	var l = $(":checkbox").is(':checked').length;
 
-			if(l<4) {
-				console.log('Select more pictures');
-			} else {
+		// 	if(l<4) {
+		// 		console.log('Select more pictures');
+		// 	} else {
 
-		  	var check = $(":checkbox");
+		//   	var check = $(":checkbox");
 
-		    var checkboxesChecked = [];
-		    for (var i=0; i<check.length; i++) {
-		     if (check[i].checked) {
-		        checkboxesChecked.push(check[i].id);
-		     }
-		    }
-		    console.log(checkboxesChecked);
-				// document.getElementById("manual-form").submit();
-			}
+		//     var checkboxesChecked = [];
+		//     for (var i=0; i<check.length; i++) {
+		//      if (check[i].checked) {
+		//         checkboxesChecked.push(check[i].id);
+		//      }
+		//     }
+		//     console.log(checkboxesChecked);
+		// 		// document.getElementById("manual-form").submit();
+		// 	}
 
-
-
-		}
+		// }
 
 		$('input.checkbox').on('change', function(evt) {
 
-			var l = $(":checkbox").is(':checked').length;
+			var image_selected = $("input").is(':checked').length;
 
-			if(l > 6) {
+			if(image_selected > 6) {
 				this.checked = false;
-			} else if(l < 4) {
+			} 
+
+			if(image_selected < 4) {
+
 			  $('#cta-submit.cta-green').css('opacity', '0.3');
+
 			} else {
+
 			  $('#cta-submit.cta-green').css('opacity', '1');
+
+			  $('#manual-form').submit(function(){
+			  	
+			  	$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
+			  		if(resp == 'true') {
+			  			window.location.href = '/loading';
+			  		}
+			  	});
+			  	
+			  	return false;
+			  });
 			}
 
 	  });
