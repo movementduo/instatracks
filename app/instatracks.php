@@ -111,7 +111,7 @@ class Instatracks {
 		if($mode == 'popular') {
 			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 6",array($this->instanceID));
 		}elseif($mode == 'manual') {
-			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 AND status = 'selected' ORDER BY RAND() LIMIT 6",array($this->instanceID));
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 AND status = 'accepted' ORDER BY RAND() LIMIT 6",array($this->instanceID));
 		} else {
 			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
 		}
