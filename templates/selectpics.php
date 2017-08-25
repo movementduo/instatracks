@@ -6,12 +6,12 @@
 	</div>
 	<form id="manual-form" method="post" action="/select">
 		<div id="popular-posts">
-			<p>Top posts</p>
+			<p style="margin-top: 15px; margin-bottom: 5px;">Top posts</p>
 			<div class="square-grid">
-				<?php foreach($popular as $image) { ?>
+				<?php foreach($popular as $key => $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
-						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
+						<input id="<?php echo 'img-'.$image['id'].'-'.$key; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
+						<label for="<?php echo 'img-'.$image['id'].'-'.$key; ?>">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
@@ -19,12 +19,12 @@
 			</div>
 		</div>
 		<div id="recent-posts">
-			<p>Most recent</p>
+			<p style="margin-top: 10px; margin-bottom: 10px;">Most recent</p>
 			<div class="square-grid">
-				<?php foreach($recent as $image) { ?>
+				<?php foreach($recent as $key => $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id']; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
-						<label for="<?php echo 'img-'.$image['id']; ?>" style="height: 33.33vw">
+						<input id="<?php echo 'img-'.$image['id'].'-'.$key; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
+						<label for="<?php echo 'img-'.$image['id'].'-'.$key; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
@@ -83,11 +83,15 @@
 
 			if(image_selected < 4) {
 
-			  $('#cta-submit.cta-green').css('opacity', '0.3');
+			  $('#cta-submit.cta-green input').css('opacity', '0.3');
+			  $('#cta-submit.cta-green ').css('opacity', '0.8');
+			  $('#cta-submit.cta-green').css('background', 'darkgrey');
 
 			} else {
 
-			  $('#cta-submit.cta-green').css('opacity', '1');
+			  $('#cta-submit.cta-green input').css('opacity', '1');
+			  $('#cta-submit.cta-green ').css('opacity', '1');
+			  $('#cta-submit.cta-green').css('background', '#99bc1f');
 
 			}
 

@@ -348,8 +348,12 @@ button.cta-small {
 
 #manual-form {
   text-align: left;
-  padding-left: 0.5vw;
-  padding-right: 0.5vw; }
+  overflow: hidden;
+  margin-right: -1px;
+  margin-top: 10px; }
+
+#manual-form p {
+  margin: 0px 0px 0px 10px; }
 
 #profile_picture {
   height: 100px;
@@ -371,10 +375,8 @@ input[type="checkbox"][id^="img-"] {
   display: none; }
 
 label {
-  width: 32vw;
-  height: 32vw;
-  margin-bottom: 1vw;
-  border: 1px solid #fff;
+  margin: 0px 1px 1px 0px;
+  border: 0px solid #fff;
   position: relative;
   cursor: pointer; }
 
