@@ -4,6 +4,7 @@
 		<figure id="profile_picture"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
 		<h2><?php echo $user['username'];?></h2>
 	</div>
+	<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 	<form id="manual-form" method="post" action="/select">
 		<div id="popular-posts">
 			<p style="margin-top: 15px; margin-bottom: 5px;">Top posts</p>
@@ -32,7 +33,9 @@
 			</div>
 		</div>
 		<button id="cta-submit" class="cta-green cta-small"><input type="button" type="submit" value="GO"></button>
-		<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
+		<div id="manual-error-overlay">
+			<button id="cta-reset" class="cta-green"><a href="" id="">Ok got it</a></button>
+		</div>
 	</form>
 
 </div>
@@ -41,12 +44,16 @@
 	$( document ).ready(function() {
 
 		$('#manual-form').submit(function(){
-	  	
-	  	$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
-	  		if(resp == 'true') {
-	  			window.location.href = '/loading';
-	  		}
-	  	});
+
+			if($('#manual-form').serializeArray().length < 4){
+				$('#manual-error-overlay').css('display', 'block');
+			} else {
+				$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){
+		  		if(resp == 'true') {
+		  			window.location.href = '/loading';
+		  		}
+		  	});
+			}
 	  	
 	  	return false;
 	  });

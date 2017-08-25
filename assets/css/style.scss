@@ -279,6 +279,13 @@ button.cta-small {
 	@include flex-centered;
 }
 
+#manual-error-overlay {
+	display: none;
+	background: white;
+	opacity: 0.5;
+	@include default-overlay;
+}
+
 #received-video-overlay, #email-video-overlay, #new-video-overlay {
 	display: none;
 	background: $orange;
@@ -361,7 +368,7 @@ button.cta-small {
 	z-index: 9;
 }
 
-#manual-form > #cta-reset, #manual-form > #cta-submit {
+#cta-reset, #manual-form > #cta-submit {
 	position: fixed;
 	top: 130px;
 	z-index: 100;
@@ -369,11 +376,16 @@ button.cta-small {
 
 #cta-submit.cta-green {
 	opacity: 0.8;
-	background: 'darkgrey';
+	background: darkgrey;
+	right: calc(50vw - 125px);
 }
 
 #cta-submit.cta-green input {
 	opacity: 0.3;
+}
+
+#cta-reset {
+	left: calc(50vw - 135px);
 }
 
 #manual-form {
@@ -397,14 +409,6 @@ button.cta-small {
 	width: 35%;
 	margin: 0 auto;
 	padding-top: 10px;
-}
-
-#cta-submit {
-	right: calc(50vw - 125px);
-}
-
-#cta-reset {
-	left: calc(50vw - 135px);
 }
 
 //checkboxes
