@@ -1,12 +1,12 @@
 <div id="manual-select">
-	<div class="back" id="video-two.html"><span>< BACK</span></div>
+	<div class="back" id=""><a href="videotwo"><span>< BACK</span></a></div>
 	<div id="manual-header">
 		<figure id="profile_picture"><img src="<?php echo $user['profile_picture']; ?>" width="100%" height="100%" /></figure>
 		<h2><?php echo $user['username'];?></h2>
 	</div>
 	<form id="manual-form" method="post" action="/select">
 		<div id="popular-posts">
-			<h3>Top posts</h3>
+			<p>Top posts</p>
 			<div class="square-grid">
 				<?php foreach($popular as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div id="recent-posts">
-			<h3>Most recent</h3>
+			<p>Most recent</p>
 			<div class="square-grid">
 				<?php foreach($recent as $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
@@ -30,9 +30,9 @@
 					</div>
 				<? } ?>
 			</div>
-			<button id="cta-submit" class="cta-green cta-small"><input type="button" type="submit" value="GO"></button>
-			<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 		</div>
+		<button id="cta-submit" class="cta-green cta-small"><input type="button" type="submit" value="GO"></button>
+		<button id="cta-reset" class="cta-orange cta-small"><a href="#reset-pics" id="reset-pics">Reset</a></button>
 	</form>
 
 </div>
