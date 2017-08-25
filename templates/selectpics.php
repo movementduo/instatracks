@@ -10,8 +10,8 @@
 			<div class="square-grid">
 				<?php foreach($popular as $key => $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id'].'-'.$key; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
-						<label for="<?php echo 'img-'.$image['id'].'-'.$key; ?>">
+						<input id="<?php echo 'img-'.$image['id'].'-popular'; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
+						<label for="<?php echo 'img-'.$image['id'].'-popular'; ?>">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
@@ -23,8 +23,8 @@
 			<div class="square-grid">
 				<?php foreach($recent as $key => $image) { ?>
 					<div class="col-xs-4" style="padding: 0;">
-						<input id="<?php echo 'img-'.$image['id'].'-'.$key; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
-						<label for="<?php echo 'img-'.$image['id'].'-'.$key; ?>" style="height: 33.33vw">
+						<input id="<?php echo 'img-'.$image['id'].'-recent'; ?>" class="checkbox" type="checkbox" name="url[<?php echo $image['id']; ?>]" value="1">
+						<label for="<?php echo 'img-'.$image['id'].'-recent'; ?>" style="height: 33.33vw">
 							<img src="<?php echo $image['thumbnailURL']; ?>" data-id="<?php echo $image['id']; ?>" width="100%" height="100%" />
 						</label>
 					</div>
