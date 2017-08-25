@@ -16,6 +16,8 @@ $orange: #f7941e;
 	display: none;
 }
 
+//Generic
+
 .con {
 	padding-left: 10%;
 	padding-right: 10%;
@@ -57,8 +59,13 @@ $orange: #f7941e;
 // span {
 // 	font-size: 1.3em;
 // }
+
+h2 {
+	color: $blue;
+}
+
 p, ul, li, a {
-	font-size: 1.2em;
+	font-size: 2rem;
 }
 ul {
 	padding-left: 0;
@@ -176,10 +183,47 @@ button.cta-small {
 
 #homepage {
 	background: $orange;
+	position: relative;
 }
 
 #homepage #what-is-this- {
 	@include absolute-bottom;
+}
+
+#intro-message {
+	position: absolute;
+	font-size: 3rem;
+	top: 5vh;
+	width: 85%;
+	left: 7%;
+  -ms-transform: rotate(-10deg); /* IE 9 */
+  -webkit-transform: rotate(-10deg); /* Chrome, Safari, Opera */
+  transform: rotate(-10deg);
+  z-index: 2;
+}
+
+#intro-instagram {
+	position: absolute;
+  width: 50%;
+  top: -58vh;
+  right: 0vh;
+  transform: scaleX(-1);
+  z-index: 1;
+}
+
+#intro-fanta {
+	position: absolute;
+  width: 280px;
+  left: 3vh;
+  top: 39vh;
+  z-index: 2;
+}
+
+#intro-button {
+	position: absolute;
+  width: 80%;
+  top: 70vh;
+  z-index: 3;
 }
 
 /*what-is-this*/
@@ -323,6 +367,15 @@ button.cta-small {
 	z-index: 100;
 }
 
+#cta-submit.cta-green {
+	opacity: 0.8;
+	background: 'darkgrey';
+}
+
+#cta-submit.cta-green input {
+	opacity: 0.3;
+}
+
 #manual-form {
 	text-align: left;
 	overflow: hidden;
@@ -429,5 +482,44 @@ label img {
 		margin-top: 30px;
 	}
 }
+
+	// #homepage {
+	// 	background: red;
+	// }
+	// #intro-message {
+	// 	position: absolute;
+	// 	font-size: 28px;
+	// 	top: 5%;
+	// 	width: 80%;
+	// 	left: 7%;
+	//   -ms-transform: rotate(-10deg); /* IE 9 */
+	//   -webkit-transform: rotate(-10deg); /* Chrome, Safari, Opera */
+	//   transform: rotate(-10deg);
+	//   z-index: 2;
+	// }
+
+	// #intro-instagram {
+	// 	position: absolute;
+	//   width: 150px;
+	//   top: -305px;
+	//   right: 10px;
+	//   transform: scaleX(-1);
+	//   z-index: 1;
+	// }
+
+	// #intro-fanta {
+	// 	position: absolute;
+	//   width: 280px;
+	//   left: 25px;
+	//   top: 215px;
+	//   z-index: 2;
+	// }
+
+	// #intro-button {
+	// 	position: absolute;
+	//   width: 80%;
+	//   top: 420px;
+	//   z-index: 3;
+	// }
 
 // Animations

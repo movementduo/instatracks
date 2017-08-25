@@ -38,8 +38,11 @@
 @media screen and (orientation: landscape) and (max-width: 767px) {
   #landscape-screen {
     display: block; } }
+h2 {
+  color: #000a8b; }
+
 p, ul, li, a {
-  font-size: 1.2em; }
+  font-size: 2rem; }
 
 ul {
   padding-left: 0; }
@@ -137,7 +140,8 @@ button.cta-small {
   padding: 10%; }
 
 #homepage {
-  background: #f7941e; }
+  background: #f7941e;
+  position: relative; }
 
 #homepage #what-is-this- {
   position: absolute;
@@ -145,6 +149,40 @@ button.cta-small {
   bottom: 1em;
   left: 50%;
   transform: translate(-50%, 0); }
+
+#intro-message {
+  position: absolute;
+  font-size: 3rem;
+  top: 5vh;
+  width: 85%;
+  left: 7%;
+  -ms-transform: rotate(-10deg);
+  /* IE 9 */
+  -webkit-transform: rotate(-10deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(-10deg);
+  z-index: 2; }
+
+#intro-instagram {
+  position: absolute;
+  width: 50%;
+  top: -58vh;
+  right: 0vh;
+  transform: scaleX(-1);
+  z-index: 1; }
+
+#intro-fanta {
+  position: absolute;
+  width: 280px;
+  left: 3vh;
+  top: 39vh;
+  z-index: 2; }
+
+#intro-button {
+  position: absolute;
+  width: 80%;
+  top: 70vh;
+  z-index: 3; }
 
 /*what-is-this*/
 #what-is-this-overlay {
@@ -345,6 +383,13 @@ button.cta-small {
   position: fixed;
   top: 130px;
   z-index: 100; }
+
+#cta-submit.cta-green {
+  opacity: 0.8;
+  background: 'darkgrey'; }
+
+#cta-submit.cta-green input {
+  opacity: 0.3; }
 
 #manual-form {
   text-align: left;

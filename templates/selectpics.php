@@ -40,28 +40,6 @@
 
 	$( document ).ready(function() {
 
-		// function check_selected() {
-
-		// 	var l = $(":checkbox").is(':checked').length;
-
-		// 	if(l<4) {
-		// 		console.log('Select more pictures');
-		// 	} else {
-
-		//   	var check = $(":checkbox");
-
-		//     var checkboxesChecked = [];
-		//     for (var i=0; i<check.length; i++) {
-		//      if (check[i].checked) {
-		//         checkboxesChecked.push(check[i].id);
-		//      }
-		//     }
-		//     console.log(checkboxesChecked);
-		// 		// document.getElementById("manual-form").submit();
-		// 	}
-
-		// }
-
 		$('#manual-form').submit(function(){
 	  	
 	  	$.get('/ajax?action=select',$('#manual-form').serializeArray(),function(resp){

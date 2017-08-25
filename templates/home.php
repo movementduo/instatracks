@@ -1,12 +1,13 @@
 <div id="homepage">
-	<h1>Create music video with your insta pics</h1>
-	<figure>
-		<img src=""/>
-	</figure>
-	<div class="cube"></div>
-	<button class="cta-green"><a href="<?php echo $link; ?>" id="instagram-login">Create video</a></button>
+	<p id="intro-message">Create an instant lyrics video from your instagram pics!</p>
+	<img id="intro-instagram" src="assets/img/instagram-icon-with-strings.png"/>
+	<img id="intro-fanta" src="assets/img/FANTAXyou-LOGO.png"/>	
+	<div id="intro-button">
+		<button class="cta-green"><a href="<?php echo $link; ?>" id="instagram-login">Let's do it!</a></button>
+	</div>
 	<a class="open-overlay" id="what-is-this-" href="#">
 		<img src=""/>
+		<img style="width: 30px; height: 30px; margin: 0 auto;" src="assets/img/orange-for-messages.png">
 		<p>Tell me more?</p>
 	</a>
 </div>
