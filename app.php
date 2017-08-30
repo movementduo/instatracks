@@ -23,11 +23,18 @@ use Google\Cloud\Vision\VisionClient;
 $client = new Google_Client();
 $client->useApplicationDefaultCredentials();
 
+use Aws\Polly\PollyClient;
+$polly = new PollyClient([
+	'version' => 'latest',
+	'profile' => AWS_PROFILE,
+	'region' => AWS_REGION
+]);
+
 $i = new Instatracks;
 $i->setInstance($instanceID);
 $i->setLyrics(json_decode(file_get_contents('lyrics/'.APP_LANGUAGE.'.json')));
-$i->setVision(new VisionClient(['projectId' => 'node-instatracks']));
-$i->setPolly(new Aws\Polly\PollyClient(['version' => 'latest', 'region' => 'eu-west-1']));
-$i->setS3(new Aws\S3\S3Client(['version' => 'latest', 'region' => 'eu-west-1']));
+$i->setVision(new VisionClient(['projectId' => GOOGLE_PROJECTID]));
+$i->setPolly($polly);
+$i->setS3(new Aws\S3\S3Client(['version' => 'latest', 'region' => S3_REGION]));
 $i->setDB($db);
 $i->execute();
