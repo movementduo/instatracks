@@ -7,11 +7,65 @@ $orange: #f7941e;
   src: url(../fonts/Fanta-Regular.otf);
 }
 
-span {
-	font-size: 1.3em;
+//Default email over download
+.ios-OS {
+	display: block;
 }
+
+.other-OS {
+	display: none;
+}
+
+//Generic
+
+.con {
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.orange {
+	color: $orange;
+}
+
+#landscape-screen {
+	display: none;
+	width: 100vw;
+	height: 100vh;
+	text-align: center;
+	font-size: 1.5em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	z-index: 99;
+	background: $blue;
+}
+
+#landscape-screen p {
+	position: absolute;
+	width: 80%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+@media screen and (orientation:landscape) and (max-width: 767px) { 
+	#landscape-screen {
+		display: block;
+	}
+}
+
+// span {
+// 	font-size: 1.3em;
+// }
+
+h2 {
+	color: $blue;
+}
+
 p, ul, li, a {
-	font-size: 1.1em;
+	font-size: 2rem;
 }
 ul {
 	padding-left: 0;
@@ -25,6 +79,7 @@ ul {
 	text-transform: uppercase;
 	position: absolute;
 	top: 0;
+	padding: 10%;
 }
 @mixin flex-centered {
 	justify-content: center;
@@ -38,10 +93,12 @@ ul {
 	margin: 0 auto;
 }
 @mixin default-shadow {
-	border: 0;
-  -webkit-box-shadow: 3px 3px 0px 6px $blue;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow:    3px 3px 0px 6px $blue;  /* Firefox 3.5 - 3.6 */
-  box-shadow:         3px 3px 0px 6px $blue;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+	box-shadow: 1px 1px 0px $blue,
+	                2px 2px 0px $blue,
+	                3px 3px 0px $blue,
+	                4px 4px 0px $blue,
+	                5px 5px 0px $blue,
+	                6px 6px 0px $blue;
 }
 @mixin absolute-bottom {
 	position: absolute;
@@ -51,12 +108,12 @@ ul {
 	transform: translate(-50%, 0);
 }
 
-@mixin cta {
-	width: 70%;
-	height: 8vh;
-	color: $blue;
-	font-size: 1.6em;
-}
+// @mixin cta {
+// 	width: 70%;
+// 	height: 8vh;
+// 	color: $blue;
+// 	font-size: 1.6em;
+// }
 
 html, body {
 	margin: 0;
@@ -73,38 +130,100 @@ a {
 	color: inherit;
 }
 
+@mixin cta {
+	height: 50px;
+	width: calc(100% - 20px);
+	position: relative;
+	color: $blue;
+	border: 3px solid $blue;
+	&:after, &:before {
+	  content: '';
+	  background: $blue;
+	  position: absolute;
+	}
+  &:after {
+    width: calc(100% + 6px);
+    height: 10px;
+    left: 2px;
+    bottom: -3px;
+    transform: translatey(100%) skewx(45deg);
+  }
+  &:before {
+    width: 10px;
+    height: calc(100% + 6px);
+    right: -3px;
+    transform: translatex(100%) skewy(45deg);
+    top: 2px;
+  }
+}
+
 button.cta-green {
-	background: $green;
 	@include cta;
-	@include default-shadow;
+	background: $green;
 }
 
 button.cta-orange {
-	background: $orange;
 	@include cta;
-	@include default-shadow;
+	background: $orange;
 }
 
 button.cta-small {
-	width: 30%;
-	height: 5vh;
+	@include cta;
+	width: 120px;
+	height: 40px;
 	font-size: 1.2em;
-	margin: 5px 10px;
 }
 
 /*homepage*/
 
 #homepage {
 	height: 100%;
-	padding: 2em 2em 0.5em 2em;
+	padding: 10%;
 }
 
 #homepage {
 	background: $orange;
+	position: relative;
 }
 
 #homepage #what-is-this- {
 	@include absolute-bottom;
+}
+
+#intro-message {
+	position: absolute;
+	font-size: 3rem;
+	top: 5vh;
+	width: 85%;
+	left: 7%;
+  -ms-transform: rotate(-10deg); /* IE 9 */
+  -webkit-transform: rotate(-10deg); /* Chrome, Safari, Opera */
+  transform: rotate(-10deg);
+  z-index: 2;
+}
+
+#intro-instagram {
+	position: absolute;
+  width: 50%;
+  top: -58vh;
+  right: 0vh;
+  transform: scaleX(-1);
+  z-index: 1;
+}
+
+#intro-fanta {
+	position: absolute;
+  width: 280px;
+  left: 3vh;
+  top: 39vh;
+  z-index: 2;
+}
+
+#intro-button {
+	position: absolute;
+  width: 80%;
+  top: 70vh;
+  z-index: 3;
 }
 
 /*what-is-this*/
@@ -120,7 +239,8 @@ button.cta-small {
 }
 
 .back {
-	position: absolute;
+	z-index: 10;
+	position: fixed;
 	top: 1rem;
 	left: 1rem;
 }
@@ -153,14 +273,20 @@ button.cta-small {
 	width: 100vw;
 	overflow: hidden;
 	display: block;
-	height: 60%;
 }
 
 #video-one .row {
 	@include flex-centered;
 }
 
-#email-video-overlay, #new-video-overlay {
+#manual-error-overlay {
+	display: none;
+	background: white;
+	opacity: 0.5;
+	@include default-overlay;
+}
+
+#received-video-overlay, #email-video-overlay, #new-video-overlay {
 	display: none;
 	background: $orange;
 	@include default-overlay;
@@ -170,6 +296,16 @@ button.cta-small {
 }
 #video-two {
 	background: $orange;
+}
+
+.get-video-CTA {
+	height: 50px;
+	margin-top: 10px;
+}
+
+.new-video-CTA {
+	height: 50px;
+	margin-top: 20px;
 }
 
 // Email
@@ -200,40 +336,194 @@ button.cta-small {
 
 // Select pics
 
-#select-pics {
+#manual-select {
 	color: $blue;
 	background: white;
 }
 
-#select-pics h2 {
+#manual-select h2 {
 	color: white;
 	margin: 0;
 }
 
-#select-pics h3 {
+#manual-select h3 {
 	text-align: left;
 	margin-left: 1rem;
 }
 
-#select-pics figure > img {
+#manual-select figure > img {
 	padding: 5px;
 }
 
-#select-pics figure.profile-pic {
+#popular-posts {
+	margin-top: 190px;
+}
+
+#manual-header {
+	background: $green;
+	height: 150px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9;
+}
+
+#cta-reset, #manual-form > #cta-submit {
+	position: fixed;
+	top: 130px;
+	z-index: 100;
+}
+
+#cta-submit.cta-green {
+	opacity: 0.8;
+	background: darkgrey;
+	right: calc(50vw - 125px);
+}
+
+#cta-submit.cta-green input {
+	opacity: 0.3;
+}
+
+#cta-reset {
+	left: calc(50vw - 135px);
+}
+
+#manual-form {
+	text-align: left;
+	overflow: hidden;
+	margin-right: -1px;
+	margin-top: 10px;
+}
+
+#manual-form p{
+	margin: 0px 0px 0px 10px;
+}
+
+#profile_picture {
+	height: 100px;
+	width: 100px;
+	margin: 0 auto;
+}
+
+#manual-select figure.profile-pic {
 	width: 35%;
 	margin: 0 auto;
 	padding-top: 10px;
 }
 
-.square-grid {
-	width: calc(100% - 10px);
-	height: 100vw;
+//checkboxes
+
+input[type="checkbox"][id^="img-"] {
+  display: none;
 }
 
-.user {
-	background: $green;
+label {
+	margin: 0px 1px 1px 0px;
+  border: 0px solid #fff;
+  position: relative;
+  cursor: pointer;
 }
 
-@media (min-width: 600px) {
-
+label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
 }
+
+label img {
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: $orange;
+  border-width: 3px;
+}
+
+:checked + label img {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}
+
+// Desktop
+@media screen and (min-width: 1025px){
+	#video-player {
+		width: 300px;
+		margin: 0 auto;
+	}
+}
+
+// Ipad
+@media screen and (min-width: 500px){
+	@mixin cta {
+		width: 250px;
+	}
+	button.cta-green, button.cta-orange {
+		@include cta;
+	}
+	#video-player {
+		height: 70%;
+		margin: 0 auto;
+	}
+	.get-video-CTA {
+		margin-top: 30px;
+	}
+
+	.new-video-CTA {
+		margin-top: 30px;
+	}
+}
+
+	// #homepage {
+	// 	background: red;
+	// }
+	// #intro-message {
+	// 	position: absolute;
+	// 	font-size: 28px;
+	// 	top: 5%;
+	// 	width: 80%;
+	// 	left: 7%;
+	//   -ms-transform: rotate(-10deg); /* IE 9 */
+	//   -webkit-transform: rotate(-10deg); /* Chrome, Safari, Opera */
+	//   transform: rotate(-10deg);
+	//   z-index: 2;
+	// }
+
+	// #intro-instagram {
+	// 	position: absolute;
+	//   width: 150px;
+	//   top: -305px;
+	//   right: 10px;
+	//   transform: scaleX(-1);
+	//   z-index: 1;
+	// }
+
+	// #intro-fanta {
+	// 	position: absolute;
+	//   width: 280px;
+	//   left: 25px;
+	//   top: 215px;
+	//   z-index: 2;
+	// }
+
+	// #intro-button {
+	// 	position: absolute;
+	//   width: 80%;
+	//   top: 420px;
+	//   z-index: 3;
+	// }
+
+// Animations

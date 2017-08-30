@@ -37,17 +37,18 @@
 					$this->is404();
 				}
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, username, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, :x5, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode,$username));
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, username, full_name, profile_picture, userid, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, :x5, :x6, :x7, :x8, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode,$username, $data->user->full_name, $data->user->profile_picture, $data->user->id));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
 
 				foreach ($result->data as $media) {
 					if ($media->type == 'image') {
-						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6)",array(
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, thumbnailURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6, :x7)",array(
 							$instanceId,
 							$media->id,
 							$media->images->standard_resolution->url,
+							$media->images->thumbnail->url,
 							$media->likes->count,
 							$media->images->standard_resolution->width,
 							$media->images->standard_resolution->height,
