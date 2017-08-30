@@ -3,3 +3,5 @@ config-local.php
 
 build/
 !build/index.php
+
+assets/css/.sass-cache/

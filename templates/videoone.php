@@ -5,10 +5,13 @@
 		</video>
 	</div>
 	<!-- IOS -->
-	<div class="row" style="height: 20%; padding-top:7%">
+	<div class="ios-OS" style="height: 20%; padding-top:7%">
 		<button class="cta-orange"><a href="#email-video" class="open-overlay" id="email-video-">Email video</a></button>
 	</div>
-	<div class="row" style="height: 20%; padding-bottom:7%">
+		<div class="other-OS" style="height: 20%; padding-top:7%">
+		<button class="cta-orange"><a href="video-demo_v1.1.mp4" class="open-overlay" id="download-video-" download>Download video</a></button>
+	</div>
+	<div class="" style="height: 20%; padding-bottom:7%">
 		<button class="cta-orange"><a href="#new-video" class="open-overlay" id="new-video-">Make a new video</a></button>
 	</div>
 	<!-- Andriod -->
@@ -32,4 +35,4 @@
 </div>
 <div id="new-video-overlay">
 	<div class="back" id="new-video"><span>< BACK</span></div>
-</div>aaa
+</div>

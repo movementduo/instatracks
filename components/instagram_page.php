@@ -12,7 +12,7 @@
 			$instagram = new Instagram(array(
 			  'apiKey'      => INSTAGRAM_KEY,
 			  'apiSecret'   => INSTAGRAM_SECRET,
-			  'apiCallback' => WEB_ROOT.'instagram'
+			  'apiCallback' => WEB_ROOT.'instagram'.(isset($this->args[1])?'/'.$this->args[1]:''),
 			));
 
 			if(array_key_exists('code',$_REQUEST)) {
@@ -22,7 +22,7 @@
 				$_SESSION['oauthToken'] = $_REQUEST['code'];
 
 				// receive OAuth token object
-				$data = $instagram->getOAuthToken($_SESSION['oauthToken']);
+				$data = $instagram->getOAuthToken($_REQUEST['code']);
 				$username = $username = $data->user->username;
 
 				// store user access token
@@ -30,37 +30,45 @@
 
 				// now you have access to all authenticated user methods
 				$result = $instagram->getUserMedia('self',100);
+				
+				$mode = array_key_exists(1,$this->args)?$this->args[1]:'random';
+				
+				if(!in_array($mode,['random','popular','manual'])) {
+					$this->is404();
+				}
 
-				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, status, stampCreate) VALUES (:x1, :x2, :x3, 'random', 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE));
+				$instance = $this->db->executeSql("INSERT INTO instances (sessionId, oauthToken, lang, sessionMode, username, full_name, profile_picture, userid, status, stampCreate) VALUES (:x1, :x2, :x3, :x4, :x5, :x6, :x7, :x8, 'pending', NOW())",array(session_id(),$_SESSION['oauthToken'],APP_LANGUAGE,$mode,$username, $data->user->full_name, $data->user->profile_picture, $data->user->id));
 				$instanceId = $this->db->lastId();
 				
 				$_SESSION['instanceId'] = $instanceId;
 
 				foreach ($result->data as $media) {
 					if ($media->type == 'image') {
-
-						$metadata = array(
-							$media->likes->count,
-							$width = $media->images->standard_resolution->width,
-							$height = $media->images->standard_resolution->height,
-
-						);
-	
-						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, metadata) VALUES (:x1, :x2, :x3, :x4)",array(
+						$instance = $this->db->executeSql("INSERT INTO instanceSlides (instanceID, instagramID, cdnURL, thumbnailURL, likes, width, height) VALUES (:x1, :x2, :x3, :x4, :x5, :x6, :x7)",array(
 							$instanceId,
 							$media->id,
 							$media->images->standard_resolution->url,
-							serialize($metadata)
+							$media->images->thumbnail->url,
+							$media->likes->count,
+							$media->images->standard_resolution->width,
+							$media->images->standard_resolution->height,
 						));
 
 					}
 				
 				}
 				
-				shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
+				if($this->db->executeSql("SELECT COUNT(*) AS total FROM instanceSlides WHERE instanceId = :x1",array($instanceId))->fetchAssoc()[0]['total'] < 4) {
+					die('not enough images');
+				}
 
-				$this->redirect('/loading');
-
+				if(in_array($mode,['popular','random'])) {
+					shell_exec('echo "/usr/bin/php '.APP_ROOT.'app.php '.$instanceId.'" | at now');
+					$this->redirect('/loading');
+				} else {
+					$this->redirect('/selectpics');
+				}
+				
 			} else {
 
 

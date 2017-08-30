@@ -9,14 +9,12 @@ class Instatracks {
 	var $db;
 	var $isVerbose = false;
 	var $polly;
-
 	var $instanceID;
 	
 	function __construct() {
 		if(in_array('-v',$_SERVER['argv'])) {
 			$this->setVerbose();
 		}
-
 	}
 	
 	function setInstance($instanceID) {
@@ -67,7 +65,6 @@ class Instatracks {
 		if($image->logos()){
 			return 'logo';
 		}
-
 	}
 
 	function setDB($db) {
@@ -87,36 +84,43 @@ class Instatracks {
 	}
 
 	function createImageObject($type,$image,$text) {
-
-		$metadata = unserialize($image['metadata']);
-
 		return (object) [
 			"type"		=> $type,
 			"text"		=> $text,
 			"id"		=> $image['id'],
 			"url"		=> $image['cdnURL'],
-			"likes"		=> $metadata[0],
+			"likes"		=> $image['likes'],
 			"lyrics_id"	=> '',
 			"lyrics"	=> '',
 			"lyrics2"	=> '',
-			"width"		=> $metadata[1],
-			"height"	=> $metadata[2],
+			"width"		=> $image['width'],
+			"height"	=> $image['height'],
 		];
 	}
 
 	function setImages() {
-		$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		$mode = $this->db->executeSql("SELECT sessionMode FROM instances WHERE id = :x1 LIMIT 1",[$this->instanceID])->fetchAssoc()[0]['sessionMode'];
+
+		$this->debug('what is the mode: ');
+		$this->debug($mode);
+		if($mode == 'popular') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY likes DESC, RAND() LIMIT 9",array($this->instanceID));
+		}elseif($mode == 'manual') {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 AND status = 'accepted' ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		} else {
+			$imagesQ = $this->db->executeSql("SELECT * FROM instanceSlides WHERE instanceId = :x1 ORDER BY RAND() LIMIT 6",array($this->instanceID));
+		}
 		if($imagesQ->rowCount()) {
 			$this->images = $imagesQ->fetchAssoc();
 		}
 	}
 
 	function execute() {
-/*		if(!$this->instanceExists()) {
-			$this->debug("No instance");
-			$this->destroy();
-		}
-*/		$this->setImages();
+		//if(!$this->instanceExists()) {
+		//	$this->debug("No instance");
+		//	$this->destroy();
+		//}
+		$this->setImages();
 		$this->updateState("analyzing");
 
 		if(count($this->images) < 4) {
@@ -124,240 +128,224 @@ class Instatracks {
 			$this->destroy();
 		}
 
-
-	
-	foreach($this->images as $i) {
-		$allLabels = array();
-		$imageStream = file_get_contents($i['cdnURL']);
-		$this->saveToS3($imageStream,'images',$i['id'].'.jpg');
-		$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION']);
-		$result = $this->vision->annotate($image);
-		$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$i['id']]);
-		$myPics[] = $this->analyseImage($result,$i);
-	}
-
-
-	// SAFE IMAGES
-
-	$this->updateState("lyrics");
-
-$image_count = count($myPics);
-
-$n = array(1, 2, 3, 4, 5, 6);
-shuffle($n);
-
-if($image_count == 4 ) {
-	$rG1 = array($n[0], $n[1], $n[0], $n[1]);
-	$rG2 = array($n[0], $n[0], $n[1], $n[1]);
-	$rG = array($rG1, $rG2);
-}
-
-if($image_count == 5 ) {
-	$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[1]];
-	$rG2 = [$n[0], $n[1], $n[2], $n[1], $n[0]];
-	$rG3 = [$n[0], $n[1], $n[0], $n[1], $n[0]];
-	$rG = array($rG1, $rG2, $rG3);
-}
-
-if($image_count == 6) {
-	//$rG1 = [$n[0], $n[1], $n[0], $n[1], $n[2], $n[2]];
-	//$rG2 = [$n[0], $n[1], $n[2], $n[0], $n[1], $n[2]];
-	//$rG3 = [$n[0], $n[1], $n[2], $n[2], $n[1], $n[0]];
-	$rG4 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
-	$rG = array($rG4);
-}
-
-$scheme = $rG[array_rand($rG)];
-
-$sequenceMap = [
-	"happy" => "A",
-	"angry" => "B",
-	"sad" => "C",
-	"surprised" => "D",
-	"landmark" => "E",
-	"group" => "F",
-	"noun" => "G",
-	"verb" => "H",
-	"logo" => "I",
-	"fanta" => "J",
-	"noEmotion" => "K",
-];
-
-$seq = [];
-$l_seq = [];
-
-print_r($scheme);
-
-foreach($scheme as $key=>$s){
-
-	$image = $myPics[$key];
-	$a = ($s*3)-2;
-	$b = ($s*3)-1;
-	$f = ($s*3);
-
-	if($key == count($scheme)-1){
-		$image->lyrics_id = $f-1;
-		if($f < 10) {
-			$seq[] = $sequenceMap[$image->type].'0'.$f;
-		} else{
-			$seq[] = $sequenceMap[$image->type].$f;
+		foreach($this->images as $i) {
+			$allLabels = array();
+			$imageStream = file_get_contents($i['cdnURL']);
+			$this->saveToS3($imageStream,'images',$i['id'].'.jpg');
+			$image = $this->vision->image($imageStream, ['LABEL_DETECTION','TEXT_DETECTION', 'LOGO_DETECTION','FACE_DETECTION','LANDMARK_DETECTION']);
+			$result = $this->vision->annotate($image);
+			$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$i['id']]);
+			$myPics[] = $this->analyseImage($result,$i);
 		}
-	} else if($key % 2 == 0) {
-		$image->lyrics_id = $a-1;
-		if($a < 10) {
-			$seq[] = $sequenceMap[$image->type].'0'.$a;
-		} else{
-			$seq[] = $sequenceMap[$image->type].$a;
+
+
+		// SAFE IMAGES
+
+		$this->updateState("lyrics");
+		$image_count = count($myPics);
+		$n = array(1, 2, 3, 4, 5, 6);
+		shuffle($n);
+
+		if($image_count == 4 ) {
+			$rG1 = array($n[0], $n[0], $n[1], $n[1]);
+			$rG = array($rG1);
 		}
-	} else {
-		$image->lyrics_id = $b-1;
-		if($b < 10) {
-			$seq[] = $sequenceMap[$image->type].'0'.$b;
-		} else{
-			$seq[] = $sequenceMap[$image->type].$b;
+
+		if($image_count == 5 ) {
+			$rG1 = [$n[0], $n[0], $n[1], $n[1], $n[1]];
+			$rG = array($rG1);
 		}
-	}
 
-}
+		if($image_count == 6) {
+			$rG1 = [$n[0], $n[0], $n[1], $n[1], $n[2], $n[2]];
+			$rG = array($rG1);
+		}
 
-print_r($seq);
-print_r($myPics);
+		$scheme = $rG[array_rand($rG)];
 
-$audio = [];
-$total = count($myPics);
-$c = 0;
- 	
-foreach($myPics as $key => $s){	
-	$type = $s->type;
-	$line = $s->lyrics_id;
-  	$t = $this->lyrics->$type;
-  	if($type == 'landmark' || $type == 'noun' || $type == 'verb' || $type == 'logo') {
-    		$replaced = str_replace('%replace%', $s->text, $t[$line]);
-    		$l = explode('| ', $replaced);
-  	} else {
-    		$l = explode('| ', $t[$line]);
-  	}
-  	$lyrics = implode('',$l);
-  	$s->lyrics = $l[0];
-  	$s->lyrics2 = $l[1];
+		$sequenceMap = [
+			"happy" => "A",
+			"angry" => "B",
+			"sad" => "C",
+			"surprised" => "D",
+			"landmark" => "E",
+			"group" => "F",
+			"noun" => "G",
+			"verb" => "H",
+			"logo" => "I",
+			"fanta" => "J",
+			"noEmotion" => "K",
+		];
 
-	$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
+		$seq = [];
+		$l_seq = [];
+
+		$this->debug($scheme);
+
+		foreach($scheme as $key=>$s){
+
+			$image = $myPics[$key];
+			$a = ($s*3)-2;
+			$b = ($s*3)-1;
+			$f = ($s*3);
+
+			if($key == count($scheme)-1){
+				$image->lyrics_id = $f-1;
+				if($f < 10) {
+					$seq[] = $sequenceMap[$image->type].'0'.$f;
+				} else{
+					$seq[] = $sequenceMap[$image->type].$f;
+				}
+			} else if($key % 2 == 0) {
+				$image->lyrics_id = $a-1;
+				if($a < 10) {
+					$seq[] = $sequenceMap[$image->type].'0'.$a;
+				} else{
+					$seq[] = $sequenceMap[$image->type].$a;
+				}
+			} else {
+				$image->lyrics_id = $b-1;
+				if($b < 10) {
+					$seq[] = $sequenceMap[$image->type].'0'.$b;
+				} else{
+					$seq[] = $sequenceMap[$image->type].$b;
+				}
+			}
+
+		}
+
+		$this->debug($seq);
+		$this->debug($myPics);
+
+		$audio = [];
+		$total = count($myPics);
+		$c = 0;
+	 	
+		foreach($myPics as $key => $s){	
+			$type = $s->type;
+			$line = $s->lyrics_id;
+		  	$t = $this->lyrics->$type;
+		  	if($type == 'landmark' || $type == 'noun' || $type == 'verb' || $type == 'logo') {
+		    		$replaced = str_replace('%replace%', $s->text, $t[$line]);
+		    		$l = explode('| ', $replaced);
+		  	} else {
+		    		$l = explode('| ', $t[$line]);
+		  	}
+		  	$lyrics = implode('',$l);
+		  	$s->lyrics = $l[0];
+		  	$s->lyrics2 = $l[1];
+
+			$this->db->executeSql("UPDATE instanceSlides SET lyrics = :x1 WHERE id = :x2",[$lyrics, $s->id]);
+			
+			$pollySpeech = $this->polly->synthesizeSpeech([
+			  'OutputFormat' => 'mp3', // REQUIRED
+			  'Text' => '<speak><prosody rate="slow">'.$lyrics.'</prosody></speak>', // REQUIRED
+			  'TextType' => 'ssml',
+			  'VoiceId' => 'Joanna', // REQUIRED
+			]);
+
+			$audioStream = $pollySpeech->get('AudioStream')->getContents();
+
+			$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
+
+			if(in_array(substr($seq[$c],0,1),array("E","G","H","I"))) {
+				$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
+			}
+			$c++;
+		}
+
+		$this->debug($myPics);	
+
+		$this->db->executeSql("UPDATE instances SET sequence = :x1 WHERE id = :x2",[implode('',$seq), $this->instanceID]);
 	
-	$pollySpeech = $this->polly->synthesizeSpeech([
-	  'OutputFormat' => 'mp3', // REQUIRED
-	  'Text' => '<speak><prosody rate="slow">'.$lyrics.'</prosody></speak>', // REQUIRED
-	  'TextType' => 'ssml',
-	  'VoiceId' => 'Joanna', // REQUIRED
-	]);
 
-	$audioStream = $pollySpeech->get('AudioStream')->getContents();
+		// next step - get lyrics sorted (api call)
+		$this->updateState('audio');
 
-	$this->saveToS3($audioStream,'audio',$s->id.'.mp3');
+		$getVars = [
+			'salt'		=> $this->instanceID,
+			'pepper'	=> VOCODER_API_SECRET,
+			'sequence'	=> implode('',$seq),
+			'file'		=> $audio,
+		];
 
-	if(in_array(substr($seq[$c],0,1),array("E","G","H","I"))) {
-		$audio[] = S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/'.$s->id.'.mp3';
-	}
-	$c++;
-}
+		$getVar = $this->createVocoderRequest($getVars);
 
-$this->debug($myPics);	
+		$this->debug($getVar);
 
+		$return = trim(file_get_contents(VOCODER_API_LOC.$getVar));
 
-	$this->db->executeSql("UPDATE instances SET sequence = :x1 WHERE id = :x2",[implode('',$seq), $this->instanceID]);
-	
-	
+		if(!$return) {
+			die('no url');
+		}
 
-	// next step - get lyrics sorted (api call)
-	$this->updateState('audio');
+		$audio = file_get_contents($return);
+		$this->saveToS3($audio,'audio/rendered',$this->instanceID.'.wav');
 
-	$getVars = [
-		'salt'		=> $this->instanceID,
-		'pepper'	=> VOCODER_API_SECRET,
-		'sequence'	=> implode('',$seq),
-		'file'		=> $audio,
-	];
+		$this->updateState('video');
 
-	$getVar = $this->createVocoderRequest($getVars);
+		$all_commands = [];
 
-	$this->debug($getVar);
+		foreach($myPics as $i) {
+			// $this->debug($i);
+			$w = $i->width;
+			$h = $i->height;
+			$url = $i->url;
+			$id = $i->id;
+			$l1 = $i->lyrics;
+			$l2 = $i->lyrics2;
 
-	$return = trim(file_get_contents(VOCODER_API_LOC.$getVar));
+			if($w == $h) {
+				$object = new stdClass();
+				$object->background = FFMPEG_ASSETS.'video-bg_003.mp4';
+				$object->textbox = FFMPEG_ASSETS.'orange_textbox.png';
+				$object->image = $url;
+				$object->video = new stdClass();
+				$object->video->id = $id;
+				$object->video->text_top_line= $l1;
+				$object->video->text_bottom_line= $l2;
+				$all_commands[] = square_top($object);
+			}
+			if($w < $h) {
+				$object = new stdClass();
+				$object->background = FFMPEG_ASSETS.'video-bg_005.mp4';
+				$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
+				$object->image = $url;
+				$object->video = new stdClass();
+				$object->video->id = $id;
+				$object->video->text_top_line= $l1;
+				$object->video->text_bottom_line= $l2;
+				$all_commands[] = portrait_top($object);
+			}
+			if($w > $h) {
+				$object = new stdClass();
+				$object->background = FFMPEG_ASSETS.'video-bg_009.mp4';
+				$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
+				$object->image = $url;
+				$object->video = new stdClass();
+				$object->video->id = $id;
+				$object->video->text_top_line= $l1;
+				$object->video->text_bottom_line= $l2;
+				$all_commands[] = landscape_center($object);
+			}
+		}
 
-	if(!$return) {
-		die('no url');
-	}
+		$cmd = trim(join(' & ', $all_commands));
+		shell_exec($cmd);
 
-	$audio = file_get_contents($return);
-	$this->saveToS3($audio,'audio/rendered',$this->instanceID.'.wav');
+		join_videos($myPics,$this->instanceID);
 
-	$this->updateState('video');
+		do {
+			usleep(500);
+		} while(!file_exists(TMP_DIR."addmusic-{$this->instanceID}.mp4"));
 
+		add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
 
+		do {
+			usleep(500);
+		} while(!file_exists(TMP_DIR."finished-{$this->instanceID}.mp4"));
 
-$all_commands = [];
-
-foreach($myPics as $i) {
-	// print_r($i);
-	$w = $i->width;
-	$h = $i->height;
-	$url = $i->url;
-	$id = $i->id;
-	$l1 = $i->lyrics;
-	$l2 = $i->lyrics2;
-
-	if($w == $h) {
-		$object = new stdClass();
-		$object->background = FFMPEG_ASSETS.'video-bg_003.mp4';
-		$object->textbox = FFMPEG_ASSETS.'orange_textbox.png';
-		$object->image = $url;
-		$object->video = new stdClass();
-		$object->video->id = $id;
-		$object->video->text_top_line= $l1;
-		$object->video->text_bottom_line= $l2;
-		$all_commands[] = square_top($object);
-	}
-	if($w < $h) {
-		$object = new stdClass();
-		$object->background = FFMPEG_ASSETS.'video-bg_005.mp4';
-		$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
-		$object->image = $url;
-		$object->video = new stdClass();
-		$object->video->id = $id;
-		$object->video->text_top_line= $l1;
-		$object->video->text_bottom_line= $l2;
-		$all_commands[] = portrait_top($object);
-	}
-	if($w > $h) {
-		$object = new stdClass();
-		$object->background = FFMPEG_ASSETS.'video-bg_009.mp4';
-		$object->textbox = FFMPEG_ASSETS.'blue_textbox.png';
-		$object->image = $url;
-		$object->video = new stdClass();
-		$object->video->id = $id;
-		$object->video->text_top_line= $l1;
-		$object->video->text_bottom_line= $l2;
-		$all_commands[] = landscape_center($object);
-	}
-}
-
-$cmd = trim(join(' & ', $all_commands));
-//mail('james@giantstepsdigital.co.uk','cmd',$cmd,'From: dev2@movement.co.uk');
-shell_exec($cmd);
-
-join_videos($myPics,$this->instanceID);
-
-do {
-	usleep(500);
-} while(!file_exists(TMP_DIR."addmusic-{$this->instanceID}.mp4"));
-
-add_music(S3_WEB_ROOT.'instances/'.$this->instanceID.'/audio/rendered/'.$this->instanceID.'.wav',$this->instanceID);
-
-do {
-	usleep(500);
-} while(!file_exists(TMP_DIR."finished-{$this->instanceID}.mp4"));
-
-
-// move rendered video to s3
+		// move rendered video to s3
 
 		$videoStream = file_get_contents(TMP_DIR."finished-{$this->instanceID}.mp4");
 		$filename = $this->generateFilename();
@@ -376,12 +364,11 @@ do {
 		$this->updateState('complete');
 		$this->db->executeSql("UPDATE instanceSlides SET status = 'accepted' WHERE id = :x1",[$this->instanceID]);
 		$this->db->executeSql("UPDATE instances SET status = 'complete', videoFile = :x1, shareUrl = :x2, instanceId = :x3 WHERE id = :x4",[$filename.'.mp4','/v/'.$filename,$filename,$this->instanceID]);
+		
+	//		GARBAGE COLLECTION
+	//	delete temporary files after successful creation */
+		
 	}
-
-
-
-
-
 
 	function analyseImage($result,$image) {
 		if($result->logos()){
@@ -478,7 +465,6 @@ do {
 		
 		return $code;
 
-		
 	}
 	
 	function saveToS3($stream,$folder,$filename) {
@@ -493,4 +479,5 @@ do {
 			echo "There was an error uploading the file.\n";
 		}
 	}
+	//END
 }

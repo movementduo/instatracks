@@ -14,9 +14,7 @@ function square_top($object) {
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
-	// exec($full_command);
 	return $full_command;
-
 }
 
 function portrait_top($object) {
@@ -32,9 +30,7 @@ function portrait_top($object) {
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
-	// exec($full_command);
 	return $full_command;
-
 }
 
 function landscape_center($object) {
@@ -52,9 +48,7 @@ $c = "[1]scale=-1:650,drawbox=color=white:t=15,format=yuva420p,fade=in:st=0.4:d=
 
 	$full_command = $initial.'"'.$c.'"'.$end;
 
-	// exec($full_command);
 	return $full_command;
-
 }
 
 function join_videos($imgs,$instanceID) {
@@ -70,10 +64,6 @@ function join_videos($imgs,$instanceID) {
 	$name = TMP_DIR."addmusic-{$instanceID}.mp4";
 
 	$cmd = "ffmpeg -i ".$intro.implode($vids)." -i ".$end." -filter_complex concat=n=".(count($vids) + 2).":v=1:a=1 -c:v libx264 ".$name;
-
-//	mail('james@giantstepsdigital.co.uk','cmd2',$cmd,'From: dev2@movement.co.uk');
-
-	
 	shell_exec($cmd);
 }
 
@@ -86,9 +76,5 @@ function add_music($audioUrl,$instanceID) {
 	$command = "ffmpeg -i ".$vid." -i ".$music." \
 	-c:v copy -c:a aac -strict experimental \
 	-map 0:v:0 -map 1:a:0 ".$fin;
-
-//mail('james@giantstepsdigital.co.uk','cmd3',$command,'From: dev2@movement.co.uk');
-
-	
 	shell_exec($command);
 }
