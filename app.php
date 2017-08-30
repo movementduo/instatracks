@@ -27,7 +27,7 @@ $i = new Instatracks;
 $i->setInstance($instanceID);
 $i->setLyrics(json_decode(file_get_contents('lyrics/'.APP_LANGUAGE.'.json')));
 $i->setVision(new VisionClient(['projectId' => GOOGLE_PROJECTID]));
-$i->setPolly(new Aws\Polly\PollyClient(['version' => 'latest', 'profile' => AWS_PROFILE, 'region' => AWS_REGION]));
+$i->setPolly(new Aws\Polly\PollyClient(['version' => 'latest', 'region' => AWS_REGION]));
 $i->setS3(new Aws\S3\S3Client(['version' => 'latest', 'region' => S3_REGION]));
 $i->setDB($db);
 $i->execute();
