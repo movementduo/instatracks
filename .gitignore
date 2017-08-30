@@ -1,7 +1,11 @@
 .DS_Store
 config-local.php
 
-build/
+build/*
 !build/index.php
 
 assets/css/.sass-cache/
+
+config-secret.php
+cfg/*
+!cfg/google_example.json
