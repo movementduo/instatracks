@@ -6,6 +6,6 @@ build/*
 
 assets/css/.sass-cache/
 
+google.json
 config-secret.php
 cfg/*
-!cfg/google_example.json

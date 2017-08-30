@@ -12,7 +12,7 @@ define("WEB_ROOT","");
 
 # Keys 
 define('GOOGLE_PROJECTID', '');
-putenv('GOOGLE_APPLICATION_CREDENTIALS=cfg/google.json');
+putenv('GOOGLE_APPLICATION_CREDENTIALS=google.json');
 
 define("INSTAGRAM_KEY","");
 define("INSTAGRAM_SECRET","");
